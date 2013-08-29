@@ -3,8 +3,12 @@
 #include<time.h>
 struct message
 {
+    long long receiver;
+    long long sender;
     unsigned char content[71];
     struct message *NextMessage;
+    time_t Time;
+    int HasBeenReaded;//0表示未读，1表示读了
 };
 
 struct person
