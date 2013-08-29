@@ -8,6 +8,7 @@ struct message
     unsigned char content[71];
     struct message *NextMessage;
     time_t Time;
+    int flag_lms;//长短信标识，0代表非长短信，数字n代表长短信第n条
     int HasBeenReaded;//0表示未读，1表示读了
 };
 
