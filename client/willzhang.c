@@ -35,6 +35,7 @@ void DataInit()
     ((struct person *)(TmpMemPoint+sizeof(long long)))->name[1]='z';
     ((struct person *)(TmpMemPoint+sizeof(long long)))->name[2]='\0';
     ((struct person *)(TmpMemPoint+sizeof(long long)))->Time=0;
+    ((struct person *)(TmpMemPoint+sizeof(long long)))->NextPerson=NULL;
 }
 int main()
 {
