@@ -1,6 +1,6 @@
 
 #include"message.h"
-
+#include"memory.h"
 #include<stdio.h>
 
 void list_person_message(long long person_id,int NumOfPage)

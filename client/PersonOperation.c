@@ -44,3 +44,14 @@ void delete_person(long long id)
     }
     p->NextPerson=p->NextPerson->NextPerson;
 }
+
+int exist_in_list(long long person_id)
+{
+    struct person *p=PersonList->NextPerson;
+    while(p&&p->id!=person_id)
+    {
+        p=p->NextPerson;
+    }
+    if(p==NULL) return 0;
+    return 1;
+}

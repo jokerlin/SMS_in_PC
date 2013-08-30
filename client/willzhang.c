@@ -39,6 +39,7 @@ void DataInit()
 }
 int main()
 {
+    printf("hello, my name is baka willzhang\n");
     return 0;
 }
 
