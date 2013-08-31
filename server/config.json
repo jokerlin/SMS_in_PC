@@ -1,3 +1,6 @@
 {
-	"PORT": 7128
+    "DEBUG": 1,
+    "PORT_client": 12450,
+    "PORT": 7128,
+    "db": "sms.db"
 }
