@@ -2,7 +2,7 @@
 #include"message.h"
 #include"memory.h"
 #include<stdio.h>
-
+//单元测试通过
 void list_person_message(long long person_id,int NumOfPage)
 {
     struct person *p=PersonList->NextPerson;
@@ -22,7 +22,7 @@ void list_person_message(long long person_id,int NumOfPage)
     for(int i=0;i<the_message_num_of_one_page;i++)
     {
         if(q==NULL) return;
-        printf("%s",q->content);
+        printf("%s\n",q->content);
         q=q->NextMessage;
     }
 }
@@ -36,6 +36,7 @@ void delete_message(long long person_id,int message_id)
         pre_p=pre_p->NextPerson;
         p=p->NextPerson;
     }
+    p->NumOfMessage--;
     if(message_id==0)
     {
         p->HeadMessage=p->HeadMessage->NextMessage;
@@ -73,6 +74,7 @@ void save_message(long long person_id,struct message x)
     {
         p=p->NextPerson;
     }
+    p->NumOfMessage++;
     struct message *p_message=new_message();
     *p_message=x;
     p_message->NextMessage=p->HeadMessage;
@@ -80,10 +82,12 @@ void save_message(long long person_id,struct message x)
     p->Time=p->HeadMessage->Time;
     //调整p的位置
     struct person *q=PersonList;
-    while(q->NextPerson->Time>p->Time)
+    while(q->NextPerson&&q->NextPerson->Time>=p->Time)
     {
         q=q->NextPerson;
     }
+    if(q==p)  return;
     p->NextPerson=q->NextPerson;
     q->NextPerson=p;
 }
+

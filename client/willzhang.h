@@ -3,6 +3,7 @@
 
 #include<time.h>
 
+
 struct message
 {
     long long receiver;
@@ -21,6 +22,7 @@ struct person
     time_t Time;//该联系人的最新一条信息的时间,若无信息则置为0
     struct message *HeadMessage;//指向第一条信息
     struct person *NextPerson;
+    int NumOfMessage;
 };
 
 long long *DataHead;//文件内存的第一个long long大小的内存指针，存储的内容为未使用的文件内存首地址

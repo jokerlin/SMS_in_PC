@@ -3,6 +3,8 @@
 
 #include"willzhang.h"
 #include"PersonOperation.h"
+#include"message.h"
+#include"search.h"
 
 #include<sys/mman.h>
 #include<sys/types.h>
@@ -42,30 +44,39 @@ int main()
 {
     //DataInit();
     DataBaseStart();
-    //sleep(100);
-
-
-    list_person(0);
-/*
-    DataBaseStart();
+    /*增加一个联系人
     struct person tmp;
     tmp.HeadMessage=NULL;
-    tmp.id=18810578993;
-    tmp.name[0]='w';tmp.name[1]='\0';tmp.Time=0;
+    tmp.id=12;
+    scanf("%s",tmp.name);
+    tmp.Time=0;
     add_person(tmp);
-///*/
-    /*tmp.id=18810578994;
-    tmp.name[0]='z';tmp.name[1]='\0';tmp.Time=0;
-    add_person(tmp);*/
-/*
-    DataBaseStart();
-    printf("%lld\n",*DataHead);
-    printf("%lld %s\n",PersonList->id,PersonList->name);
-    printf("%lld %s\n",PersonList[1].id,PersonList[1].name);
-    if(PersonList->NextPerson==&PersonList[1])  printf("Yes");
-    if(PersonList->NextPerson==NULL)    printf("NULL");
-    printf("%lld\n",((struct person *)(MemPoint-sizeof(struct person)))->id);
-*/
+    //*/
+    /*给该联系人增加5个信息
+    struct message tmp;
+    for(int i=0;i<12;i++)
+    {
+        scanf("%s",tmp.content);
+        tmp.Time=10+i;
+        save_message(12,tmp);
+    }
+    //*/
+    /*
+    list_person_message(12,0);
+    list_person_message(12,1);
+    printf("\n");
+    delete_message(12,3);
+    list_person_message(12,0);
+    list_person_message(12,1);
+    */
+    ///*
+    list_person_message(12,0);list_person_message(12,1);
+    unsigned char a[70][70];
+    scanf("%s",a[0]);
+    scanf("%s",a[1]);
+    search_message(a,2);
+    //*/
+    //list_person(0);
     return 0;
 }
 

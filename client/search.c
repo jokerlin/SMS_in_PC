@@ -7,7 +7,7 @@ int strlen_unsigned(unsigned char a[])
 {
     int ans=0;
     unsigned char *p=a;
-    while(p!=0)
+    while((*p)!=0)
     {
         ans++;
         p++;
@@ -22,7 +22,7 @@ struct node
     struct node *pre;//前缀指针
     unsigned char ch;//其父节点通过ch字符到达此节点
     int bStopNode;//是否某个模式串的终止节点,及该模式串出现的次数（用来应对重复串）
-} NODES[1000000];
+} NODES[100000];
 int nNode;
 struct node *root;
 void Clear()//自动机的初始化,与清空
@@ -111,8 +111,17 @@ void add_pre()//增加前缀指针，这之前只是字典树，只有执行了�
         }
     }
 }
+/********栈结构****/
+struct refresh
+{
+    struct node *p;
+    int stopnum;
+}Stack[100000];
+int nStack;
+/*****************/
 int Find(unsigned char a[])//在自动机中查找a串匹配的字符串数目
 {
+    nStack=0;
     struct node *p=root;
     int len=strlen_unsigned(a);
     int ans=0;
@@ -131,10 +140,19 @@ int Find(unsigned char a[])//在自动机中查找a串匹配的字符串数目
         struct node *q=p;
         while(q)//此节点的前缀节点若为终止节点，则显然也被匹配到
         {
+            if(q->bStopNode)
+            {
+                Stack[nStack].stopnum=q->bStopNode;
+                Stack[nStack++].p=q;
+            }
             ans+=q->bStopNode;
             q->bStopNode=0;//避免被重复计算
             q=q->pre;
         }
+    }
+    for(int i=0;i<nStack;i++)
+    {
+        Stack[i].p->bStopNode=Stack[i].stopnum;
     }
     return ans;
 }
@@ -156,7 +174,7 @@ void search_message(unsigned char a[][70],int m)
     Clear();
     for(int i=0;i<m;i++)
     {
-        add_str(a[m]);
+        add_str(a[i]);
     }
     add_pre();
     nans=0;
@@ -172,7 +190,7 @@ void search_message(unsigned char a[][70],int m)
             }
         }
     }
-    qsort(ans,0,sizeof(ans[0]),cmp);
+    qsort(ans,nans,sizeof(ans[0]),cmp);
     for(int i=0;i<nans;i++)
     {
         printf("%s 匹配的关键字数：%d\n",ans[i].cont->content,ans[i].num);
