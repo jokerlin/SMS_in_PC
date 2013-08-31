@@ -8,7 +8,6 @@ import sys, os, time
 
 con = sqlite3.connect('sms.db')
 cursor = con.cursor()
-PORT = 7121
 client_ston = {} # 根据socket寻找phone_num
 client_ntos = {} # 根据phone_num寻找socket
 client_new = []
@@ -113,13 +112,11 @@ def parent():
 
 # 主函数
 def main():
+
+	# 配置socket相关属性，开启端口复用
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    server.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
-    server.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPCNT, 3)
-    server.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, 10)
-    server.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, 600)
-    
+
     # 尝试绑定端口
     try:
         server.bind(('0.0.0.0', PORT))
