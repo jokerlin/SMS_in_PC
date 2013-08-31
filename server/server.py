@@ -75,7 +75,7 @@ def poweron(s, client_ip):
     phone_num = s.recv(4096)
     s.send('OK')
     s.close()
-    phone_num = phone_num[1:-1]
+    phone_num = phone_num[1:]
     if DEBUG:
         print str(phone_num) + " Power On..."
     client[phone_num] = client_ip
@@ -87,7 +87,7 @@ def poweroff(s):
     phone_num = s.recv(4096)
     s.send('OK')
     s.close()
-    phone_num = phone_num[1:-1]
+    phone_num = phone_num[1:]
     if DEBUG:
         print str(phone_num) + " Power Off..."
     client.pop(phone_num)
