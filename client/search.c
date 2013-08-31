@@ -178,9 +178,9 @@ void search_message(unsigned char a[][70],int m)
     }
     add_pre();
     nans=0;
-    for(struct person *p=PersonList->NextPerson;p;p=p->NextPerson)
+    for(struct person *p=longlong_to_PersonPoint(PersonList->NextPerson);p!=MemBasePerson;p=longlong_to_PersonPoint(p->NextPerson))
     {
-        for(struct message *q=p->HeadMessage;q;q=q->NextMessage)
+        for(struct message *q=longlong_to_MessagePoint(p->HeadMessage);q!=MemBaseMessage;q=longlong_to_MessagePoint(q->NextMessage))
         {
             int tnum=Find(q->content);
             if(tnum>=1)
@@ -225,9 +225,9 @@ int kmp_find(unsigned char *T,unsigned char *P)//在T中寻找P出现的位置
 /****************************************/
 void search_message_single(unsigned char a[])
 {
-    for(struct person *p=PersonList->NextPerson;p;p=p->NextPerson)
+    for(struct person *p=longlong_to_PersonPoint(PersonList->NextPerson);p!=MemBasePerson;p=longlong_to_PersonPoint(p->NextPerson))
     {
-        for(struct message *q=p->HeadMessage;q;q=q->NextMessage)
+        for(struct message *q=longlong_to_MessagePoint(p->HeadMessage);q!=MemBaseMessage;q=longlong_to_MessagePoint(q->NextMessage))
         {
             if(kmp_find(q->content,a))
             {
