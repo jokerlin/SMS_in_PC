@@ -1,139 +1,156 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # coding: utf-8
 # A simple server software, whick work as a SMS server
 
-import socket, select
+import socket, select, json
 import sqlite3
 import sys, os, time
 
-con = sqlite3.connect('sms.db')
+# 读取配置文件信息并进行相应配置
+config = {}
+f = open('config.json')
+config = json.load(f)
+f.close()
+DEBUG = config['DEBUG']
+con = sqlite3.connect(config['db'])
 cursor = con.cursor()
-client_ston = {} # 根据socket寻找phone_num
-client_ntos = {} # 根据phone_num寻找socket
-client_new = []
-timeout = 10
-smsending = "||A SMS END||" # 短信结束标识
+client = {}
 
 # 存储短信
-def savesms(sms):
-    # 分析短信并保存
-    pass
+def savesms(sms, flag_new):
+    tableName = 'old' # 分析要存入的表
+    if flag_new:
+        tableName = 'new'
+    # 生成SQL语句
+    sms['table'] = tableName
+    sql = 'INSERT INTO %(table)s (sender, receiver, content, time, long) VALUES ("%(sender)s", "%(receiver)s", "%(content)s", "%(time)s", %(long)d);' % sms
+
+    # 执行sql语句并提交
+    if DEBUG:
+        print sql
+    cursor.execute(sql)
+    con.commit()
 
 # 发送短信
-def sendsms(s, sms):
-    # 接受短信，验证是否发送成功，未发送成功则保存
-    s.send(sms)
-    a = s.recv(2)
+def sendsms(sms, client_ip, id=0):
+    # 尝试发送短信，如果成功则存入
+    if DEBUG:
+        print "send message..."
+    flag_send = True
+    s2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s2.connect((client_ip, config['PORT_client']))
+    s2.send(json.dumps(sms))
+    if DEBUG:
+        print json.dumps(sms)
+    a = s2.recv(2)
+    s2.close()
     if "OK" in a:
-        pass
+        flag_send = False
+    if (id) and (not flag_send):
+        sql = "DELETE FROM new WHERE id = %d" % id
+        cursor.execute(sql)
+        con.commit()
+    savesms(sms, flag_send)
+
+# 开机查询逻辑
+def check(phone_num):
+    # 定制查询
+    sql = 'SELECT * FROM new WHERE receiver="%s"' % phone_num
+    if DEBUG:
+        print sql
+    result = cursor.execute(sql)
+    result = result.fetchall()
+    for i in result:
+       newsms = {}
+       newsms['sender'] = i[0]
+       newsms['receiver'] = i[1]
+       newsms['content'] = i[2]
+       newsms['time'] = i[3]
+       newsms['long'] = i[4]
+       id = i[5]
+       sendsms(newsms, client[newsms['receiver']], id)
+
+# 开机函数
+def poweron(s, client_ip):
+    phone_num = s.recv(4096)
+    s.send('OK')
+    s.close()
+    phone_num = phone_num[1:-1]
+    if DEBUG:
+        print str(phone_num) + " Power On..."
+    client[phone_num] = client_ip
+    # 查询是否有短信并发送
+    check(phone_num)
+
+# 关机函数
+def poweroff(s):
+    phone_num = s.recv(4096)
+    s.send('OK')
+    s.close()
+    phone_num = phone_num[1:-1]
+    if DEBUG:
+        print str(phone_num) + " Power Off..."
+    client.pop(phone_num)
+
+# 短信函数
+def message(s):
+    print "message"
+    sms = s.recv(4096)
+    s.send('OK')
+    s.close()
+    sms = json.loads(sms)
+    if DEBUG:
+        print sms['receiver']
+        print client.keys()
+    if sms['receiver'] in client.keys():
+        sendsms(sms, client[sms['receiver']])
     else:
-        savesms(sms)
+        savesms(sms, True)
 
-# 子进程
-def child(server):
-    while 1:
-        # 循环接受客户端手机号，并搜索是否有其短信
-        s, addr = server.accept()
-        phone_num = s.read()
-        phone_num = phone_num[9:]
-        result = cursor.execute("SELECT * FROM new WHERE receiver='%s'" % phone_num)
-        result = result.fetchall()
-       
-        # 如果有短信，则将短信分条发送
-        if result != 0:
-            for smsobj in result:
-                sms = ''
-                for smsinfo in smsobj:
-                    sms = sms + unicode(u) + u"|"
-                sms = sms.encode('utf-8')
-                sms = sms[:] + smsending
-                while 1:
-                    r, w, e = [s], [], []
-                    r, w, e = select.select(r, w, e, timeout)
-                    if s in r:
-                        sendsms(s, sms)
-                        break
-                    time.sleep(2)
-                
-        # 将对应的socket和phone_num存入字典和记录数组
-        client_ntos[phone_num] = s
-        client_ston[s] = phone_num
-        client_new.append(s)
+# 开始监听并进行操作
+def serverdo(s, addr):
+    if DEBUG:
+        print str(addr) + " Connecting...."
+    flag = s.recv(1) # 读取连接第一个字符，判断连接作用
 
-# 父进程
-def parent():
-    r = w = e = []
-    while 1:
+    # 开机信息
+    if flag == '1':
+        poweron(s, addr[0])	
 
-        # 将新连接加入队列
-        if client_new:
-            try:
-                r.append(client_new.pop())
-            except:
-                pass
+    # 关机信息
+    elif flag == '2':
+        poweroff(s)
+
+    # 发送短信
+    elif flag == '3':
+        message(s)
         
-        # 查看各套接字状态
-        r, w, e = select.select(r, w, e, timeout)
-
-        # 有套接字错误则删除
-        if e:
-            for s in e:
-                tmp = client_ston.pop(s)
-                client_ntos.pop(tmp)
-
-        # 有套接字可读则转发
-        if r:
-            
-            # 读入内容
-            for s in r:
-                read_result = s.recv(4096)
-            
-            # 分析套接字，区分关机和发送短信
-            if "Off" in read_result[:12]:
-                # 关机
-                r.remove(s)
-                tmp = client_ston.pop(s)
-                client_ntos.pop(tmp)
-            else:    
-                # 发送短信
-                read_result = read_result.split(smsending)
-                for smsobj in read_result:
-                    if smsobj:
-                        smsinfo = smsobj.split("|")
-                        receiver_num = smsinfo[1]
-                        
-                        # 若接受人在线
-                        if client_ntos[receiver_num] in w:
-                            sendsms(client_ntos[receiver_num], smsobj)
-                        # 若接受人不在线
-                        else:
-                            savesms(smsobj)
-        time.sleep(10)
+    # 非法信息
+    else:
+        s.close()
 
 # 主函数
 def main():
-
-	# 配置socket相关属性，开启端口复用
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
+    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # 配置socket相关属性，开启端口复用
     # 尝试绑定端口
     try:
-        server.bind(('0.0.0.0', PORT))
+        server.bind(('0.0.0.0', config['PORT']))
     except Exception as e:
-        print e.strerror
-        print "端口绑定失败，程序结束"
+        print e.message
+        print "程序出现错误，强制结束"
         sys.exit()
-    server.listen(-1)
-
-    # 区分子进程和父进程
-    if os.fork() != 0:
-        print "SMS server v1.0 Start in Port %d...." % PORT
+    finally:
+        server.listen(-1)
+        print "SMS Server alpha by Sandtears"  
+        print "Start in Port %d...." % config['PORT']
         print "Please press <Control + C> to stop it"
-        parent()
-    else:
-        child(server)
+        # 输出声明字符串并开始工作
 
-# Test
+        # 获取客户端连接
+        while 1:
+            s, addr = server.accept()
+            serverdo(s, addr)
+
 if __name__ == "__main__":
     main()
