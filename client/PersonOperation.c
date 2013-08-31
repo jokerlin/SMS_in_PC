@@ -24,10 +24,13 @@ void list_person(int numofpage)
 
 void add_person(struct person x)
 {
+    //printf("%lld\n",x.id);//debug
     struct person *q=new_person();
+    //if(q==NULL) printf("1");
+    //else printf("2");
     *q=x;
     struct person *p=PersonList;
-    while(p->NextPerson->Time>x.Time)
+    while(p->NextPerson&&p->NextPerson->Time>x.Time)
     {
         p=p->NextPerson;
     }

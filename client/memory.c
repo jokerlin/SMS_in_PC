@@ -1,5 +1,5 @@
 #include"memory.h"
-
+#include<stdio.h>
 struct person * new_person()
 {
     struct person *ans=(struct person *)MemPoint;
