@@ -42,6 +42,7 @@ def sendsms(sms, client_ip, id=0):
     s2.send(json.dumps(sms))
     if DEBUG:
         print json.dumps(sms)
+    s2.settimeout(10)
     a = s2.recv(2)
     s2.close()
     if "OK" in a:
@@ -72,6 +73,7 @@ def check(phone_num):
 
 # 开机函数
 def poweron(s, client_ip):
+    s.settimeout(10)
     phone_num = s.recv(4096)
     s.send('OK')
     s.close()
@@ -84,6 +86,7 @@ def poweron(s, client_ip):
 
 # 关机函数
 def poweroff(s):
+    s.settimeout(10)
     phone_num = s.recv(4096)
     s.send('OK')
     s.close()
@@ -95,6 +98,7 @@ def poweroff(s):
 # 短信函数
 def message(s):
     print "message"
+    s.settimeout(10)
     sms = s.recv(4096)
     s.send('OK')
     s.close()
@@ -111,6 +115,7 @@ def message(s):
 def serverdo(s, addr):
     if DEBUG:
         print str(addr) + " Connecting...."
+    s.settimeout(10)
     flag = s.recv(1) # 读取连接第一个字符，判断连接作用
 
     # 开机信息

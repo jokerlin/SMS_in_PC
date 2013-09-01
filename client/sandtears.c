@@ -37,6 +37,7 @@ char* longlong_to_string(long long number) {
 char* time_to_string(time_t time) {
     char str[30];
     // 时间转字符串
+    // 2013-03-22 03:02:02
 }
 
 char* str_append(char* str1, char* str2){
