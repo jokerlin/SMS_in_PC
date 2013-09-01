@@ -48,17 +48,22 @@ def sendsms(sms, client_ip, id=0):
     s2.send(json.dumps(sms))
     if DEBUG:
         print json.dumps(sms)
-    a = s2.recv(2)
-    s2.close()
-    if "OK" in a:
-        flag_send = False
-    if (id) and (not flag_send):
-        sql = "DELETE FROM new WHERE id = %d" % id
-        con, cursor = opendb()
-        cursor.execute(sql)
-        con.commit()
-        con.close()
-    savesms(sms, flag_send)
+    s2.timeout(30)
+    try:
+        a = s2.recv(2)
+        s2.close()
+        if "OK" in a:
+            flag_send = False
+    except:
+        flag_send = True
+    finally:
+        if (id) and (not flag_send):
+            sql = "DELETE FROM new WHERE id = %d" % id
+            con, cursor = opendb()
+            cursor.execute(sql)
+            con.commit()
+            con.close()
+        savesms(sms, flag_send)
 
 # 开机查询逻辑
 def check(phone_num):
