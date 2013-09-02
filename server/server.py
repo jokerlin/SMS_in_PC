@@ -2,6 +2,7 @@
 # coding: utf-8
 # A simple server software, whick work as a SMS server
 
+from SocketServer import ThreadingMixIn, StreamRequestHandler, TCPServer
 import socket, select, json
 import sqlite3
 import sys, os, time
@@ -12,9 +13,12 @@ f = open('config.json')
 config = json.load(f)
 f.close()
 DEBUG = config['DEBUG']
-con = sqlite3.connect(config['db'])
-cursor = con.cursor()
 client = {}
+def opendb():
+    con = sqlite3.connect(config['db'])
+    cursor = con.cursor()
+    return con, cursor
+    
 
 # 存储短信
 def savesms(sms, flag_new):
@@ -28,8 +32,10 @@ def savesms(sms, flag_new):
     # 执行sql语句并提交
     if DEBUG:
         print sql
+    con, cursor = opendb()
     cursor.execute(sql)
     con.commit()
+    con.close()
 
 # 发送短信
 def sendsms(sms, client_ip, id=0):
@@ -42,15 +48,22 @@ def sendsms(sms, client_ip, id=0):
     s2.send(json.dumps(sms))
     if DEBUG:
         print json.dumps(sms)
-    a = s2.recv(2)
-    s2.close()
-    if "OK" in a:
-        flag_send = False
-    if (id) and (not flag_send):
-        sql = "DELETE FROM new WHERE id = %d" % id
-        cursor.execute(sql)
-        con.commit()
-    savesms(sms, flag_send)
+    s2.timeout(30)
+    try:
+        a = s2.recv(2)
+        s2.close()
+        if "OK" in a:
+            flag_send = False
+    except:
+        flag_send = True
+    finally:
+        if (id) and (not flag_send):
+            sql = "DELETE FROM new WHERE id = %d" % id
+            con, cursor = opendb()
+            cursor.execute(sql)
+            con.commit()
+            con.close()
+        savesms(sms, flag_send)
 
 # 开机查询逻辑
 def check(phone_num):
@@ -58,6 +71,7 @@ def check(phone_num):
     sql = 'SELECT * FROM new WHERE receiver="%s"' % phone_num
     if DEBUG:
         print sql
+    con, cursor = opendb()
     result = cursor.execute(sql)
     result = result.fetchall()
     for i in result:
@@ -69,13 +83,13 @@ def check(phone_num):
        newsms['long'] = i[4]
        id = i[5]
        sendsms(newsms, client[newsms['receiver']], id)
+    con.close()
 
 # 开机函数
 def poweron(s, client_ip):
-    phone_num = s.recv(4096)
-    s.send('OK')
-    s.close()
-    phone_num = phone_num[1:-1]
+    phone_num = s.rfile.read(4096)
+    s.wfile.write('OK')
+    phone_num = phone_num[1:]
     if DEBUG:
         print str(phone_num) + " Power On..."
     client[phone_num] = client_ip
@@ -84,10 +98,9 @@ def poweron(s, client_ip):
 
 # 关机函数
 def poweroff(s):
-    phone_num = s.recv(4096)
-    s.send('OK')
-    s.close()
-    phone_num = phone_num[1:-1]
+    phone_num = s.rfile.read(4096)
+    s.wfile.write('OK')
+    phone_num = phone_num[1:]
     if DEBUG:
         print str(phone_num) + " Power Off..."
     client.pop(phone_num)
@@ -95,9 +108,8 @@ def poweroff(s):
 # 短信函数
 def message(s):
     print "message"
-    sms = s.recv(4096)
-    s.send('OK')
-    s.close()
+    sms = s.rfile.read(4096)
+    s.wfile.write('OK')
     sms = json.loads(sms)
     if DEBUG:
         print sms['receiver']
@@ -107,50 +119,38 @@ def message(s):
     else:
         savesms(sms, True)
 
-# 开始监听并进行操作
-def serverdo(s, addr):
-    if DEBUG:
-        print str(addr) + " Connecting...."
-    flag = s.recv(1) # 读取连接第一个字符，判断连接作用
+# 创建多线程服务器
+class ThreadServer(ThreadingMixIn, TCPServer):
+    pass
 
-    # 开机信息
-    if flag == '1':
-        poweron(s, addr[0])	
+# 创建服务器处理逻辑
+class Handler(StreamRequestHandler):
 
-    # 关机信息
-    elif flag == '2':
-        poweroff(s)
+    def handle(self):
+        addr, port = self.request.getpeername()
+        flag = self.rfile.read(1)
 
-    # 发送短信
-    elif flag == '3':
-        message(s)
+        # 开机信息
+        if flag == '1':
+            poweron(self, addr)	
+
+        # 关机信息
+        elif flag == '2':
+            poweroff(self)
+
+        # 发送短信
+        elif flag == '3':
+            message(self)
         
-    # 非法信息
-    else:
-        s.close()
 
 # 主函数
 def main():
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # 配置socket相关属性，开启端口复用
-    # 尝试绑定端口
-    try:
-        server.bind(('0.0.0.0', config['PORT']))
-    except Exception as e:
-        print e.message
-        print "程序出现错误，强制结束"
-        sys.exit()
-    finally:
-        server.listen(-1)
-        print "SMS Server alpha by Sandtears"  
-        print "Start in Port %d...." % config['PORT']
-        print "Please press <Control + C> to stop it"
-        # 输出声明字符串并开始工作
-
-        # 获取客户端连接
-        while 1:
-            s, addr = server.accept()
-            serverdo(s, addr)
+    server = ThreadServer(('', config['PORT']), Handler)
+    # 输出声明字符串并开始工作
+    print "SMS Server alpha by Sandtears"  
+    print "Start in Port %d...." % config['PORT']
+    print "Please press <Control + C> to stop it"
+    server.serve_forever()
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,242 @@
+/*************************************************************************
+    > File Name: sandtears.c
+    > Author: Sandtears
+    > Mail: me@sandtears.com 
+    > Created Time: 2013年08月31日 星期六 20时47分14秒
+ ************************************************************************/
+
+#include <stdio.h>
+#include <sandtears.h>
+#include <willzhang.h>
+#include <sys/socket.h>
+#include <sys/types.h> 
+#include <unistd.h>
+#include <string.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+#define MAXLEN 1024
+
+char* longlong_to_string(long long number) {
+    int len;
+    char str[20], re_str[20];
+    // 求出倒序字符串
+    for(len = 0; number < 10; len++) {
+        re_str[len] = number % 10 + '0';
+        number = number / 10;
+    }
+    re_str[len] = number + '0';
+    re_str[len + 1] = 0;
+    for(i = 0; i <= len; i++) {
+        str[i] = re_str[len - i];
+    }
+    str[i + 1] = 0;
+    return str;
+}
+
+char* time_to_string(time_t time) {
+    char str[30];
+    // 时间转字符串
+    // 2013-03-22 03:02:02
+}
+
+char* str_append(char* str1, char* str2){
+    // 字符串补充
+}
+
+char* sms_to_string(struct message msg) {
+    // 逐个转化为char* 型
+    char str_receiver[20], str_sender[20], str_time[30];
+    char str_flag_lms[1];
+    char sms[1024]="";
+    str_receiver = longlong_to_string(msg.receiver);
+    str_sender = longlong_to_string(msg.sender);
+    str_flag_lms[0] = msg.flag_lms + '0';
+    
+    // 字符串合成
+    str_append(sms, "3{\"sender\":\"");
+    str_append(sms, str_sender);
+    str_append(sms, "\",\"receiver\":\"");
+    str_append(sms, str_receiver);
+    str_append(sms, "\",\"content\":\"");
+    str_append(sms, msg.content);
+    str_append(sms, "\",\"Time\":\"");
+    str_append(sms, str_time);
+    str_append(sms, "\",\"flag_lms\":");
+    str_append(sms, str_flag_lms);
+    str_append(sms, "}");
+}
+
+int sock_power_on(char* phone_num, char* server_ip, int server_port, int client_port) //开机，返回文件描述符
+{
+    int sockfd, len;
+    struct sockaddr_in serverAddr;
+    char* buf;
+
+    // 创建socket
+    if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
+        perror("on_socket_client");
+        return -1;
+    }
+
+    // 绑定IP
+    memset(&serverAddr, 0, sizeof(serverAddr));
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(server_port);
+    if(inet_pton(AF_INET, server_ip, &serverAddr.sin_addr) < 0){
+        perror("on_inet_pton");
+        return -1;
+    }
+
+    // 连接服务器
+    if(connect(sockfd, (struct sockaddr*) &serverAddr, sizeof(serverAddr)) < 0){
+        perror("on_connect");
+        return -1;
+    }
+
+    // 数据传输，将手机号发给服务端
+    buf = phone_num - sizeof(char) * 2;
+    buf[0] = "1";
+    buf[1] = "|";
+    len = strlen(buf)
+    if(write(sockfd, buf, len) != len){
+        perror("on_write");
+        return -1;
+    }
+    memset(buf, 0, sizeof(buf));
+    if((read(sockfd, buf, MAXLEN)) < 0) {
+        perror("on_read");
+        return -1;
+    }
+    if((buf[0] == "O")&&(buf[1] == "K")) {
+        perror("on_read_2");
+        return -1;
+    }
+    // 关闭socket
+    close(sockfd);
+
+    //建立连接，监听并返回
+    //
+    // 创建socket
+    if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
+        perror("on_socket_server");
+        return -1;
+    }
+
+    // 绑定地址
+    memset(&serverAddr, 0, sizeof(serverAddr));
+    serverAddr.sin_port = htons(client_port);
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    if(bind(sockfd, (struct sockaddr*) &serverAddr, sizeof(serverAddr)) < 0){
+        perror("on_bind");
+        return -1;
+    }
+
+    // 监听
+    if(listen(sockfd, 1) < 0){
+        perror("on_listen");
+        return -1;
+    }
+
+    // 返回结果
+    return sockfd;
+}
+
+int sock_power_off(int serverfd, char* phone_num, char* server_ip, int server_port) //关机
+{
+    int sockfd, len;
+    struct sockaddr_in serverAddr;
+    char* buf;
+
+    close(serverfd);
+    // 创建socket
+    if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
+        perror("off_socket");
+        return -1;
+    }
+
+    // 绑定IP
+    memset(&serverAddr, 0, sizeof(serverAddr));
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(server_port);
+    if(inet_pton(AF_INET, server_ip, &serverAddr.sin_addr) < 0){
+        perror("off_inet_pton");
+        return -1;
+    }
+
+    // 连接服务器
+    if(connect(sockfd, (struct sockaddr*) &serverAddr, sizeof(serverAddr)) < 0){
+        perror("off_connect");
+        return -1;
+    }
+
+    // 数据传输，将手机号发给服务端
+    buf = phone_num - sizeof(char) * 2;
+    buf[0] = "2";
+    buf[1] = "|";
+    len = strlen(buf)
+    if(write(sockfd, buf, len) != len){
+        perror("off_write");
+        return -1;
+    }
+    memset(buf, 0, sizeof(buf));
+    if((read(sockfd, buf, MAXLEN)) < 0) {
+        perror("off_read");
+        return -1;
+    }
+    if((buf[0] == "O")&&(buf[1] == "K")) {
+        perror("off_read_2");
+        return -1;
+    }
+    // 关闭socket
+    close(sockfd);
+    return 1;
+}
+
+int sock_sendmsg(struct message msg, char* server_ip, int server_port) 
+{
+    int sockfd, len;
+    struct sockaddr_in serverAddr;
+    char* buf;
+
+    // 创建socket
+    if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
+        perror("sendmsg_socket");
+        return -1;
+    }
+
+    // 绑定IP
+    memset(&serverAddr, 0, sizeof(serverAddr));
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_port = htons(server_port);
+    if(inet_pton(AF_INET, server_ip, &serverAddr.sin_addr) < 0){
+        perror("sendmsg_inet_pton");
+        return -1;
+    }
+
+    // 连接服务器
+    if(connect(sockfd, (struct sockaddr*) &serverAddr, sizeof(serverAddr)) < 0){
+        perror("sendmsg_connect");
+        return -1;
+    }
+    
+    // 数据传输，将短信发送出去
+    
+    len = strlen(buf)
+    if(write(sockfd, buf, len) != len){
+        perror("sendmsg_write");
+        return -1;
+    }
+    memset(buf, 0, sizeof(buf));
+    if((read(sockfd, buf, MAXLEN)) < 0) {
+        perror("sendmsg_read");
+        return -1;
+    }
+    if((buf[0] == "O")&&(buf[1] == "K")) {
+        perror("sendmsg_read_2");
+        return -1;
+    }
+    // 关闭socket
+    return 1; 
+}
