@@ -7,7 +7,7 @@ int strlen_unsigned(unsigned char a[])
 {
     int ans=0;
     unsigned char *p=a;
-    while((*p)!=0)
+        while((*p)!=0)
     {
         ans++;
         p++;

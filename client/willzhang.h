@@ -8,7 +8,7 @@ struct message
 {
     long long receiver;
     long long sender;
-    unsigned char content[71];
+    unsigned char content[250];
     //struct message *NextMessage;
     long long NextMessage;//NextMessage+MemBase才为真正的指针,为0代表为空
     time_t Time;
@@ -37,6 +37,10 @@ struct person *PersonList;//文件内存的继第一个long long之后的第一�
 void DataBaseStart();//开机时调用，为DataHead和MemPoint和PersonList赋初值
 void DataInit();//第一次开机时调用，初始化文件内存
 //内存存的前两个变量,一个long long ,一个person
+
+void *PersonRecycleBinPoint;//指向文件PersonRecycleBin的指针，文件的第一个longlong内存存着回收站的终点，弱终点等于起点，则回收站无内容
+void *MessageRecycleBinPoint;//指向文件MessageRecycleBin的指针，
+
 struct person * longlong_to_PersonPoint(long long x);
 struct message * longlong_to_MessagePoint(long long x);
 #endif

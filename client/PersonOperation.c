@@ -55,6 +55,7 @@ void delete_person(long long id)
     {
         p=longlong_to_PersonPoint(p->NextPerson);
     }
+    Recycle_Person(p->NextPerson);
     p->NextPerson=longlong_to_PersonPoint(p->NextPerson)->NextPerson;
 }
 

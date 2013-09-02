@@ -47,6 +47,7 @@ void delete_message(long long person_id,int message_id)
     p->NumOfMessage--;
     if(message_id==0)
     {
+        Recycle_Message(p->HeadMessage);
         p->HeadMessage=longlong_to_MessagePoint(p->HeadMessage)->NextMessage;
         if(p->HeadMessage==0)
         {
@@ -72,6 +73,7 @@ void delete_message(long long person_id,int message_id)
     {
         q=longlong_to_MessagePoint(q->NextMessage);
     }
+    Recycle_Message(q->NextMessage);
     q->NextMessage=longlong_to_MessagePoint(q->NextMessage)->NextMessage;
 }
 

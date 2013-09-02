@@ -25,7 +25,9 @@ struct message * longlong_to_MessagePoint(long long x)
 
 void DataBaseStart()
 {
-    int fd=open("DataFile",O_RDWR);
+    int fd;
+
+    fd=open("DataFile",O_RDWR);
     struct stat DataFileState;
     fstat(fd,&DataFileState);
     MemPoint=mmap(NULL,DataFileState.st_size,PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
@@ -36,10 +38,22 @@ void DataBaseStart()
     PersonList=((struct person *)(MemPoint+sizeof(long long)));
     close(fd);
     MemPoint+=DataHead[0];
+
+    fd=open("PersonRecycleBin",O_RDWR);
+    struct stat PersonRecycleBinState;
+    fstat(fd,&PersonRecycleBinState);
+    PersonRecycleBinPoint=mmap(NULL,PersonRecycleBinState.st_size,PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
+
+    fd=open("MessageRecycleBin",O_RDWR);
+    struct stat MessageRecycleBinState;
+    fstat(fd,&MessageRecycleBinState);
+    MessageRecycleBinPoint=mmap(NULL,MessageRecycleBinState.st_size,PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
 }
 void DataInit()
 {
-    int fd=open("DataFile",O_RDWR);
+    int fd;
+
+    fd=open("DataFile",O_RDWR);
     struct stat DataFileState;
     fstat(fd,&DataFileState);
     void *TmpMemPoint=mmap(NULL,DataFileState.st_size,PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
@@ -52,12 +66,28 @@ void DataInit()
     ((struct person *)(TmpMemPoint+sizeof(long long)))->name[2]='\0';
     ((struct person *)(TmpMemPoint+sizeof(long long)))->Time=0;
     ((struct person *)(TmpMemPoint+sizeof(long long)))->NextPerson=0;
+
+    fd=open("PersonRecycleBin",O_RDWR);
+    struct stat PersonRecycleBinState;
+    fstat(fd,&PersonRecycleBinState);
+    void *TmpPersonRecycleBinPoint=mmap(NULL,PersonRecycleBinState.st_size,PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
+    close(fd);
+    ((long long *)TmpPersonRecycleBinPoint)[0]=0;
+
+    fd=open("MessageRecycleBin",O_RDWR);
+    struct stat MessageRecycleBinState;
+    fstat(fd,&MessageRecycleBinState);
+    void *TmpMessageRecycleBinPoint=mmap(NULL,MessageRecycleBinState.st_size,PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
+    close(fd);
+    ((long long *)TmpMessageRecycleBinPoint)[0]=0;
 }
 int main()
 {
     //DataInit();
     DataBaseStart();
-    printf("%d\n",person_pages_nums());
+    //delete_person(12);
+    //printf("%lld\n",((long long *)MemBase)[0]);
+    //printf("%d\n",person_pages_nums());
     /*增加一个联系人
     struct person tmp;
     tmp.HeadMessage=0;
@@ -67,35 +97,37 @@ int main()
     tmp.NumOfMessage=0;
     add_person(tmp);
     //*/
+    //delete_person(12);
+    //list_person(0);
     /*给该联系人增加5个信息
     struct message tmp;
-    for(int i=0;i<12;i++)
+    for(int i=0;i<3;i++)
     {
         scanf("%s",tmp.content);
         tmp.Time=10+i;
         save_message(12,tmp);
     }
     //*/
-    /*
+///*
     list_person_message(12,0);printf("\n");
-    list_person_message(12,1);
-    printf("\n");
-    delete_message(12,3);
-    list_person_message(12,0);
-    list_person_message(12,1);
-    */
+    //list_person_message(12,1);
+    //*/
+    /*printf("\n");*/
+    //delete_message(12,1);
+    //list_person_message(12,0);
+    //list_person_message(12,1);
 
-    /*
-    list_person_message(12,0);list_person_message(12,1);
+
+    /*list_person_message(12,0);list_person_message(12,1);
     unsigned char a[70][70];
     scanf("%s",a[0]);
     scanf("%s",a[1]);
     search_message(a,2);
-    //*/
-    /*list_person_message(12,0);list_person_message(12,1);
+    list_person_message(12,0);list_person_message(12,1);
     unsigned char a[70];
     scanf("%s",a);
-    search_message_single(a);*/
+    search_message_single(a);
+    //*/
     return 0;
 }
 
