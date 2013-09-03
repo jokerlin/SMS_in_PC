@@ -7,6 +7,14 @@
 #ifndef c_client_h
 #define c_client_h
 
+int lockflag = 0; //进程锁标记
+//long long phonenumber;
+long long input_phonenumber;
+int page_number;
+int input_page_number;
+int input_message_id;
+char[100] input_message_content;
+
 void power_off(); //关机 
 void help(); //显示帮助
 void client_list_person(); //显示联系列表 
