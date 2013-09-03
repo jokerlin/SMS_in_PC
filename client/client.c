@@ -180,6 +180,7 @@ void send_message()
 		msg.flag_lms = 0;
 		msg.HasBeenReaded = 0;
 		
+		save_message(msg.receiver,msg);
 		sock_sendmsg(struct message msg, server_ip, server_port) 
 	}
 	else

@@ -43,6 +43,8 @@ int main(int argc, char** argv)
 			{
 				printf("\nYou Just Get a New Message!\n");
 				printf("%s\n",buf_r);
+				struct msg_receive = string_to_message(buf_r);
+				save_message(msg_receive.receiver,msg_receive);
 				r_num = 0;
 			}
 			close(pipe_fd[0]);
