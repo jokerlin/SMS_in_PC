@@ -36,11 +36,10 @@ char* longlong_to_string(long long number) {
 }
 
 char* time_to_string(time_t time) {
-    char str[30];
+    //char *str=(char *)malloc(sizeof(char)*50);
     // 时间转字符串
     // 2013-03-22 03:02:02
-    //
-    return str;
+    return ctime(&time);
 }
 
 void str_append(char* str1, char* str2){

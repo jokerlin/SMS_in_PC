@@ -6,7 +6,8 @@
  ************************************************************************/
 
 #include "client.h"
-
+#include"PersonOperation.h"
+#include"message.h"
 #include<stdio.h>
 #include<string.h>
 
@@ -16,7 +17,7 @@ long long input_phonenumber;
 int page_number;
 int input_page_number;
 int input_message_id;
-char[100] input_message_content;
+char input_message_content[100];
 
 void power_off()
 {
@@ -43,29 +44,29 @@ void help()
 
 	printf("指令：\n\n");
 
-	printf("l	>	列出与您联系的联系人，\n";
-	printf("		紧接着您需要输入联系人列表的页数，\n";
-	printf("		数字越小代表越是最近与您联系的联系人。\n\n";
+	printf("l	>	列出与您联系的联系人，\n");
+	printf("		紧接着您需要输入联系人列表的页数，\n");
+	printf("		数字越小代表越是最近与您联系的联系人。\n\n");
 
-	printf("m	>	列出某位联系人与您之间发送的短信，\n";
-	printf("		紧接着您需要输入该联系人的手机号，以及短信列表的页数，\n";
-	printf("		数字越小代表越是最近该联系人与您之间发送的短信。\n\n";
+	printf("m	>	列出某位联系人与您之间发送的短信，\n");
+	printf("		紧接着您需要输入该联系人的手机号，以及短信列表的页数，\n");
+	printf("		数字越小代表越是最近该联系人与您之间发送的短信。\n\n");
 
-	printf("r	>	删除您与某位联系人联系的所有短信，\n";
-	printf("		紧接着您需要输入该联系人的手机号。\n\n";
+	printf("r	>	删除您与某位联系人联系的所有短信，\n");
+	printf("		紧接着您需要输入该联系人的手机号。\n\n");
 
-	printf("d	>	删除您与某位联系人的某条短信，\n";
-	printf("		紧接着您需要输入该联系人的手机号，\n";
-	printf("		以及与该联系人之间发送的短信的message_id。\n\n";
+	printf("d	>	删除您与某位联系人的某条短信，\n");
+	printf("		紧接着您需要输入该联系人的手机号，\n");
+	printf("		以及与该联系人之间发送的短信的message_id。\n\n");
 
-	printf("s	>	给某位联系人发送短信，\n";
-	printf("		紧接着您需要输入该联系人的手机号，\n";
-	printf("		以及键入你想要发送的短信内容。\n\n";
+	printf("s	>	给某位联系人发送短信，\n");
+	printf("		紧接着您需要输入该联系人的手机号，\n");
+	printf("		以及键入你想要发送的短信内容。\n\n");
 
-	printf("f	>	根据关键字搜索所有的短信，\n";
-	printf("		紧接着您需要输入您所输入的关键字。\n\n";
+	printf("f	>	根据关键字搜索所有的短信，\n");
+	printf("		紧接着您需要输入您所输入的关键字。\n\n");
 
-	printf("h	>	显示帮助\n\n";
+	printf("h	>	显示帮助\n\n");
 
 	printf("q	>	退出该系统。\n\n");
 }

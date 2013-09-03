@@ -81,6 +81,7 @@ void DataInit()
     close(fd);
     ((long long *)TmpMessageRecycleBinPoint)[0]=0;
 }
+/*
 int main()
 {
     //DataInit();
@@ -88,7 +89,7 @@ int main()
     //delete_person(12);
     //printf("%lld\n",((long long *)MemBase)[0]);
     //printf("%d\n",person_pages_nums());
-    /*增加一个联系人
+    /a*增加一个联系人
     struct person tmp;
     tmp.HeadMessage=0;
     tmp.id=12;
@@ -96,7 +97,7 @@ int main()
     tmp.Time=0;
     tmp.NumOfMessage=0;
     add_person(tmp);
-    //*/
+    //a*/
     //delete_person(12);
     //list_person(0);
     /*给该联系人增加5个信息
@@ -107,9 +108,9 @@ int main()
         tmp.Time=10+i;
         save_message(12,tmp);
     }
-    //*/
+    //a*/
 ///*
-    list_person_message(12,0);printf("\n");
+    //list_person_message(12,0);printf("\n");
     //list_person_message(12,1);
     //*/
     /*printf("\n");*/
@@ -127,8 +128,8 @@ int main()
     unsigned char a[70];
     scanf("%s",a);
     search_message_single(a);
-    //*/
+    *a/
     return 0;
 }
-
+*/
 #endif
