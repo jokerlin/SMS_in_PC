@@ -12,13 +12,6 @@
 #include<stdio.h>
 #include<string.h>
 
-int lockflag = 0; //进程锁标记
-//long long phonenumber;
-long long input_phonenumber;
-int page_number;
-int input_page_number;
-int input_message_id;
-char input_message_content[100];
 
 void power_off()
 {

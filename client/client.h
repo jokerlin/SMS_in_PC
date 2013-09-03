@@ -13,7 +13,7 @@ long long input_phonenumber;
 int page_number;
 int input_page_number;
 int input_message_id;
-char[100] input_message_content;
+char input_message_content[250];
 
 void power_off(); //关机 
 void help(); //显示帮助

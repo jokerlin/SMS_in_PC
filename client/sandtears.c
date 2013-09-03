@@ -6,8 +6,8 @@
  ************************************************************************/
 
 #include <stdio.h>
-#include <sandtears.h>
-#include <willzhang.h>
+#include "sandtears.h"
+#include "willzhang.h"
 #include <sys/socket.h>
 #include <sys/types.h> 
 #include <unistd.h>
