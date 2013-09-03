@@ -8,6 +8,7 @@
 #include "client.h"
 #include"PersonOperation.h"
 #include"message.h"
+#include"search.h"
 #include<stdio.h>
 #include<string.h>
 
@@ -105,7 +106,7 @@ void client_delete_person()
 	printf("Please Enter the Phone Number You Want to Delete: ");
 	scanf("%lld",&input_phonenumber);
 
-	delete_person(&input_phonenumber);
+	delete_person(input_phonenumber);
 
 	lockflag = 0;
 }
@@ -141,8 +142,8 @@ void client_search_message()
 	int search_way;
 	int i;
 	int keys_num;
-	char[70] input_search_content;
-	char[10][70] input_search_content2;
+	char input_search_content[250];
+	char input_search_content2[10][250];
 	lockflag = 1;
 	
 	printf("(1)Single_Search; (2)Multi_Search. Press '1' or '2' to choose: ");
@@ -150,13 +151,13 @@ void client_search_message()
 	if (search_way == 1) 
 	{
 		printf("Please Input the Key: ");
-		for (i = 0; i <  70; i++) input_search_content = '\0';	
+		for (i = 0; i <  70; i++) input_search_content[i] = '\0';	
 		scanf("%s", input_search_content);
 		search_message_single(input_search_content);
 	}
 	else
 	{
-		(if search_way == 2) 
+		if (search_way == 2) 
 		{
 			printf("Please Enter the Number of Keys: ");	
 			scanf("%d", &keys_num);	
@@ -165,7 +166,7 @@ void client_search_message()
 				scanf("%s", input_search_content);
 				strcpy(input_search_content2[i],input_search_content);
 			}
-			search_message(*input_search_content2, keys_num);
+			search_message(input_search_content2, keys_num);
 		} 
 		else printf("WRONG INSTRUCTION.\n");
 	}

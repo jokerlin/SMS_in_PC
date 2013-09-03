@@ -9,7 +9,7 @@
 #include <stdio.h>
 
 long long local_phoneNumber;
-char[16] server_ip;
+char server_ip[16];
 int local_port;
 int server_port;
 

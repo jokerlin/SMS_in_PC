@@ -22,6 +22,7 @@ int pipe_fd[2];
 char instruction;
 pid_t pid;
 char buf_r[1024];
+int r_num = 0;
 
 int main(int argc, char** argv)
 {
@@ -42,6 +43,7 @@ int main(int argc, char** argv)
 			{
 				printf("\nYou Just Get a New Message!\n");
 				printf("%s\n",buf_r);
+				r_num = 0;
 			}
 			close(pipe_fd[0]);
 			while (!kbhit()) nothing();
