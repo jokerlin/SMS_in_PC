@@ -6,8 +6,8 @@
  ************************************************************************/
 
 #include <stdio.h>
-#include "sandtears.h"
 #include "willzhang.h"
+#include "Sandtears.h"
 #include <sys/socket.h>
 #include <sys/types.h> 
 #include <unistd.h>
@@ -18,9 +18,9 @@
 
 #define MAXLEN 1024
 
-char* longlong_to_string(long long number) {
-    int len;
-    char str[20], re_str[20];
+void longlong_to_string(long long number, char* str) {
+    int len, i;
+    char re_str[20];
     // 求出倒序字符串
     for(len = 0; number < 10; len++) {
         re_str[len] = number % 10 + '0';
@@ -32,42 +32,41 @@ char* longlong_to_string(long long number) {
         str[i] = re_str[len - i];
     }
     str[i + 1] = 0;
-    return str;
+    return;
 }
 
-char* time_to_string(time_t time) {
+void time_to_string(time_t time, char* str) {
     //char *str=(char *)malloc(sizeof(char)*50);
     // 时间转字符串
     // 2013-03-22 03:02:02
-    return ctime(&time);
+    char format[10] = "%F %T";
+    struct tm *ptr = localtime(&time);
+    strftime(str, MAXLEN, format, ptr);
+    return;
 }
 
-void str_append(char* str1, char* str2){
-    strcat(str1, str2);
-}
-
-char* sms_to_string(struct message msg) {
+void sms_to_string(struct message msg, char* sms) {
     // 逐个转化为char* 型
     char str_receiver[20], str_sender[20], str_time[30];
-    char str_flag_lms[1];
-    char sms[1024]="";
-    str_receiver = longlong_to_string(msg.receiver);
-    str_sender = longlong_to_string(msg.sender);
+    char str_flag_lms[2];
+    longlong_to_string(msg.receiver, str_receiver);
+    longlong_to_string(msg.sender, str_sender);
     str_flag_lms[0] = msg.flag_lms + '0';
+    str_flag_lms[1] = 0;
     
     // 字符串合成
-    str_append(sms, "3{\"sender\":\"");
-    str_append(sms, str_sender);
-    str_append(sms, "\",\"receiver\":\"");
-    str_append(sms, str_receiver);
-    str_append(sms, "\",\"content\":\"");
-    str_append(sms, msg.content);
-    str_append(sms, "\",\"Time\":\"");
-    str_append(sms, str_time);
-    str_append(sms, "\",\"flag_lms\":");
-    str_append(sms, str_flag_lms);
-    str_append(sms, "}");
-    return sms;
+    strcat(sms, "3{\"sender\":\"");
+    strcat(sms, str_sender);
+    strcat(sms, "\",\"receiver\":\"");
+    strcat(sms, str_receiver);
+    strcat(sms, "\",\"content\":\"");
+    strcat(sms, msg.content);
+    strcat(sms, "\",\"Time\":\"");
+    strcat(sms, str_time);
+    strcat(sms, "\",\"flag_lms\":");
+    strcat(sms, str_flag_lms);
+    strcat(sms, "}");
+    return;
 }
 
 int sock_power_on(char* phone_num, char* server_ip, int server_port, int client_port) //开机，返回文件描述符
@@ -101,8 +100,8 @@ int sock_power_on(char* phone_num, char* server_ip, int server_port, int client_
     buf = phone_num - sizeof(char) * 2;
     buf[0] = "1";
     buf[1] = "|";
-    len = strlen(buf)
-    if(write(sockfd, buf, len) != len){
+    len = strlen(buf);
+    if(write(sockfd, buf, len) != len) {
         perror("on_write");
         return -1;
     }
@@ -178,7 +177,7 @@ int sock_power_off(int serverfd, char* phone_num, char* server_ip, int server_po
     buf = phone_num - sizeof(char) * 2;
     buf[0] = "2";
     buf[1] = "|";
-    len = strlen(buf)
+    len = strlen(buf);
     if(write(sockfd, buf, len) != len){
         perror("off_write");
         return -1;
@@ -226,7 +225,7 @@ int sock_sendmsg(struct message msg, char* server_ip, int server_port)
     
     // 数据传输，将短信发送出去
     
-    len = strlen(buf)
+    len = strlen(buf);
     if(write(sockfd, buf, len) != len){
         perror("sendmsg_write");
         return -1;
