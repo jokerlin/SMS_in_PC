@@ -14,6 +14,7 @@
 #include <string.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <time.h>
 
 #define MAXLEN 1024
 
@@ -38,10 +39,12 @@ char* time_to_string(time_t time) {
     char str[30];
     // 时间转字符串
     // 2013-03-22 03:02:02
+    //
+    return str;
 }
 
-char* str_append(char* str1, char* str2){
-    // 字符串补充
+void str_append(char* str1, char* str2){
+    strcat(str1, str2);
 }
 
 char* sms_to_string(struct message msg) {
@@ -65,6 +68,7 @@ char* sms_to_string(struct message msg) {
     str_append(sms, "\",\"flag_lms\":");
     str_append(sms, str_flag_lms);
     str_append(sms, "}");
+    return sms;
 }
 
 int sock_power_on(char* phone_num, char* server_ip, int server_port, int client_port) //开机，返回文件描述符
