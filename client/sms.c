@@ -9,23 +9,41 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/socket.h>
+#include <errno.h>
+#include <sys/types.h>
 
 #include "power_on.h"
 #include "kbhit.h"
 #include "client.h"
 
 int normal_power_flag = 0;//正常关机标志
+int pipe_fd[2];
 char instruction;
 pid_t pid;
+char buf_r[1024];
 
 int main(int argc, char** argv)
 {
 	welcome();
-	power_on();
-	if (pid > 0)
+	int sockfd = power_on();
+	if (pipe(pipe_fd) < 0)
+	{
+	    printf("pipe creat error\n");
+	    return -1;
+	}
+	
+	if (pid = fork()  > 0)
 	{
 		while (!normal_power_flag)
 		{
+			close(pipe_fd[1]);
+			if ((r_num = read(pipe_fd[0],buf_r,100)) > 0)
+			{
+				printf("\nYou Just Get a New Message!\n");
+				printf("%s\n",buf_r);
+			}
+			close(pipe_fd[0]);
 			while (!kbhit()) nothing();
 			instruction = getchar();
 			switch (instruction)
@@ -44,7 +62,25 @@ int main(int argc, char** argv)
 		}
 	}
 	else
+
 	{
-		receive_message();
+		while(1) 
+		{
+			struct sockaddr_in addr;
+			int addrlen = sizeof(addr);
+			int childSockfd;
+			if((childSockfd = accept(sockfd, ()struct sockaddr*) &addr, &addrlen) < 0) 
+			{
+				perror("accept");
+				return -1;
+			}
+			char buf[1024];
+			memset(buf, 0, sizeof(buf));
+			int len = read(childSockfd, buf, 1024);
+			close(pipe_fd[0]);
+			while (lockflag) sleep(1000);
+			write(pipe_fd[1], buf, 1);
+			close(pipe_fd[1]);	
+		}
 	}
 }
