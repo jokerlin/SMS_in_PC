@@ -52,7 +52,6 @@ void sms_to_string(struct message msg, char* sms) {
     longlong_to_string(msg.sender, str_sender);
     str_flag_lms[0] = msg.flag_lms + '0';
     str_flag_lms[1] = 0;
-    time_to_string(msg.Time, str_time);
 
     // 字符串合成
     strcat(sms, "3{\"sender\":\"");
@@ -93,6 +92,7 @@ int sock_power_on(char* phone_num, char* server_ip, int server_port, int client_
     // 连接服务器
     if(connect(sockfd, (struct sockaddr*) &serverAddr, sizeof(serverAddr)) < 0){
         perror("on_connect");
+        printf("%s\n", server_ip);
         return -1;
     }
 
@@ -200,8 +200,7 @@ int sock_sendmsg(struct message msg, char* server_ip, int server_port)
 {
     int sockfd, len;
     struct sockaddr_in serverAddr;
-    char buf[1024] = "";
-    sms_to_string(msg, buf);
+    char* buf;
 
     // 创建socket
     if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){

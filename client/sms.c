@@ -1,7 +1,7 @@
 /*************************************************************************
     > File Name: sms.c
     > Author: linheng
-    > Mail: i@haroquee.me 
+    > Mail: i@haroquee.me
     > Created Time: Fri 30 Aug 2013 09:26:23 PM CST
  ************************************************************************/
 
@@ -31,12 +31,14 @@ int main(int argc, char** argv)
 {
 	welcome();
 	int sockfd = power_on();
+
+
 	if (pipe(pipe_fd) < 0)
 	{
 	    printf("pipe creat error\n");
 	    return -1;
 	}
-	
+
 	if (pid = fork()  > 0)
 	{
 		while (!normal_power_flag)
@@ -71,14 +73,15 @@ int main(int argc, char** argv)
 	else
 
 	{
-		while(1) 
+		while(1)
 		{
 			struct sockaddr_in addr;
 			int addrlen = sizeof(addr);
 			int childSockfd;
-			if((childSockfd = accept(sockfd, (struct sockaddr*) &addr, &addrlen)) < 0) 
+			if((childSockfd = accept(sockfd, (struct sockaddr*) &addr, &addrlen)) < 0)
 			{
 				perror("accept");
+                printf("%d\n",sockfd);
 				return -1;
 			}
 			char buf[1024];
@@ -87,7 +90,7 @@ int main(int argc, char** argv)
 			close(pipe_fd[0]);
 			while (lockflag) sleep(1000);
 			write(pipe_fd[1], buf, 1);
-			close(pipe_fd[1]);	
+			close(pipe_fd[1]);
 		}
 	}
 }

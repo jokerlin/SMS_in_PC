@@ -32,7 +32,7 @@ void welcome()
     printf("#########################################################################/\n\n");
 }
 
-void power_on()
+int power_on()
 {
 	int flag = 0;//读取配置文件成功标志，0为成功，-1为失败
 
@@ -63,13 +63,13 @@ void power_on()
 	{
 
 	}
-	server_port = string_to_longlong(server_ip_s);
+	server_port = string_to_longlong(server_port_s,strlen(server_port_s)-1+server_port_s);
 	flag = GetProfileString("./client.conf","client","port",local_port_s);
 	if (flag == -1)
 	{
 
 	}
-	local_port = string_to_longlong(local_port_s);
+	local_port = string_to_longlong(local_port_s,strlen(local_port_s)-1+local_port_s);
 	printf("Please Enter Your Telephone Number: ");
 	scanf("%lld",&local_phoneNumber);//输入电话号码
 
@@ -125,5 +125,6 @@ void power_on()
 	list_person(0);
 	char local_phoneNumber_s[12];
 	longlong_to_string(local_phoneNumber, local_phoneNumber_s);
-	sock_power_on(local_phoneNumber_s,server_ip,server_port,local_port);
+	return sock_power_on(local_phoneNumber_s,server_ip,server_port,local_port);
+
 }
