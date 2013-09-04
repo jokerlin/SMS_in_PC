@@ -34,8 +34,8 @@ void *MemBase;//文件内存首地址
 struct person *MemBasePerson;//由MemBase强制转换转换而来
 struct message *MemBaseMessage;//由MemBase强制转换转换而来
 struct person *PersonList;//文件内存的继第一个long long之后的第一个person大小的内存的指针，指向第一个联系人（开发者）
-void DataBaseStart();//开机时调用，为DataHead和MemPoint和PersonList赋初值
-void DataInit();//第一次开机时调用，初始化文件内存
+void DataBaseStart(char *path);//开机时调用，为DataHead和MemPoint和PersonList赋初值
+void DataInit(char *path);//第一次开机时调用，初始化文件内存
 //内存存的前两个变量,一个long long ,一个person
 
 void *PersonRecycleBinPoint;//指向文件PersonRecycleBin的指针，文件的第一个longlong内存存着回收站的终点，弱终点等于起点，则回收站无内容
