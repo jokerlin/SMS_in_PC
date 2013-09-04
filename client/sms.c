@@ -12,6 +12,8 @@
 #include <sys/socket.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 #include "power_on.h"
 #include "kbhit.h"
@@ -73,7 +75,7 @@ int main(int argc, char** argv)
 			struct sockaddr_in addr;
 			int addrlen = sizeof(addr);
 			int childSockfd;
-			if((childSockfd = accept(sockfd, ()struct sockaddr*) &addr, &addrlen) < 0) 
+			if((childSockfd = accept(sockfd, (struct sockaddr*) &addr, &addrlen)) < 0) 
 			{
 				perror("accept");
 				return -1;
