@@ -23,11 +23,14 @@ struct message * longlong_to_MessagePoint(long long x)
     return (struct message *)(x+MemBase);
 }
 
-void DataBaseStart()
+void DataBaseStart(char *path)
 {
     int fd;
 
-    fd=open("DataFile",O_RDWR);
+	char path1[100];
+	strcpy(path1,path);
+	strcat(path1,"/DataFile");
+    fd=open(path1,O_RDWR);
     struct stat DataFileState;
     fstat(fd,&DataFileState);
     MemPoint=mmap(NULL,DataFileState.st_size,PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
@@ -39,21 +42,30 @@ void DataBaseStart()
     close(fd);
     MemPoint+=DataHead[0];
 
-    fd=open("PersonRecycleBin",O_RDWR);
+    char path2[100];
+	strcpy(path2,path);
+	strcat(path2,"/PersonRecycleBin");
+	fd=open(path2,O_RDWR);
     struct stat PersonRecycleBinState;
     fstat(fd,&PersonRecycleBinState);
     PersonRecycleBinPoint=mmap(NULL,PersonRecycleBinState.st_size,PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
 
-    fd=open("MessageRecycleBin",O_RDWR);
+	char path3[100];
+	strcpy(path3,path);
+	strcat(path3,"/MessageRecycleBin");
+    fd=open(path3,O_RDWR);
     struct stat MessageRecycleBinState;
     fstat(fd,&MessageRecycleBinState);
     MessageRecycleBinPoint=mmap(NULL,MessageRecycleBinState.st_size,PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
 }
-void DataInit()
+void DataInit(char *path)
 {
     int fd;
 
-    fd=open("DataFile",O_RDWR);
+    char path1[100];
+	strcpy(path1,path);
+	strcat(path1,"/DataFile");
+	fd=open(path1,O_RDWR);
     struct stat DataFileState;
     fstat(fd,&DataFileState);
     void *TmpMemPoint=mmap(NULL,DataFileState.st_size,PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
@@ -67,14 +79,20 @@ void DataInit()
     ((struct person *)(TmpMemPoint+sizeof(long long)))->Time=0;
     ((struct person *)(TmpMemPoint+sizeof(long long)))->NextPerson=0;
 
-    fd=open("PersonRecycleBin",O_RDWR);
+	char path2[100];
+	strcpy(path2,path);
+	strcat(path2,"/PersonRecycleBin");
+    fd=open(path2,O_RDWR);
     struct stat PersonRecycleBinState;
     fstat(fd,&PersonRecycleBinState);
     void *TmpPersonRecycleBinPoint=mmap(NULL,PersonRecycleBinState.st_size,PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
     close(fd);
     ((long long *)TmpPersonRecycleBinPoint)[0]=0;
 
-    fd=open("MessageRecycleBin",O_RDWR);
+	char path3[100];
+	strcpy(path3,path);
+	strcat(path3,"/MessageRecycleBin");
+    fd=open(path3,O_RDWR);
     struct stat MessageRecycleBinState;
     fstat(fd,&MessageRecycleBinState);
     void *TmpMessageRecycleBinPoint=mmap(NULL,MessageRecycleBinState.st_size,PROT_READ|PROT_WRITE,MAP_SHARED,fd,0);
