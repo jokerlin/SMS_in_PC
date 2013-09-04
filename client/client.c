@@ -8,11 +8,16 @@
 #include "client.h"
 #include "power_on.h"
 #include "willzhang.h"
+#include "sandtears.h"
+#include "message.h"
+#include "PersonOperation.h"
+
 
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <time.h>
+#include <math.h>
 
 char input_phonenumber_s[12];
 char input_page_number_s[5];
@@ -20,7 +25,7 @@ char input_message_id_s[5];
 
 void power_off(int serverfd, char* phone_num, char* server_ip, int server_port)
 {
-	sock_power_off(serverfd, phone_num, server_ip, server_port) //关机
+	sock_power_off(serverfd, phone_num, server_ip, server_port) ;//关机
 	printf("\n/#########################################################################\n\n");
 	printf("	> Shutdown Sucessfully.\n\n");
 	printf("	> Bye Bye.\n\n");
@@ -70,13 +75,23 @@ void help()
 	printf("q	>	退出该系统。\n\n");
 }
 
+int lh_pow(int a, int b) {
+	int ans = a;
+	if(b == 0) 
+		return 1;
+	for(int i = 1; i < b; i++) {
+		ans = ans * a;
+	}
+	return ans;
+}
+
 long long legalinput(char a[])
 {
 	int len = strlen(a);
 	long long digit = 0;
 	for (int i = 0; i<len; i++)
 	{
-		if (isdigit(a[i])) digit = digit + (a[i]-48) * pow(10, len-i-1); 
+		if (isdigit(a[i])) digit = digit + (a[i]-48) * lh_pow(10, 1*len-i-1); 
 		else
 		{
 			return -1;
@@ -131,7 +146,7 @@ void client_delete_person()
 	printf("Please Enter the Phone Number You Want to Delete: ");
 	scanf("%s",&input_phonenumber_s);
 	input_phonenumber = legalinput(input_phonenumber_s);
-	if (input_page_number != -1) delete_person(input_phonenumber);;
+	if (input_page_number != -1) delete_person(input_phonenumber);
 	else printf("WRONG INPUT.\n");
 
 	lockflag = 0;
@@ -174,14 +189,14 @@ void send_message()
 		
 		struct message msg;
 		msg.receiver = input_phonenumber;
-		msg.sender = local_phonenumber;
+		msg.sender = local_phoneNumber;
 		strcpy(msg.content, input_message_content);
 		msg.Time = time(NULL);
 		msg.flag_lms = 0;
 		msg.HasBeenReaded = 0;
 		
 		save_message(msg.receiver,msg);
-		sock_sendmsg(struct message msg, server_ip, server_port) 
+		sock_sendmsg(msg, server_ip, server_port) ;
 	}
 	else
 	{
@@ -196,8 +211,8 @@ void client_search_message()
 	int search_way;
 	int i;
 	int keys_num;
-	char[70] input_search_content;
-	char[10][70] input_search_content2;
+	char input_search_content[250];
+	char input_search_content2[10][250];
 	lockflag = 1;
 	
 	printf("(1)Single_Search; (2)Multi_Search. Press '1' or '2' to choose: ");
@@ -205,13 +220,13 @@ void client_search_message()
 	if (search_way == 1) 
 	{
 		printf("Please Input the Key: ");
-		for (i = 0; i <  70; i++) input_search_content = '\0';	
+		for (i = 0; i <  70; i++) input_search_content[i] = '\0';	
 		scanf("%s", input_search_content);
 		search_message_single(input_search_content);
 	}
 	else
 	{
-		(if search_way == 2) 
+		if (search_way == 2) 
 		{
 			printf("Please Enter the Number of Keys: ");	
 			scanf("%d", &keys_num);	

@@ -169,7 +169,7 @@ int cmp(const void *a,const void *b)
     struct ans_of_search *bb=(struct ans_of_search *)b;
     return bb->num-aa->num;
 }
-void search_message(unsigned char a[][70],int m)
+void search_message(unsigned char a[][250],int m)
 {
     Clear();
     for(int i=0;i<m;i++)

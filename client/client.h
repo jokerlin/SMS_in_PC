@@ -7,7 +7,7 @@
 #ifndef c_client_h
 #define c_client_h
 
-int lockflag = 0; //进程锁标记
+int lockflag; //进程锁标记
 //long long phonenumber;
 long long input_phonenumber;
 int page_number;

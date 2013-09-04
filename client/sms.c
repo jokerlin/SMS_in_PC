@@ -12,10 +12,12 @@
 #include <sys/socket.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <netinet/in.h>
 
 #include "power_on.h"
 #include "kbhit.h"
 #include "client.h"
+#include "string_to_message.h"
 
 int normal_power_flag = 0;//正常关机标志
 int pipe_fd[2];
@@ -43,7 +45,7 @@ int main(int argc, char** argv)
 			{
 				printf("\nYou Just Get a New Message!\n");
 				printf("%s\n",buf_r);
-				struct msg_receive = string_to_message(buf_r);
+				struct message msg_receive = string_to_message(buf_r);
 				save_message(msg_receive.receiver,msg_receive);
 				r_num = 0;
 			}
@@ -73,7 +75,7 @@ int main(int argc, char** argv)
 			struct sockaddr_in addr;
 			int addrlen = sizeof(addr);
 			int childSockfd;
-			if((childSockfd = accept(sockfd, ()struct sockaddr*) &addr, &addrlen) < 0) 
+			if((childSockfd = accept(sockfd, (struct sockaddr*) &addr, &addrlen)) < 0) 
 			{
 				perror("accept");
 				return -1;

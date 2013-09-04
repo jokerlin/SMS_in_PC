@@ -7,12 +7,12 @@
 #include "power_on.h"
 #include "getprofile.h"
 #include <stdio.h>
-
+/*
 long long local_phoneNumber;
 char server_ip[16];
 int local_port;
 int server_port;
-
+*/
 void welcome()
 {
 	printf("/#########################################################################\n\n");

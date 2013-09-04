@@ -11,4 +11,10 @@
 void welcome();//欢迎屏
 void power();//开机函数
 
+long long local_phoneNumber;
+char server_ip[16];
+int local_port;
+int server_port;
+
+
 #endif

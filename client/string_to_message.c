@@ -5,7 +5,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <string.h>
-int strlen_unsigned(unsigned char a[])
+int strlen_unsigned2(unsigned char a[])
 {
     int ans=0;
     unsigned char *p=a;
@@ -35,7 +35,7 @@ long long string_to_longlong(unsigned char *Begin,unsigned char *End)
 struct message string_to_message(unsigned char *str)
 {
 	struct message ans;
-	int len=strlen_unsigned(str);
+	int len=strlen_unsigned2(str);
 	int index1,index2;
 
 	for(int i=0;i<len;i++)

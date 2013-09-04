@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 #include "willzhang.h"
-#include "Sandtears.h"
+#include "sandtears.h"
 #include <sys/socket.h>
 #include <sys/types.h> 
 #include <unistd.h>
