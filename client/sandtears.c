@@ -22,19 +22,18 @@ void longlong_to_string(long long number, char* str) {
     int len, i;
     char re_str[20];
     // 求出倒序字符串
-    for(len = 0; number < 10; len++) {
+    for(len = 0; number > 0; len++) {
         re_str[len] = number % 10 + '0';
         number = number / 10;
     }
-    re_str[len] = number + '0';
-    re_str[len + 1] = 0;
-    for(i = 0; i <= len; i++) {
-        str[i] = re_str[len - i];
+    //re_str[len] = number + '0';
+    re_str[len] = 0;
+    for(i = 0; i < len; i++) {
+        str[i] = re_str[len - i - 1];
     }
     str[i + 1] = 0;
     return;
 }
-
 void time_to_string(time_t time, char* str) {
     //char *str=(char *)malloc(sizeof(char)*50);
     // 时间转字符串
