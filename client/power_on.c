@@ -83,29 +83,44 @@ void power_on()
 		strcpy(fileid,id);
 		strcat(fileid,"/DataFile");
 		fd=creat(fileid,S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-		write(fd,buf,1024*1024);
+        char instruction[128];
+        memset(instruction, '\0', sizeof(instruction));
+        strcpy(instruction, "dd if=/dev/zero of=");
+        strcat(instruction, fileid);
+        strcat(instruction, " bs=1024 count=1024");
+        system(instruction);
+        //write(fd,buf,1024);
 		close(fd);
 		memset(fileid,'\0',sizeof(fileid));
 		strcpy(fileid,id);
 		//	printf("%s\n",fileid);
-		strcat(fileid,"/PesonRecycleBin");
+		strcat(fileid,"/PersonRecycleBin");
 		fd=creat(fileid,S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-        write(fd,buf,1024*1024);
+        memset(instruction, '\0', sizeof(instruction));
+        strcpy(instruction, "dd if=/dev/zero of=");
+        strcat(instruction, fileid);
+        strcat(instruction, " bs=1024 count=1024");
+        system(instruction);
         close(fd);
 		memset(fileid,'\0',sizeof(fileid));
 		strcpy(fileid,id);
 		strcat(fileid,"/MessageRecycleBin");
 		fd=creat(fileid,S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-		write(fd,buf,1024*1024);
+		memset(instruction, '\0', sizeof(instruction));
+        strcpy(instruction, "dd if=/dev/zero of=");
+        strcat(instruction, fileid);
+        strcat(instruction, " bs=1024 count=1024");
+        system(instruction);
 		close(fd);
 		DataInit(id);
+		DataBaseStart(id);
 	}
 	else
 	{
 		DataBaseStart(id);
 	}
 
-	list_person(1);
+	list_person(0);
 	char local_phoneNumber_s[12];
 	longlong_to_string(local_phoneNumber, local_phoneNumber_s);
 	sock_power_on(local_phoneNumber_s,server_ip,server_port,local_port);
