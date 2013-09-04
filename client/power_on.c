@@ -17,7 +17,7 @@
 #include <string.h>
 #include "willzhang.h"
 #include "sandtears.h"
-
+#include "string_to_message.h"
 /*
 long long local_phoneNumber;
 char server_ip[16];
@@ -49,8 +49,8 @@ void power_on()
     char server_port_s[20];
     char local_port_s[20];
 
-    longlong_to_string(server_port, server_port_s);
-    longlong_to_string(local_port, local_port_s);
+    //longlong_to_string(server_port, server_port_s);
+    //longlong_to_string(local_port, local_port_s);
 
 	flag = GetProfileString("./client.conf","server","ip",server_ip);
 	if (flag == -1)
@@ -63,11 +63,13 @@ void power_on()
 	{
 
 	}
+	server_port = string_to_longlong(server_ip_s);
 	flag = GetProfileString("./client.conf","client","port",local_port_s);
 	if (flag == -1)
 	{
 
 	}
+	local_port = string_to_longlong(local_port_s);
 	printf("Please Enter Your Telephone Number: ");
 	scanf("%lld",&local_phoneNumber);//输入电话号码
 
