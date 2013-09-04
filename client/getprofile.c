@@ -3,9 +3,9 @@
 #include <string.h>
 #include <assert.h>
 #include <errno.h>
- 
+
 #define KEYVALLEN 100
- 
+
 /*   删除左边的空格   */
 char * l_trim(char * szOutput, const char *szInput)
 {
@@ -17,7 +17,7 @@ char * l_trim(char * szOutput, const char *szInput)
  }
  return strcpy(szOutput, szInput);
 }
- 
+
 /*   删除右边的空格   */
 char *r_trim(char *szOutput, const char *szInput)
 {
@@ -32,7 +32,7 @@ char *r_trim(char *szOutput, const char *szInput)
  *(++p) = '\0';
  return szOutput;
 }
- 
+
 /*   删除两边的空格   */
 char * a_trim(char * szOutput, const char * szInput)
 {
@@ -46,8 +46,8 @@ char * a_trim(char * szOutput, const char * szInput)
  *(++p) = '\0';
  return szOutput;
 }
- 
- 
+
+
 int GetProfileString(char *profile, char *AppName, char *KeyName, char *KeyVal )
 {
  char appname[32],keyname[32];
@@ -62,14 +62,14 @@ int GetProfileString(char *profile, char *AppName, char *KeyName, char *KeyVal )
  fseek( fp, 0, SEEK_SET );
  memset( appname, 0, sizeof(appname) );
  sprintf( appname,"[%s]", AppName );
- 
+
  while( !feof(fp) && fgets( buf_i, KEYVALLEN, fp )!=NULL ){
   l_trim(buf_o, buf_i);
   if( strlen(buf_o) <= 0 )
    continue;
   buf = NULL;
   buf = buf_o;
- 
+
   if( found == 0 ){
    if( buf[0] != '[' ) {
     continue;
@@ -77,7 +77,7 @@ int GetProfileString(char *profile, char *AppName, char *KeyName, char *KeyVal )
     found = 1;
     continue;
    }
- 
+
   } else if( found == 1 ){
    if( buf[0] == '#' ){
     continue;
@@ -87,11 +87,11 @@ int GetProfileString(char *profile, char *AppName, char *KeyName, char *KeyVal )
     if( (c = (char*)strchr(buf, '=')) == NULL )
      continue;
     memset( keyname, 0, sizeof(keyname) );
- 
+
    sscanf( buf, "%[^=|^ |^\t]", keyname );
     if( strcmp(keyname, KeyName) == 0 ){
      sscanf( ++c, "%[^\n]", KeyVal );
-     char *KeyVal_o = (char *)malloc(strlen(KeyVal) + 1);
+     char *KeyVal_o = (char *)malloc(strlen(KeyVal) + 1);//这里要加个sizeof(char)??,以及运行到这的指针是空的
      if(KeyVal_o != NULL){
       memset(KeyVal_o, 0, sizeof(KeyVal_o));
       a_trim(KeyVal_o, KeyVal);

@@ -1,7 +1,7 @@
 /*************************************************************************
     > File Name: sandtears.c
     > Author: Sandtears
-    > Mail: me@sandtears.com 
+    > Mail: me@sandtears.com
     > Created Time: 2013年08月31日 星期六 20时47分14秒
  ************************************************************************/
 
@@ -9,7 +9,7 @@
 #include "willzhang.h"
 #include "sandtears.h"
 #include <sys/socket.h>
-#include <sys/types.h> 
+#include <sys/types.h>
 #include <unistd.h>
 #include <string.h>
 #include <netinet/in.h>
@@ -31,7 +31,7 @@ void longlong_to_string(long long number, char* str) {
     for(i = 0; i < len; i++) {
         str[i] = re_str[len - i - 1];
     }
-    str[i + 1] = 0;
+    str[i] = 0;
     return;
 }
 void time_to_string(time_t time, char* str) {
@@ -52,7 +52,7 @@ void sms_to_string(struct message msg, char* sms) {
     longlong_to_string(msg.sender, str_sender);
     str_flag_lms[0] = msg.flag_lms + '0';
     str_flag_lms[1] = 0;
-    
+
     // 字符串合成
     strcat(sms, "3{\"sender\":\"");
     strcat(sms, str_sender);
@@ -195,7 +195,7 @@ int sock_power_off(int serverfd, char* phone_num, char* server_ip, int server_po
     return 1;
 }
 
-int sock_sendmsg(struct message msg, char* server_ip, int server_port) 
+int sock_sendmsg(struct message msg, char* server_ip, int server_port)
 {
     int sockfd, len;
     struct sockaddr_in serverAddr;
@@ -221,9 +221,9 @@ int sock_sendmsg(struct message msg, char* server_ip, int server_port)
         perror("sendmsg_connect");
         return -1;
     }
-    
+
     // 数据传输，将短信发送出去
-    
+
     len = strlen(buf);
     if(write(sockfd, buf, len) != len){
         perror("sendmsg_write");
@@ -239,5 +239,5 @@ int sock_sendmsg(struct message msg, char* server_ip, int server_port)
         return -1;
     }
     // 关闭socket
-    return 1; 
+    return 1;
 }

@@ -1,7 +1,7 @@
 /*************************************************************************
     > File Name: client.h
     > Author: linheng
-    > Mail: i@haroquee.me 
+    > Mail: i@haroquee.me
     > Created Time: Sat 31 Aug 2013 05:16:19 PM CST
  ************************************************************************/
 
@@ -37,9 +37,9 @@ void power_off(int serverfd, char* phone_num, char* server_ip, int server_port)
 void help()
 {
 	printf("\n\n#########################################################################\n\n");
-		
+
 	printf("	> HANDBOOK of SMS_in_PC\n\n");
-		
+
 	printf("	> Created by My Nine Partners and Me\n\n");
 
 	printf("	> Edited on 2013.08.31\n\n");
@@ -77,7 +77,7 @@ void help()
 
 int lh_pow(int a, int b) {
 	int ans = a;
-	if(b == 0) 
+	if(b == 0)
 		return 1;
 	for(int i = 1; i < b; i++) {
 		ans = ans * a;
@@ -91,7 +91,7 @@ long long legalinput(char a[])
 	long long digit = 0;
 	for (int i = 0; i<len; i++)
 	{
-		if (isdigit(a[i])) digit = digit + (a[i]-48) * lh_pow(10, 1*len-i-1); 
+		if (isdigit(a[i])) digit = digit + (a[i]-48) * lh_pow(10, 1*len-i-1);
 		else
 		{
 			return -1;
@@ -104,30 +104,30 @@ long long legalinput(char a[])
 void client_list_person()
 {
 	lockflag = 1;
-	
+
 	page_number = person_pages_nums() - 1;
 	printf("Choose Page to Read(0~%d):  ",page_number);
-	
-	scanf("%s",&input_page_number_s);
+
+	scanf("%s",input_page_number_s);
 	input_page_number = legalinput(input_page_number_s);
 	if (input_page_number != -1) list_person(input_page_number);
 	else printf("WRONG INPUT.\n");
-	
+
 	lockflag = 0;
 }
 
 void client_list_person_message()
 {
 	lockflag = 1;
-	
+
 	printf("Please Enter the Phone Number You Want to Read: ");
-	scanf("%s",&input_phonenumber_s);
+	scanf("%s",input_phonenumber_s);
 	input_phonenumber = legalinput(input_phonenumber_s);
-	if (input_phonenumber !=  -1) 
+	if (input_phonenumber !=  -1)
 	{
 		page_number = person_message_pages_nums(input_phonenumber) - 1;
 		printf("Choose Page to Read(0~%d):  ",page_number);
-		scanf("%s",&input_page_number_s);
+		scanf("%s",input_page_number_s);
 		input_page_number = legalinput(input_page_number_s);
 		if (input_page_number != -1) list_person_message(input_phonenumber, input_page_number);
 		else printf("WRONG INPUT.\n");
@@ -144,7 +144,7 @@ void client_delete_person()
 	lockflag = 1;
 
 	printf("Please Enter the Phone Number You Want to Delete: ");
-	scanf("%s",&input_phonenumber_s);
+	scanf("%s",input_phonenumber_s);
 	input_phonenumber = legalinput(input_phonenumber_s);
 	if (input_page_number != -1) delete_person(input_phonenumber);
 	else printf("WRONG INPUT.\n");
@@ -156,12 +156,12 @@ void client_delete_message()
 	lockflag = 1;
 
 	printf("Please Enter the Phone Number You Want to Delete: ");
-	scanf("%s",&input_phonenumber_s);
+	scanf("%s",input_phonenumber_s);
 	input_phonenumber = legalinput(input_phonenumber_s);
-	if (input_phonenumber !=  -1) 
+	if (input_phonenumber !=  -1)
 	{
 		printf("Choose the Message ID: ");
-		scanf("%s",&input_message_id_s);
+		scanf("%s",input_message_id_s);
 		input_message_id = legalinput(input_message_id_s);
 		if (input_page_number != -1) delete_message(input_phonenumber, input_message_id);
 		else printf("WRONG INPUT.\n");
@@ -178,15 +178,15 @@ void send_message()
 	lockflag = 1;
 
 	printf("Please Enter the Phone Number You Want to Send to: ");
-	scanf("%s",&input_phonenumber_s);
+	scanf("%s",input_phonenumber_s);
 	input_phonenumber = legalinput(input_phonenumber_s);
-	if (input_phonenumber !=  -1) 
+	if (input_phonenumber !=  -1)
 	{
 		printf("Enter the Message Content:\n");
 		int i;
-		for (i = 0; i <  100; i++) input_message_content[i] = '\0';	
+		for (i = 0; i <  100; i++) input_message_content[i] = '\0';
 		scanf("%s", input_message_content);
-		
+
 		struct message msg;
 		msg.receiver = input_phonenumber;
 		msg.sender = local_phoneNumber;
@@ -194,7 +194,7 @@ void send_message()
 		msg.Time = time(NULL);
 		msg.flag_lms = 0;
 		msg.HasBeenReaded = 0;
-		
+
 		save_message(msg.receiver,msg);
 		sock_sendmsg(msg, server_ip, server_port) ;
 	}
@@ -202,7 +202,7 @@ void send_message()
 	{
 		printf("WRONG INPUT.\n");
 	}
-	
+
 
 	lockflag = 0;
 }
@@ -214,29 +214,29 @@ void client_search_message()
 	char input_search_content[250];
 	char input_search_content2[10][250];
 	lockflag = 1;
-	
+
 	printf("(1)Single_Search; (2)Multi_Search. Press '1' or '2' to choose: ");
 	scanf("%d", &search_way);
-	if (search_way == 1) 
+	if (search_way == 1)
 	{
 		printf("Please Input the Key: ");
-		for (i = 0; i <  70; i++) input_search_content[i] = '\0';	
+		for (i = 0; i <  70; i++) input_search_content[i] = '\0';
 		scanf("%s", input_search_content);
 		search_message_single(input_search_content);
 	}
 	else
 	{
-		if (search_way == 2) 
+		if (search_way == 2)
 		{
-			printf("Please Enter the Number of Keys: ");	
-			scanf("%d", &keys_num);	
+			printf("Please Enter the Number of Keys: ");
+			scanf("%d", &keys_num);
 			for (i = 0; i< keys_num; i++)
 			{
 				scanf("%s", input_search_content);
 				strcpy(input_search_content2[i],input_search_content);
 			}
 			search_message(*input_search_content2, keys_num);
-		} 
+		}
 		else printf("WRONG INSTRUCTION.\n");
 	}
 

@@ -1,7 +1,7 @@
 /*************************************************************************
     > File Name: power.h
     > Author: linheng
-    > Mail: i@haroquee.me 
+    > Mail: i@haroquee.me
     > Created Time: Fri 30 Aug 2013 09:50:55 PM CST
  ************************************************************************/
 #include "power_on.h"
@@ -14,8 +14,9 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <string.h>    
+#include <string.h>
 #include "willzhang.h"
+#include "sandtears.h"
 
 /*
 long long local_phoneNumber;
@@ -34,8 +35,8 @@ void welcome()
 void power_on()
 {
 	int flag = 0;//读取配置文件成功标志，0为成功，-1为失败
-	
-	int status; 
+
+	int status;
 	char buff[] = "./newdir";
 	char buf[1024];
 	DIR *dir=NULL;
@@ -44,51 +45,58 @@ void power_on()
 	char id[50];
 	char fileid[50];
 
+    char server_ip_s[20];
+    char server_port_s[20];
+    char local_port_s[20];
+
+    longlong_to_string(server_port, server_port_s);
+    longlong_to_string(local_port, local_port_s);
+
 	flag = GetProfileString("./client.conf","server","ip",server_ip);
 	if (flag == -1)
 	{
 
 	}
 
-	flag = GetProfileString("./client.conf","server","port",server_port);
+	flag = GetProfileString("./client.conf","server","port",server_port_s);
 	if (flag == -1)
 	{
 
 	}
-	flag = GetProfileString("./client.conf","client","port",local_port);
+	flag = GetProfileString("./client.conf","client","port",local_port_s);
 	if (flag == -1)
 	{
 
 	}
-	printf("Please Enter Your Telephone Number: "); 
+	printf("Please Enter Your Telephone Number: ");
 	scanf("%lld",&local_phoneNumber);//输入电话号码
 
 	longlong_to_string(local_phoneNumber, phone);
 	//printf ("%s\n",phone);
 	memset(buf,0,sizeof(buf));
-	id[0]='.';id[1]='/';
+	id[0]='.';id[1]='/';id[2]='\0';
 	strcat(id,phone);
 	if(NULL == dir)
 	{
-		status = mkdir(id, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH); 
+		status = mkdir(id, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 		int fd;
 		strcpy(fileid,id);
 		strcat(fileid,"/DataFile");
-		fd=creat(fileid,S_IRUSR | S_IRWXG | S_IROTH | S_IXOTH);
-		write(fd,buf,1024);
+		fd=creat(fileid,S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+		write(fd,buf,1024*1024);
 		close(fd);
 		memset(fileid,'\0',sizeof(fileid));
 		strcpy(fileid,id);
 		//	printf("%s\n",fileid);
 		strcat(fileid,"/PesonRecycleBin");
-		fd=creat(fileid,S_IRUSR | S_IRWXG | S_IROTH | S_IXOTH);
-        write(fd,buf,1024);
+		fd=creat(fileid,S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+        write(fd,buf,1024*1024);
         close(fd);
 		memset(fileid,'\0',sizeof(fileid));
 		strcpy(fileid,id);
 		strcat(fileid,"/MessageRecycleBin");
-		fd=creat(fileid,S_IRUSR | S_IRWXG | S_IROTH | S_IXOTH);
-		write(fd,buf,1024);
+		fd=creat(fileid,S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+		write(fd,buf,1024*1024);
 		close(fd);
 		DataInit(id);
 	}
@@ -96,7 +104,9 @@ void power_on()
 	{
 		DataBaseStart(id);
 	}
-	
+
 	list_person(1);
-	sock_power_on(longlong_to_string(local_phoneNumber),server_ip,server_port,local_port);
+	char local_phoneNumber_s[12];
+	longlong_to_string(local_phoneNumber, local_phoneNumber_s);
+	sock_power_on(local_phoneNumber_s,server_ip,server_port,local_port);
 }

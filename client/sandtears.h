@@ -11,3 +11,4 @@ int sock_sendmsg(struct message msg, char* server_ip, int server_port) ;
     //发送短信需
     //传入参数：短信结构体，服务器ip，服务器端口
     //返回运行结果，-1代表失败
+void longlong_to_string(long long number, char* str);
