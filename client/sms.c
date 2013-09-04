@@ -13,6 +13,7 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 
 #include "power_on.h"
 #include "kbhit.h"
