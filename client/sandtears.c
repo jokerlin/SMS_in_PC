@@ -43,6 +43,9 @@ void time_to_string(time_t time, char* str) {
     char format[10] = "%F %T";
     struct tm *ptr = localtime(&time);
     strftime(str, MAXLEN, format, ptr);
+    if(DEBUG) {
+        printf("Time: %s\n", str);
+    }
     return;
 }
 
@@ -50,6 +53,7 @@ void sms_to_string(struct message msg, char* sms) {
     // 逐个转化为char* 型
     char str_receiver[20], str_sender[20], str_time[30];
     char str_flag_lms[2];
+    time_to_string(msg.Time, str_time);
     longlong_to_string(msg.receiver, str_receiver);
     longlong_to_string(msg.sender, str_sender);
     str_flag_lms[0] = msg.flag_lms + '0';
@@ -103,7 +107,7 @@ int sock_power_on(char* phone_num, char* server_ip, int server_port, int client_
     buf[1] = '|';
     buf[2] = 0;
     strcat(buf, phone_num);
-    strcat(buf, '\n');
+    strcat(buf, "\n");
     len = strlen(buf);
     if(DEBUG) {
         printf("send: %s", buf);
@@ -191,7 +195,7 @@ int sock_power_off(int serverfd, char* phone_num, char* server_ip, int server_po
     buf[1] = '|';
     buf[2] = 0;
     strcat(buf, phone_num);
-    strcat(buf, '\n');
+    strcat(buf, "\n");
     len = strlen(buf);
     if(DEBUG) {
         printf("send: %s", buf);
@@ -242,7 +246,10 @@ int sock_sendmsg(struct message msg, char* server_ip, int server_port)
     }
 
     // 数据传输，将短信发送出去
-
+    sms_to_string(msg, buf);
+    if(DEBUG) {
+        printf("send %s\n", buf);
+    }
     len = strlen(buf);
     if(write(sockfd, buf, len) != len){
         perror("sendmsg_write");
