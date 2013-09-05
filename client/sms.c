@@ -39,11 +39,12 @@ int main(int argc, char** argv)
 	    return -1;
 	}
 
-	if (pid = fork()  > 0)
+	if ((pid = fork())  > 0)
 	{
 		while (!normal_power_flag)
 		{
 			close(pipe_fd[1]);
+            /*
 			if ((r_num = read(pipe_fd[0],buf_r,100)) > 0)
 			{
 				printf("\nYou Just Get a New Message!\n");
@@ -52,6 +53,7 @@ int main(int argc, char** argv)
 				save_message(msg_receive.receiver,msg_receive);
 				r_num = 0;
 			}
+            */
 			close(pipe_fd[0]);
 			while (!kbhit()) nothing();
 			instruction = getchar();
