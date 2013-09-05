@@ -27,7 +27,7 @@ def savesms(sms, flag_new):
         tableName = 'new'
     # 生成SQL语句
     sms['table'] = tableName
-    sql = 'INSERT INTO %(table)s (sender, receiver, content, time, long) VALUES ("%(sender)s", "%(receiver)s", "%(content)s", "%(time)s", %(long)d);' % sms
+    sql = 'INSERT INTO %(table)s (sender, receiver, content, time, long) VALUES ("%(sender)s", "%(receiver)s", "%(content)s", "%(Time)s", %(long)d);' % sms
 
     # 执行sql语句并提交
     if DEBUG:
@@ -113,7 +113,9 @@ def message(s):
     sms = s.rfile.readline()
     sms = sms[:-1]
     s.wfile.write('OK')
+    print repr(sms);
     sms = json.loads(sms)
+    sms['long'] = 0
     if DEBUG:
         print sms['receiver']
         print client.keys()
