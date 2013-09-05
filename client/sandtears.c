@@ -156,7 +156,7 @@ int sock_power_off(int serverfd, char* phone_num, char* server_ip, int server_po
 {
     int sockfd, len;
     struct sockaddr_in serverAddr;
-    char* buf;
+    char buf[1024];
 
     close(serverfd);
     // 创建socket
@@ -181,7 +181,7 @@ int sock_power_off(int serverfd, char* phone_num, char* server_ip, int server_po
     }
 
     // 数据传输，将手机号发给服务端
-    buf = phone_num - sizeof(char) * 2;
+    strcpy(buf + 2, phone_num);
     buf[0] = "2";
     buf[1] = "|";
     len = strlen(buf);
@@ -207,7 +207,7 @@ int sock_sendmsg(struct message msg, char* server_ip, int server_port)
 {
     int sockfd, len;
     struct sockaddr_in serverAddr;
-    char* buf;
+    char buf[1024];
 
     // 创建socket
     if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
