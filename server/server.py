@@ -38,7 +38,7 @@ def savesms(sms, flag_new):
     con.close()
 
 # 发送短信
-def sendsms(sms, client_ip, id=0):
+def sendsms(sms, phone_num, client_ip, id=0):
     # 尝试发送短信，如果成功则存入
     if DEBUG:
         print "send message..."
@@ -48,17 +48,20 @@ def sendsms(sms, client_ip, id=0):
     s2.send(json.dumps(sms))
     if DEBUG:
         print json.dumps(sms)
-    s2.timeout(30)
+    s2.settimeout(10)
     try:
-        a = s2.recv(2)
+        a = s2.recv(20)
         s2.close()
-        if "OK" in a:
+        if phone_num in a:
+            print "send success, %s" % a
             flag_send = False
     except:
         flag_send = True
     finally:
         if (id) and (not flag_send):
             sql = "DELETE FROM new WHERE id = %d" % id
+            if DEBUG:
+                print sql
             con, cursor = opendb()
             cursor.execute(sql)
             con.commit()
@@ -79,10 +82,10 @@ def check(phone_num):
        newsms['sender'] = i[0]
        newsms['receiver'] = i[1]
        newsms['content'] = i[2]
-       newsms['time'] = i[3]
+       newsms['Time'] = i[3]
        newsms['long'] = i[4]
        id = i[5]
-       sendsms(newsms, client[newsms['receiver']], id)
+       sendsms(newsms, phone_num, client[newsms['receiver']], id)
     con.close()
 
 # 开机函数
@@ -120,7 +123,7 @@ def message(s):
         print sms['receiver']
         print client.keys()
     if sms['receiver'] in client.keys():
-        sendsms(sms, client[sms['receiver']])
+        sendsms(sms, sms['receiver'], client[sms['receiver']])
     else:
         savesms(sms, True)
 
