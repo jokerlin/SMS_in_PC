@@ -137,7 +137,7 @@ int sock_power_on(char* phone_num, char* server_ip, int server_port, int client_
 
     //设置端口复用
     int on = 1;
-    if(setsockopt(serverfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)) < 0) {
+    if(setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)) < 0) {
         perror("setsockopt");
         return -1;
     }
