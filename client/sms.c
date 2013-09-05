@@ -14,24 +14,24 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <sys/time.h> 
 
 #include "power_on.h"
 #include "kbhit.h"
 #include "client.h"
 #include "string_to_message.h"
 
-int normal_power_flag = 0;//正常关机标志
-int pipe_fd[2];
-char instruction;
-pid_t pid;
-char buf_r[1024];
-int r_num = 0;
 
 int main(int argc, char** argv)
 {
+	int normal_power_flag = 0;//正常关机标志
+	int pipe_fd[2];
+	char instruction;
+	pid_t pid;
+	char buf_r[1024];
+
 	welcome();
 	int sockfd = power_on();
-
 
 	if (pipe(pipe_fd) < 0)
 	{
@@ -39,12 +39,28 @@ int main(int argc, char** argv)
 	    return -1;
 	}
 
+	int maxfd = pipe_fd[0] > pipe_fd[1] ? pipe_fd[0] + 1 : pipe_fd[1] + 1;
+	fd_set fds;
+	struct timeval timeout = {3, 0};
+
 	if ((pid = fork())  > 0)
 	{
 		while (!normal_power_flag)
 		{
-			close(pipe_fd[1]);
-            /*
+			fd_set rdfds;
+			FD_ZERO(&rdfds);
+			FD_SET(pipe_fd[0], &rdfds);
+
+            int ret= select(maxfd, &rdfds, NULL, NULL, &timeout);
+			if (ret < 0) perror("select");/* 这说明select函数出错 */
+			else if (ret > 0)	
+			{
+				read(pipe_fd[0],buf_r,1);
+				printf("%s\n",buf_r);//for debug
+				struct message msg_receive = string_to_message(buf_r);
+				save_message(msg_receive.receiver,msg_receive);
+			}
+			/*
 			if ((r_num = read(pipe_fd[0],buf_r,100)) > 0)
 			{
 				printf("\nYou Just Get a New Message!\n");
@@ -54,6 +70,7 @@ int main(int argc, char** argv)
 				r_num = 0;
 			}
             */
+			close(pipe_fd[1]);
 			close(pipe_fd[0]);
 			while (!kbhit()) nothing();
 			instruction = getchar();
