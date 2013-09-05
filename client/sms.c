@@ -14,7 +14,7 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <sys/time.h> 
+#include <sys/time.h>
 
 #include "power_on.h"
 #include "kbhit.h"
@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 	    return -1;
 	}
 
-	int maxfd = pipe_fd[0] > pipe_fd[1] ? pipe_fd[0] + 1 : pipe_fd[1] + 1;
+	//int maxfd = pipe_fd[0] > pipe_fd[1] ? pipe_fd[0] + 1 : pipe_fd[1] + 1;
 	fd_set fds;
 	struct timeval timeout = {3, 0};
 
@@ -51,9 +51,9 @@ int main(int argc, char** argv)
 			FD_ZERO(&rdfds);
 			FD_SET(pipe_fd[0], &rdfds);
 
-            int ret= select(maxfd, &rdfds, NULL, NULL, &timeout);
+            int ret= select(1, &rdfds, NULL, NULL, &timeout);
 			if (ret < 0) perror("select");/* 这说明select函数出错 */
-			else if (ret > 0)	
+			else if (ret > 0)
 			{
 				read(pipe_fd[0],buf_r,1);
 				printf("%s\n",buf_r);//for debug

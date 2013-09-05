@@ -195,8 +195,21 @@ void send_message()
 		msg.flag_lms = 0;
 		msg.HasBeenReaded = 0;
 
-		save_message(msg.receiver,msg);
+        if (!exist_in_list(msg.receiver))
+        {
+            struct person personadd;
+            personadd.HeadMessage = 0;
+            personadd.id = msg.receiver;
+            strcpy(personadd.name,"sb");
+            personadd.NextPerson = 0;
+            personadd.NumOfMessage = 0;
+            personadd.Time = 0;
+            add_person(personadd);
+        }
+        save_message(msg.receiver,msg);
+        printf("complete saving\n");//for debug
 		sock_sendmsg(msg, server_ip, server_port) ;
+		printf("complete sending\n");//for debug
 	}
 	else
 	{
