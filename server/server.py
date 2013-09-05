@@ -53,7 +53,8 @@ def sendsms(sms, phone_num, client_ip, id=0):
         a = s2.recv(20)
         s2.close()
         if phone_num in a:
-            print "send success, %s" % a
+            if DEBUG:
+                print "send success, %s" % a
             flag_send = False
     except:
         flag_send = True

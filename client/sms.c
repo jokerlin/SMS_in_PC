@@ -121,6 +121,7 @@ int main(int argc, char** argv)
             if(DEBUG) {
                 printf("My Phone Number: %s\n", local_phoneNumber_s);
             }
+            close(childSockfd);
 			close(pipe_fd[0]);
 			while (lockflag) sleep(1000);
 			write(pipe_fd[1], buf, 1);
