@@ -48,15 +48,21 @@ def sendsms(sms, phone_num, client_ip, id=0):
     s2.send(json.dumps(sms))
     if DEBUG:
         print json.dumps(sms)
-    s2.settimeout(10)
+    s2.settimeout(1000)
     try:
-        a = s2.readline()
+        a = s2.recv(20)
         s2.close()
-        if phone_num in a:
+        if DEBUG:
+            print a
+            print phone_num
+            print type(phone_num)
+        if str(phone_num) in a:
             if DEBUG:
                 print "send success, %s" % a
             flag_send = False
-    except:
+    except Exception as e:
+        if DEBUG:
+            print e
         flag_send = True
     finally:
         if (id) and (not flag_send):
