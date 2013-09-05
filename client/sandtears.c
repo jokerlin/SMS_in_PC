@@ -66,7 +66,7 @@ void sms_to_string(struct message msg, char* sms) {
     strcat(sms, str_time);
     strcat(sms, "\",\"flag_lms\":");
     strcat(sms, str_flag_lms);
-    strcat(sms, "}");
+    strcat(sms, "}\n");
     return;
 }
 
@@ -99,9 +99,11 @@ int sock_power_on(char* phone_num, char* server_ip, int server_port, int client_
     }
 
     // 数据传输，将手机号发给服务端
-    buf[0] = "1";
-    buf[1] = "|";
-    strcpy(buf + 2, phone_num);
+    buf[0] = '1';
+    buf[1] = '|';
+    buf[2] = 0;
+    strcat(buf, phone_num);
+    strcat(buf, '\n');
     len = strlen(buf);
     if(DEBUG) {
         printf("send: %s", buf);
@@ -185,9 +187,11 @@ int sock_power_off(int serverfd, char* phone_num, char* server_ip, int server_po
     }
 
     // 数据传输，将手机号发给服务端
-    buf[0] = "2";
-    buf[1] = "|";
-    strcpy(buf + 2, phone_num);
+    buf[0] = '2';
+    buf[1] = '|';
+    buf[2] = 0;
+    strcat(buf, phone_num);
+    strcat(buf, '\n');
     len = strlen(buf);
     if(DEBUG) {
         printf("send: %s", buf);
