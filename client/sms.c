@@ -21,6 +21,8 @@
 #include "client.h"
 #include "string_to_message.h"
 
+#define DEBUG 1
+
 
 int main(int argc, char** argv)
 {
@@ -97,15 +99,25 @@ int main(int argc, char** argv)
 			struct sockaddr_in addr;
 			int addrlen = sizeof(addr);
 			int childSockfd;
+			printf("Start accept\n");
 			if((childSockfd = accept(sockfd, (struct sockaddr*) &addr, &addrlen)) < 0)
 			{
 				perror("accept");
                 printf("%d\n",sockfd);
 				return -1;
 			}
+			if(DEBUG) {
+                printf("accept success\n");
+			}
 			char buf[1024];
 			memset(buf, 0, sizeof(buf));
 			int len = read(childSockfd, buf, 1024);
+			if(DEBUG) {
+                printf("get message: %s", buf);
+			}
+			char local_phoneNumber_s[20];
+			longlong_to_string(local_phoneNumber,local_phoneNumber_s);
+			write(childSockfd, local_phoneNumber_s, 1024);
 			close(pipe_fd[0]);
 			while (lockflag) sleep(1000);
 			write(pipe_fd[1], buf, 1);

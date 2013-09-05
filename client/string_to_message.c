@@ -36,67 +36,34 @@ struct message string_to_message(unsigned char *str)
 {
 	struct message ans;
 	int len=strlen_unsigned2(str);
-	int index1,index2;
+	char * index1;
+	char * index2;
 
-	for(int i=0;i<len;i++)
+	index1=strstr(str,"sender")+9;
+	index2=index1;
+	while(*index2>='0'&&*index2<='9')
 	{
-		if(str[i]==':'&&str[i-1]!='\\')
-		{
-			index1=i+2;
-			break;
-		}
+        index2++;
 	}
-	for(int i=index1+1;i<len;i++)
-	{
-		if(str[i]==','&&str[i-1]!='\\')
-		{
-			index2=i-2;
-			break;
-		}
-	}
-	ans.receiver=string_to_longlong(str+index1,str+index2);
+	ans.sender=string_to_longlong(index1,index2-1);
 	//printf("%lld\n",ans.receiver);
 
-	for(int i=index2+1;i<len;i++)
+	index1=strstr(str,"receiver")+9;
+	index2=index1;
+	while(*index2>='0'&&*index2<='9')
 	{
-		if(str[i]==':'&&str[i-1]!='\\')
-		{
-			index1=i+2;
-			break;
-		}
+        index2++;
 	}
-	for(int i=index1+1;i<len;i++)
-	{
-		if(str[i]==','&&str[i-1]!='\\')
-		{
-			index2=i-2;
-			break;
-		}
-	}
-	ans.sender=string_to_longlong(str+index1,str+index2);
+	ans.receiver=string_to_longlong(index1,index2-1);
 	//printf("%lld\n",ans.sender);
 
-	for(int i=index2+1;i<len;i++)
+	index1=strstr(str,"content")+10;
+	index2=index1;
+	while(*index2!='"')
 	{
-		if(str[i]==':'&&str[i-1]!='\\')
-		{
-			index1=i+2;
-			break;
-		}
+	    index2++;
 	}
-	for(int i=index1+1;i<len;i++)
-	{
-		if(str[i]==','&&str[i-1]!='\\')
-		{
-			index2=i-2;
-			break;
-		}
-	}
-	/*for(int i=index1;i<=index2;i++)
-	{
-		printf("%c",str[i]);
-	}
-	printf("\n");*/
+	index2--;
 	memcpy(ans.content,str+index1,sizeof(char)*(index2-index1+1));
 	ans.content[index2-index1+1]='\0';
 	//ans.content[index2-index1+1]='\0';
@@ -122,25 +89,13 @@ struct message string_to_message(unsigned char *str)
 	ans.NextMessage=string_to_longlong(str+index1,str+index2);
 	printf("%lld\n",ans.NextMessage);*/
 
-	//printf("%d %d\n",index1,index2);
-	for(int i=index2+1;i<len;i++)
+	index1=strstr(str,"Time")+7;
+	index2=index1;
+	while(*index2!='"')
 	{
-		if(str[i]==':'&&str[i-1]!='\\')
-		{
-			index1=i+2;
-			break;
-		}
+	    index2++;
 	}
-	//printf("%d\n",len);
-	for(int i=index1+1;i<len;i++)
-	{
-		if(str[i]==','&&str[i-1]!='\\')
-		{
-			index2=i-2;
-			//printf("sdsadas");
-			break;
-		}
-	}
+	index2--;
 	char strtime[500];
 	memcpy(strtime,str+index1,sizeof(char)*(index2-index1+1));
 	strtime[index2-index1+1]='\0';
@@ -148,28 +103,14 @@ struct message string_to_message(unsigned char *str)
 	strptime(strtime, "%F %T", &tm_time);
 	ans.Time = mktime(&tm_time);
 
-	for(int i=index2+1;i<len;i++)
+	index1=strstr(str,"flag_lms")+10;
+	index2=index1;
+	while(*index2>='0'&&*index2<='9')
 	{
-		if(str[i]==':'&&str[i-1]!='\\')
-		{
-			index1=i+1;
-			break;
-		}
+	    index2++;
 	}
-	//printf("%c %c\n",*(str+index1),str[len-2]);
-	ans.flag_lms=string_to_longlong(str+index1,str+len-2);
-	//printf("%d\n",ans.flag_lms);
-
-	/*for(int i=index2+1;i<len;i++)
-	{
-		if(str[i]==':'&&str[i-1]!='\\')
-		{
-			index1=i+2;
-			break;
-		}
-	}
-	ans.HasBeenReaded=string_to_longlong(str+index1,str+len-3);
-	printf("%d\n",ans.HasBeenReaded);*/
+	index2--;
+	ans.flag_lms=string_to_longlong(index1,index2);
 
 	return ans;
 }
