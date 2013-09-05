@@ -64,7 +64,7 @@ struct message string_to_message(unsigned char *str)
 	    index2++;
 	}
 	index2--;
-	memcpy(ans.content,str+index1,sizeof(char)*(index2-index1+1));
+	memcpy(ans.content,index1,sizeof(char)*(index2-index1+1));
 	ans.content[index2-index1+1]='\0';
 	//ans.content[index2-index1+1]='\0';
 	//printf("%s\n",ans.content);
@@ -97,7 +97,7 @@ struct message string_to_message(unsigned char *str)
 	}
 	index2--;
 	char strtime[500];
-	memcpy(strtime,str+index1,sizeof(char)*(index2-index1+1));
+	memcpy(strtime,index1,sizeof(char)*((index2-index1)+1));
 	strtime[index2-index1+1]='\0';
 	struct tm tm_time;
 	strptime(strtime, "%F %T", &tm_time);
