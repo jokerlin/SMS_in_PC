@@ -87,7 +87,7 @@ def check(phone_num):
 
 # 开机函数
 def poweron(s, client_ip):
-    phone_num = s.rfile.readline()
+	phone_num = s.rfile.readline()[:-1]
     s.wfile.write('OK')
     phone_num = phone_num[1:]
     if DEBUG:
@@ -98,7 +98,7 @@ def poweron(s, client_ip):
 
 # 关机函数
 def poweroff(s):
-    phone_num = s.rfile.readline()
+	phone_num = s.rfile.readline()[:-1]
     s.wfile.write('OK')
     phone_num = phone_num[1:]
     if DEBUG:
@@ -108,7 +108,7 @@ def poweroff(s):
 # 短信函数
 def message(s):
     print "message"
-    sms = s.rfile.readline()
+	sms = s.rfile.readline()[:-1]
     s.wfile.write('OK')
     sms = json.loads(sms)
     if DEBUG:
