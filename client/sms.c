@@ -117,7 +117,8 @@ int main(int argc, char** argv)
 			}
 			char local_phoneNumber_s[20];
 			longlong_to_string(local_phoneNumber,local_phoneNumber_s);
-			write(childSockfd, local_phoneNumber_s, 1024);
+            strcat(local_phoneNumber_s, "\n");
+			write(childSockfd, local_phoneNumber_s, 20);
             if(DEBUG) {
                 printf("My Phone Number: %s\n", local_phoneNumber_s);
             }

@@ -50,7 +50,7 @@ def sendsms(sms, phone_num, client_ip, id=0):
         print json.dumps(sms)
     s2.settimeout(10)
     try:
-        a = s2.recv(20)
+        a = s2.readline()
         s2.close()
         if phone_num in a:
             if DEBUG:
