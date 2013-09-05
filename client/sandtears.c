@@ -135,6 +135,13 @@ int sock_power_on(char* phone_num, char* server_ip, int server_port, int client_
         return -1;
     }
 
+    //设置端口复用
+    int on = 1;
+    if(setsockopt(serverfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)) < 0) {
+        perror("setsockopt");
+        return -1;
+    }
+
     // 监听
     if(listen(sockfd, 1) < 0){
         perror("on_listen");
