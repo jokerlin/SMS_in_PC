@@ -18,6 +18,8 @@
 
 #define MAXLEN 1024
 
+#define DEBUG 1
+
 void longlong_to_string(long long number, char* str) {
     int len, i;
     char re_str[20];
@@ -72,7 +74,7 @@ int sock_power_on(char* phone_num, char* server_ip, int server_port, int client_
 {
     int sockfd, len;
     struct sockaddr_in serverAddr;
-    char* buf;
+    char buf[1024];
 
     // 创建socket
     if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
@@ -97,10 +99,13 @@ int sock_power_on(char* phone_num, char* server_ip, int server_port, int client_
     }
 
     // 数据传输，将手机号发给服务端
-    buf = phone_num - sizeof(char) * 2;
     buf[0] = "1";
     buf[1] = "|";
+    strcpy(buf + 2, phone_num);
     len = strlen(buf);
+    if(DEBUG) {
+        printf("send: %s", buf);
+    }
     if(write(sockfd, buf, len) != len) {
         perror("on_write");
         return -1;
@@ -118,7 +123,6 @@ int sock_power_on(char* phone_num, char* server_ip, int server_port, int client_
     close(sockfd);
 
     //建立连接，监听并返回
-    //
     // 创建socket
     if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
         perror("on_socket_server");
@@ -181,10 +185,13 @@ int sock_power_off(int serverfd, char* phone_num, char* server_ip, int server_po
     }
 
     // 数据传输，将手机号发给服务端
-    strcpy(buf + 2, phone_num);
     buf[0] = "2";
     buf[1] = "|";
+    strcpy(buf + 2, phone_num);
     len = strlen(buf);
+    if(DEBUG) {
+        printf("send: %s", buf);
+    }
     if(write(sockfd, buf, len) != len){
         perror("off_write");
         return -1;
