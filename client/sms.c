@@ -94,7 +94,10 @@ int main(int argc, char** argv)
             {
             case 'q':
                 normal_power_flag = 1;
-                power_off();
+                char local_phoneNumber_s [12];
+                memset(local_phoneNumber_s, 0, sizeof(local_phoneNumber_s));
+                longlong_to_string(local_phoneNumber, local_phoneNumber_s);
+                power_off(sockfd,local_phoneNumber_s, server_ip, server_port);
                 break;
             case 'h':
                 help();
