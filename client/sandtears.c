@@ -223,6 +223,7 @@ int sock_sendmsg(struct message msg, char* server_ip, int server_port)
     int sockfd, len;
     struct sockaddr_in serverAddr;
     char buf[1024];
+	memset(buf, 0, sizeof(buf));
 
     // 创建socket
     if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0){
@@ -264,7 +265,7 @@ int sock_sendmsg(struct message msg, char* server_ip, int server_port)
         perror("sendmsg_read");
         return -1;
     }
-    if((buf[0] == "O")&&(buf[1] == "K")) {
+    if((buf[0] != 'O')||(buf[1] != 'K')) {
         perror("sendmsg_read_2");
         return -1;
     }
