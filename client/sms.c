@@ -53,6 +53,7 @@ int main(int argc, char** argv)
     {
         while (!normal_power_flag)
         {
+			//printf("啊哈，又一次循环\n");
             FD_ZERO(&rdfds);
             FD_SET(pipe_fd[0], &rdfds);
 
@@ -63,6 +64,7 @@ int main(int argc, char** argv)
             {
                 memset(buf_r,0, sizeof(buf_r));
 				read(pipe_fd[0],buf_r,1024);
+                //printf("Fuck the pipesending: %s\n",buf_r);//for debug
 				write(pipe_fd2[1], "OK", 2);
 				if(DEBUG)
 				{
@@ -70,7 +72,7 @@ int main(int argc, char** argv)
 				}
                 printf("comlete pipesending: %s\n",buf_r);//for debug
                 struct message msg_receive = string_to_message(buf_r);
-                //printf("complete string to message\n");
+                printf("complete string to message\n");
 
                 if (!exist_in_list(msg_receive.sender))
                 {
@@ -83,7 +85,7 @@ int main(int argc, char** argv)
                     personadd.Time = 0;
                     add_person(personadd);
                 }
-
+				printf("before save msg\n");
                 save_message(msg_receive.sender,msg_receive);
                 printf("You Just Get a New Message!\n");
             }

@@ -44,12 +44,12 @@ def sendsms(sms, phone_num, client_ip, id=0):
         print "send message..."
     flag_send = True
     s2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s2.connect((client_ip, config['PORT_client']))
-    s2.send(json.dumps(sms))
-    if DEBUG:
-        print json.dumps(sms)
-    s2.settimeout(1000)
     try:
+        s2.connect((client_ip, config['PORT_client']))
+        s2.send(json.dumps(sms))
+        if DEBUG:
+            print json.dumps(sms)
+        s2.settimeout(1000)
         a = s2.recv(20)
         s2.close()
         if DEBUG:
@@ -63,17 +63,19 @@ def sendsms(sms, phone_num, client_ip, id=0):
     except Exception as e:
         if DEBUG:
             print e
-        flag_send = True
     finally:
-        if (id) and (not flag_send):
-            sql = "DELETE FROM new WHERE id = %d" % id
-            if DEBUG:
-                print sql
-            con, cursor = opendb()
-            cursor.execute(sql)
-            con.commit()
-            con.close()
-        savesms(sms, flag_send)
+        if (id):
+            if not flag_send:
+                sql = "DELETE FROM new WHERE id = %d" % id
+                if DEBUG:
+                    print sql
+                con, cursor = opendb()
+                cursor.execute(sql)
+                con.commit()
+                con.close()
+                savesms(sms, flag_send)
+        else:
+            savesms(sms, flag_send)
 
 # 开机查询逻辑
 def check(phone_num):
@@ -147,7 +149,7 @@ class Handler(StreamRequestHandler):
 
         # 开机信息
         if flag == '1':
-            poweron(self, addr)	
+            poweron(self, addr)    
 
         # 关机信息
         elif flag == '2':
