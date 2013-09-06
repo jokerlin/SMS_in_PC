@@ -163,9 +163,10 @@ void client_delete_message()
 		printf("Choose the Message ID: ");
 		scanf("%s",input_message_id_s);
 		input_message_id = legalinput(input_message_id_s);
-		if (input_page_number != -1) delete_message(input_phonenumber, input_message_id);
+		if (input_message_id != -1) delete_message(input_phonenumber, input_message_id);
 		else printf("WRONG INPUT.\n");
-		delete_message(input_phonenumber, input_message_id);
+		//delete_message(input_phonenumber, input_message_id);
+
 	}
 	else
 	{
