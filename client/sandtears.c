@@ -245,15 +245,19 @@ int sock_sendmsg(struct message msg, char* server_ip, int server_port)
         return -1;
     }
 
+    if(DEBUG) {
+        printf("SendMsg: Connection success\n");
+    }
+
     // 数据传输，将短信发送出去
     sms_to_string(msg, buf);
-    if(DEBUG) {
-        printf("send %s\n", buf);
-    }
     len = strlen(buf);
     if(write(sockfd, buf, len) != len){
         perror("sendmsg_write");
         return -1;
+    }
+    if(DEBUG) {
+        printf("SendMsg: %s\n", buf);
     }
     memset(buf, 0, sizeof(buf));
     if((read(sockfd, buf, MAXLEN)) < 0) {
@@ -264,6 +268,10 @@ int sock_sendmsg(struct message msg, char* server_ip, int server_port)
         perror("sendmsg_read_2");
         return -1;
     }
+    if(DEBUG) {
+        printf("SendMsg: get:%s\n", buf);
+    }
     // 关闭socket
+    printf("SendMsg Success...\n");
     return 1;
 }

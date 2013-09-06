@@ -9,7 +9,7 @@ int strlen_unsigned2(unsigned char a[])
 {
     int ans=0;
     unsigned char *p=a;
-        while((*p)!=0)
+    while((*p)!=0)
     {
         ans++;
         p++;
@@ -39,7 +39,7 @@ struct message string_to_message(unsigned char *str)
 	char * index1;
 	char * index2;
 
-	index1=strstr(str,"sender")+9;
+	index1=strstr(str,"sender")+10;
 	index2=index1;
 	while(*index2>='0'&&*index2<='9')
 	{
@@ -48,7 +48,7 @@ struct message string_to_message(unsigned char *str)
 	ans.sender=string_to_longlong(index1,index2-1);
 	//printf("%lld\n",ans.receiver);
 
-	index1=strstr(str,"receiver")+9;
+	index1=strstr(str,"receiver")+12;
 	index2=index1;
 	while(*index2>='0'&&*index2<='9')
 	{
@@ -57,7 +57,7 @@ struct message string_to_message(unsigned char *str)
 	ans.receiver=string_to_longlong(index1,index2-1);
 	//printf("%lld\n",ans.sender);
 
-	index1=strstr(str,"content")+10;
+	index1=strstr(str,"content")+11;
 	index2=index1;
 	while(*index2!='"')
 	{
@@ -89,7 +89,7 @@ struct message string_to_message(unsigned char *str)
 	ans.NextMessage=string_to_longlong(str+index1,str+index2);
 	printf("%lld\n",ans.NextMessage);*/
 
-	index1=strstr(str,"Time")+7;
+	index1=strstr(str,"Time")+8;
 	index2=index1;
 	while(*index2!='"')
 	{
@@ -103,7 +103,7 @@ struct message string_to_message(unsigned char *str)
 	strptime(strtime, "%F %T", &tm_time);
 	ans.Time = mktime(&tm_time);
 
-	index1=strstr(str,"flag_lms")+10;
+	index1=strstr(str,"flag_lms")+11;
 	index2=index1;
 	while(*index2>='0'&&*index2<='9')
 	{

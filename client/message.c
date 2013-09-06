@@ -30,7 +30,7 @@ void list_person_message(long long person_id,int NumOfPage)
     for(int i=0;i<the_message_num_of_one_page;i++)
     {
         if(q==MemBaseMessage) return;
-        printf("%s\n",q->content);
+        printf("%d: %s\n",NumOfPage*the_message_num_of_one_page+i,q->content);
         q=longlong_to_MessagePoint(q->NextMessage);
     }
 }
