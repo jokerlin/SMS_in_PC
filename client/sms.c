@@ -86,7 +86,7 @@ int main(int argc, char** argv)
             	r_num = 0;
             }
             */
-            help();
+            //help();
 			close(pipe_fd[1]);
             //close(pipe_fd[0]);
             while (!kbhit()) nothing();
