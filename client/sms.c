@@ -41,25 +41,25 @@ int main(int argc, char** argv)
 	    return -1;
 	}
 
-	//int maxfd = pipe_fd[0] > pipe_fd[1] ? pipe_fd[0] + 1 : pipe_fd[1] + 1;
-	fd_set fds;
-	struct timeval timeout = {3, 0};
-
+	int maxfd = pipe_fd[0] > pipe_fd[1] ? pipe_fd[0] + 1 : pipe_fd[1] + 1;
+	struct timeval timeout = {1, 0};
+	fd_set rdfds;
 	if ((pid = fork())  > 0)
 	{
 		while (!normal_power_flag)
 		{
-			fd_set rdfds;
 			FD_ZERO(&rdfds);
 			FD_SET(pipe_fd[0], &rdfds);
 
-            int ret= select(1, &rdfds, NULL, NULL, &timeout);
+            int ret= select(maxfd, &rdfds, NULL, NULL, &timeout);
+			printf ("before reading %d\n", ret);
 			if (ret < 0) perror("select");/* 这说明select函数出错 */
 			else if (ret > 0)
 			{
-				read(pipe_fd[0],buf_r,1);
-				printf("%s\n",buf_r);//for debug
+				read(pipe_fd[0],buf_r,1024);
+				printf("comlete pipesending: %s\n",buf_r);//for debug
 				struct message msg_receive = string_to_message(buf_r);
+				printf("complete string to message\n");
 				save_message(msg_receive.receiver,msg_receive);
 			}
 			/*
@@ -73,7 +73,7 @@ int main(int argc, char** argv)
 			}
             */
 			close(pipe_fd[1]);
-			close(pipe_fd[0]);
+			//close(pipe_fd[0]);
 			while (!kbhit()) nothing();
 			instruction = getchar();
 			switch (instruction)
@@ -125,8 +125,14 @@ int main(int argc, char** argv)
             close(childSockfd);
 			close(pipe_fd[0]);
 			while (lockflag) sleep(1000);
-			write(pipe_fd[1], buf, 1);
-			close(pipe_fd[1]);
+			int pipedebug = write(pipe_fd[1], buf, 1024);
+			printf ("%d\n",pipedebug);
+			if (pipedebug < 0)
+			{
+				perror("write");
+				return -1;
+			}
+			//close(pipe_fd[1]);
 		}
 	}
 }
