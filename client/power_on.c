@@ -78,7 +78,10 @@ int power_on()
 	memset(buf,0,sizeof(buf));
 	id[0]='.';id[1]='/';id[2]='\0';
 	strcat(id,phone);
-	if(NULL == dir)
+	char exitinstruction[50];
+	strcpy(exitinstruction,"cd ");
+	strcat(exitinstruction,id);
+	if(opendir(exitinstruction) == NULL)
 	{
 		status = mkdir(id, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 		int fd;

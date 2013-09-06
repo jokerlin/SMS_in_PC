@@ -57,7 +57,7 @@ void delete_message(long long person_id,int message_id)
         {
             p->Time=longlong_to_MessagePoint(p->HeadMessage)->Time;
         }
-        if(p->Time>longlong_to_PersonPoint(p->NextPerson)->Time) return;
+        if(p->NextPerson == 0||(p->Time>longlong_to_PersonPoint(p->NextPerson)->Time)) return;
         struct person *q=p;
         while(longlong_to_PersonPoint(q->NextPerson)->Time>p->Time)
         {
