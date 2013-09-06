@@ -21,14 +21,15 @@
 #include "client.h"
 #include "string_to_message.h"
 
-#define DEBUG 0
+#define DEBUG 1 
 
 
 int main(int argc, char** argv)
 {
     int normal_power_flag = 0;//正常关机标志
     int pipe_fd[2];
-    char instruction;
+    int pipe_fd2[2];
+	char instruction;
     pid_t pid;
     char buf_r[1024];
 
@@ -37,10 +38,14 @@ int main(int argc, char** argv)
 
     if (pipe(pipe_fd) < 0)
     {
-        printf("pipe creat error\n");
+        printf("pipe create error\n");
         return -1;
     }
-
+	if (pipe(pipe_fd2) < 0)
+	{
+		printf("pipe create error\n");
+		return -1;
+	}
     int maxfd = pipe_fd[0] > pipe_fd[1] ? pipe_fd[0] + 1 : pipe_fd[1] + 1;
     struct timeval timeout = {1, 0};
     fd_set rdfds;
@@ -56,8 +61,14 @@ int main(int argc, char** argv)
             if (ret < 0) perror("select");/* 这说明select函数出错 */
             else if (ret > 0)
             {
-                read(pipe_fd[0],buf_r,1024);
-                //printf("comlete pipesending: %s\n",buf_r);//for debug
+                memset(buf_r,0, sizeof(buf_r));
+				read(pipe_fd[0],buf_r,1024);
+				write(pipe_fd2[1], "OK", 2);
+				if(DEBUG)
+				{
+					printf("Send OK success\n");
+				}
+                printf("comlete pipesending: %s\n",buf_r);//for debug
                 struct message msg_receive = string_to_message(buf_r);
                 //printf("complete string to message\n");
 
@@ -87,7 +98,8 @@ int main(int argc, char** argv)
             }
             */
             //help();
-			close(pipe_fd[1]);
+			//close(pipe_fd[1]);
+			//close(pipe_fd2[0]);
             //close(pipe_fd[0]);
             while (!kbhit()) nothing();
             instruction = getchar();
@@ -144,10 +156,7 @@ int main(int argc, char** argv)
                 //printf("%d\n",sockfd);
                 return -1;
             }
-            if(DEBUG)
-            {
-                printf("Power On Successfully!\n");
-            }
+            printf("Power On Successfully!\n");
             char buf[1024];
             memset(buf, 0, sizeof(buf));
             int len = read(childSockfd, buf, 1024);
@@ -165,9 +174,17 @@ int main(int argc, char** argv)
             }
             close(childSockfd);
             close(pipe_fd[0]);
-            while (lockflag) sleep(1000);
+            //while (lockflag) sleep(1000);
             int pipedebug = write(pipe_fd[1], buf, 1024);
-            printf ("%d\n",pipedebug);
+			char buf_back[3];
+			memset(buf, 0, sizeof(buf));
+			memset(buf_back, 0, sizeof(buf_back));
+			printf ("%d\n",pipedebug);
+			//close(pipe_fd2[1]);
+			read(pipe_fd2[0], buf_back, 3);
+			if (buf_back[0] != 'O' || buf_back[1]!='K') {
+				perror("get msg from parent fail\n");			
+			}
             if (pipedebug < 0)
             {
                 perror("write");
