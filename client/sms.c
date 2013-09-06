@@ -21,7 +21,7 @@
 #include "client.h"
 #include "string_to_message.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 
 int main(int argc, char** argv)
@@ -52,14 +52,14 @@ int main(int argc, char** argv)
             FD_SET(pipe_fd[0], &rdfds);
 
             int ret= select(maxfd, &rdfds, NULL, NULL, &timeout);
-            printf ("before reading %d\n", ret);
+            //printf ("before reading %d\n", ret);
             if (ret < 0) perror("select");/* 这说明select函数出错 */
             else if (ret > 0)
             {
                 read(pipe_fd[0],buf_r,1024);
-                printf("comlete pipesending: %s\n",buf_r);//for debug
+                //printf("comlete pipesending: %s\n",buf_r);//for debug
                 struct message msg_receive = string_to_message(buf_r);
-                printf("complete string to message\n");
+                //printf("complete string to message\n");
 
                 if (!exist_in_list(msg_receive.sender))
                 {
@@ -74,7 +74,7 @@ int main(int argc, char** argv)
                 }
 
                 save_message(msg_receive.sender,msg_receive);
-                printf("complete saving\n");
+                printf("You Just Get a New Message!\n");
             }
             /*
             if ((r_num = read(pipe_fd[0],buf_r,100)) > 0)
@@ -86,7 +86,8 @@ int main(int argc, char** argv)
             	r_num = 0;
             }
             */
-            close(pipe_fd[1]);
+            help();
+			close(pipe_fd[1]);
             //close(pipe_fd[0]);
             while (!kbhit()) nothing();
             instruction = getchar();
@@ -121,7 +122,7 @@ int main(int argc, char** argv)
                 client_search_message();
                 break;
             case 10:
-                printf("NO INSTRUCTION. Please press 'h' for help.\n");
+                printf("Refreshed.\n");
                 break;
             default:
                 printf("WRONG INSTRUCTION. Please press 'h' for help.\n");
@@ -136,16 +137,16 @@ int main(int argc, char** argv)
             struct sockaddr_in addr;
             int addrlen = sizeof(addr);
             int childSockfd;
-            printf("Start accept\n");
+            //printf("Start accept\n");
             if((childSockfd = accept(sockfd, (struct sockaddr*) &addr, &addrlen)) < 0)
             {
                 perror("accept");
-                printf("%d\n",sockfd);
+                //printf("%d\n",sockfd);
                 return -1;
             }
             if(DEBUG)
             {
-                printf("accept success\n");
+                printf("Power On Successfully!\n");
             }
             char buf[1024];
             memset(buf, 0, sizeof(buf));
