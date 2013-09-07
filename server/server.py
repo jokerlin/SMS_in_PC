@@ -46,9 +46,14 @@ def sendsms(sms, phone_num, client_ip, id=0):
     s2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         s2.connect((client_ip, config['PORT_client']))
-        s2.send(json.dumps(sms).encode('utf8'))
+        tmp_content = sms['content']
+        sms['content'] = "||zwsbzwsb||"
+        str_sms = json.dumps(sms)
+        str_sms = str_sms.replace('||zwsbzwsb||', tmp_content.encode('utf8'))
+        s2.send(str_sms)
         if DEBUG:
-            print json.dumps(sms.encode('utf8'))
+            print json.dumps(str_sms)
+        sms['content'] = tmp_content
         s2.settimeout(1000)
         a = s2.recv(20)
         s2.close()
