@@ -46,6 +46,8 @@ def sendsms(sms, phone_num, client_ip, id=0):
     s2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         s2.connect((client_ip, config['PORT_client']))
+        sms['flag_lms'] = sms['long']
+        sms.pop('long')
         s2.send(json.dumps(sms))
         if DEBUG:
             print json.dumps(sms)
