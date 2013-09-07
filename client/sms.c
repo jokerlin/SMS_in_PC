@@ -12,6 +12,7 @@
 #include <sys/socket.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <signal.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/time.h>
@@ -113,6 +114,7 @@ int main(int argc, char** argv)
                 memset(local_phoneNumber_s, 0, sizeof(local_phoneNumber_s));
                 longlong_to_string(local_phoneNumber, local_phoneNumber_s);
                 power_off(sockfd,local_phoneNumber_s, server_ip, server_port);
+				kill(pid, 15);
                 break;
             case 'h':
                 help();
