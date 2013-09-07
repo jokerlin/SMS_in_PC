@@ -46,9 +46,9 @@ def sendsms(sms, phone_num, client_ip, id=0):
     s2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         s2.connect((client_ip, config['PORT_client']))
-        s2.send(json.dumps(sms))
+        s2.send(json.dumps(sms).encode('utf8'))
         if DEBUG:
-            print json.dumps(sms)
+            print json.dumps(sms.encode('utf8'))
         s2.settimeout(1000)
         a = s2.recv(20)
         s2.close()
