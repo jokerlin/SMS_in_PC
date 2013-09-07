@@ -27,7 +27,7 @@ def savesms(sms, flag_new):
         tableName = 'new'
     # 生成SQL语句
     sms['table'] = tableName
-    sql = 'INSERT INTO %(table)s (sender, receiver, content, time, long) VALUES ("%(sender)s", "%(receiver)s", "%(content)s", "%(Time)s", %(long)d);' % sms
+    sql = 'INSERT INTO %(table)s (sender, receiver, content, time, long) VALUES ("%(sender)s", "%(receiver)s", "%(content)s", "%(Time)s", %(flag_lms)d);' % sms
 
     # 执行sql语句并提交
     if DEBUG:
@@ -46,8 +46,6 @@ def sendsms(sms, phone_num, client_ip, id=0):
     s2 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         s2.connect((client_ip, config['PORT_client']))
-        sms['flag_lms'] = sms['long']
-        sms.pop('long')
         s2.send(json.dumps(sms))
         if DEBUG:
             print json.dumps(sms)
@@ -94,7 +92,7 @@ def check(phone_num):
        newsms['receiver'] = i[1]
        newsms['content'] = i[2]
        newsms['Time'] = i[3]
-       newsms['long'] = i[4]
+       newsms['flag_lms'] = i[4]
        id = i[5]
        sendsms(newsms, phone_num, client[newsms['receiver']], id)
     con.close()
@@ -129,7 +127,7 @@ def message(s):
     s.wfile.write('OK')
     print repr(sms);
     sms = json.loads(sms)
-    sms['long'] = 0
+    sms['flag_lms'] = 0
     if DEBUG:
         print sms['receiver']
         print client.keys()
