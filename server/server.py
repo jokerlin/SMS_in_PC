@@ -5,7 +5,7 @@
 from SocketServer import ThreadingMixIn, StreamRequestHandler, TCPServer
 import socket, select, json
 import sqlite3
-import sys, os, time
+import sys, os, time, threading
 
 # 读取配置文件信息并进行相应配置
 config = {}
@@ -22,6 +22,8 @@ def opendb():
 
 # 存储短信
 def savesms(sms, flag_new):
+    if type(sms['Time']) == type(5):
+        sms['Time'] = time.strftime("%F %T")
     tableName = 'old' # 分析要存入的表
     if flag_new:
         tableName = 'new'
@@ -36,10 +38,20 @@ def savesms(sms, flag_new):
     cursor.execute(sql)
     con.commit()
     con.close()
+    
+# 延时发送短信
+def sendsms_wait(sms, time):
+    time.sleep(time)
+    if sms['receiver'] in client.keys():
+        sendsms(sms, sms['receiver'], client[sms['receiver']])
+    else:
+        savesms(sms, True)
 
 # 发送短信
 def sendsms(sms, phone_num, client_ip, id=0):
     # 尝试发送短信，如果成功则存入
+    if type(sms['Time']) == type(5):
+        sms['Time'] = time.strftime("%F %T")
     if DEBUG:
         print "send message..."
     flag_send = True
@@ -136,10 +148,13 @@ def message(s):
     if DEBUG:
         print sms['receiver']
         print client.keys()
-    if sms['receiver'] in client.keys():
-        sendsms(sms, sms['receiver'], client[sms['receiver']])
+    if sms["Time"] == 0:
+        if sms['receiver'] in client.keys():
+            sendsms(sms, sms['receiver'], client[sms['receiver']])
+        else:
+            savesms(sms, True)
     else:
-        savesms(sms, True)
+        threading.Thread(target = sendsms_wait, args = (sms, sms['Time']));
 
 # 创建多线程服务器
 class ThreadServer(ThreadingMixIn, TCPServer):
