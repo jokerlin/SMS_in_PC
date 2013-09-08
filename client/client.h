@@ -23,5 +23,6 @@ void client_delete_person(); //删除联系人所有短信
 void client_delete_message(); //删除某个联系人的某个短信
 void send_message(); //发送短信
 void client_search_message(); //搜索关键字
+void client_rename_person(); //对通讯录进行操作
 
 #endif

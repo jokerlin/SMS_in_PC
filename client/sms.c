@@ -80,7 +80,7 @@ int main(int argc, char** argv)
                     struct person personadd;
                     personadd.HeadMessage = 0;
                     personadd.id = msg_receive.sender;
-                    strcpy(personadd.name,"sb");
+                    strcpy(personadd.name,"UNKNOWN");
                     personadd.NextPerson = 0;
                     personadd.NumOfMessage = 0;
                     personadd.Time = 0;
@@ -137,6 +137,8 @@ int main(int argc, char** argv)
             case 'f':
                 client_search_message();
                 break;
+			case 'e':
+				client_rename_person();
             case 10:
                 printf("Refreshed.\n");
                 break;

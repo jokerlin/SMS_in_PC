@@ -236,7 +236,7 @@ void send_message()
             struct person personadd;
             personadd.HeadMessage = 0;
             personadd.id = msg.receiver;
-            strcpy(personadd.name,"sb");
+            strcpy(personadd.name,"UNKNOWN");
             personadd.NextPerson = 0;
             personadd.NumOfMessage = 0;
             personadd.Time = 0;
@@ -289,5 +289,12 @@ void client_search_message()
 		else printf("WRONG INSTRUCTION.\n");
 	}
 
+	lockflag = 0;
+}
+
+void client_rename_person()
+{	
+	lockflag = 1;
+	
 	lockflag = 0;
 }
