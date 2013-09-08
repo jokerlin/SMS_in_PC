@@ -187,14 +187,47 @@ void send_message()
 		int i;
 		for (i = 0; i <  100; i++) input_message_content[i] = '\0';
 		scanf("%s", input_message_content);
-
+		
+		printf("Whether to delay sending?(y/n)\n");
+		char delayflag[5];
 		struct message msg;
-		msg.receiver = input_phonenumber;
-		msg.sender = local_phoneNumber;
-		strcpy(msg.content, input_message_content);
-		msg.Time = time(NULL);
-		msg.flag_lms = 0;
-		msg.HasBeenReaded = 0;
+		while(scanf("%s",delayflag))
+		{
+			if(delayflag[0] == 'y')
+			{
+				char DelayTime_s[30];
+				printf("Please Input the Time:\n");
+				printf("For Example:1970-1-1-08:00:00\n");
+				scanf("%s",DelayTime_s);
+				struct tm DelayTime;
+				strptime(DelayTime_s,"%F-%T",&DelayTime);
+				//printf("%d\n",DelayTime.tm_year,DelayTime.tm_hour);
+
+				msg.receiver = input_phonenumber;
+				msg.sender = local_phoneNumber;
+				strcpy(msg.content, input_message_content);
+				printf("Delay:%ld\n",DelayTime);
+				printf("%ld\n",time(NULL));
+				msg.Time = mktime(&DelayTime)-time(NULL);
+				msg.flag_lms = 0;
+				msg.HasBeenReaded = 0;
+				break;
+			}
+			else if(delayflag[0] == 'n')
+			{
+				msg.receiver = input_phonenumber;
+				msg.sender = local_phoneNumber;
+				strcpy(msg.content, input_message_content);
+				msg.Time = 0;
+				msg.flag_lms = 0;
+				msg.HasBeenReaded = 0;
+				break;
+			}
+			else
+			{
+				printf("Please input 'y' or 'n'");
+			}
+		}
 
         if (!exist_in_list(msg.receiver))
         {
