@@ -23,6 +23,14 @@
 void longlong_to_string(long long number, char* str) {
     int len, i;
     char re_str[20];
+
+    // 如果number为0则返回"0"
+    if(number == 0) {
+        str[0] = '0';
+        str[0] = '\0';
+        return;
+    }
+    
     // 求出倒序字符串
     for(len = 0; number > 0; len++) {
         re_str[len] = number % 10 + '0';
