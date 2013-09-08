@@ -27,7 +27,7 @@ void longlong_to_string(long long number, char* str) {
     // 如果number为0则返回"0"
     if(number == 0) {
         str[0] = '0';
-        str[0] = '\0';
+        str[1] = '\0';
         return;
     }
     
