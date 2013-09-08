@@ -143,6 +143,7 @@ void client_delete_person()
 {
 	lockflag = 1;
 
+	list_person(0);
 	printf("Please Enter the Phone Number You Want to Delete: ");
 	scanf("%s",input_phonenumber_s);
 	input_phonenumber = legalinput(input_phonenumber_s);
@@ -155,6 +156,7 @@ void client_delete_message()
 {
 	lockflag = 1;
 
+	list_person(0);
 	printf("Please Enter the Phone Number You Want to Delete: ");
 	scanf("%s",input_phonenumber_s);
 	input_phonenumber = legalinput(input_phonenumber_s);
