@@ -5,6 +5,7 @@
 
 #define the_person_num_of_one_page 10
 
+void rename_person(long long id,char *name);
 void list_person(int numofpage);
 void add_person(struct person x);
 void delete_person(long long id);
