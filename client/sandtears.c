@@ -36,24 +36,12 @@ void longlong_to_string(long long number, char* str) {
     str[i] = 0;
     return;
 }
-void time_to_string(time_t time, char* str) {
-    //char *str=(char *)malloc(sizeof(char)*50);
-    // 时间转字符串
-    // 2013-03-22 03:02:02
-    char format[10] = "%F %T";
-    struct tm *ptr = localtime(&time);
-    strftime(str, MAXLEN, format, ptr);
-    if(DEBUG) {
-        printf("Time: %s\n", str);
-    }
-    return;
-}
 
 void sms_to_string(struct message msg, char* sms) {
     // 逐个转化为char* 型
     char str_receiver[20], str_sender[20], str_time[30];
     char str_flag_lms[2];
-    time_to_string(msg.Time, str_time);
+    longlong_to_string(msg.Time, str_time);
     longlong_to_string(msg.receiver, str_receiver);
     longlong_to_string(msg.sender, str_sender);
     str_flag_lms[0] = msg.flag_lms + '0';
@@ -66,9 +54,9 @@ void sms_to_string(struct message msg, char* sms) {
     strcat(sms, str_receiver);
     strcat(sms, "\",\"content\":\"");
     strcat(sms, msg.content);
-    strcat(sms, "\",\"Time\":\"");
+    strcat(sms, "\",\"Time\":");
     strcat(sms, str_time);
-    strcat(sms, "\",\"flag_lms\":");
+    strcat(sms, ",\"flag_lms\":");
     strcat(sms, str_flag_lms);
     strcat(sms, "}\n");
     return;
