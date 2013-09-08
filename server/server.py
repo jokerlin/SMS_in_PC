@@ -41,7 +41,6 @@ def savesms(sms, flag_new):
     
 # 延时发送短信
 def sendsms_wait(sms, waittime):
-    print "Fuckyou"
     time.sleep(waittime)
     if DEBUG:
         print "已经过了%d秒，开始发送短信" % waittime
