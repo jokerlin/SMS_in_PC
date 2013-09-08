@@ -58,6 +58,15 @@ void delete_person(long long id)
     Recycle_Person(p->NextPerson);
     p->NextPerson=longlong_to_PersonPoint(p->NextPerson)->NextPerson;
 }
+void rename_person(long long id,char *name)
+{
+	struct person *p=PersonList;
+ 	while(longlong_to_PersonPoint(p->NextPerson)->id!=id)
+    {
+        p=longlong_to_PersonPoint(p->NextPerson);
+    }
+	strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
+}
 
 int exist_in_list(long long person_id)
 {
