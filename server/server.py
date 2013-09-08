@@ -42,6 +42,8 @@ def savesms(sms, flag_new):
 # 延时发送短信
 def sendsms_wait(sms, time):
     time.sleep(time)
+    if DEBUG:
+        print "已经过了%d秒，开始发送短信" % time
     if sms['receiver'] in client.keys():
         sendsms(sms, sms['receiver'], client[sms['receiver']])
     else:
@@ -148,12 +150,13 @@ def message(s):
     if DEBUG:
         print sms['receiver']
         print client.keys()
-    if sms["Time"] == 0:
+    if sms["Time"] >= 0:
         if sms['receiver'] in client.keys():
             sendsms(sms, sms['receiver'], client[sms['receiver']])
         else:
             savesms(sms, True)
     else:
+        print "请等待%d秒后的短信...." % sms['Time']
         threading.Thread(target = sendsms_wait, args = (sms, sms['Time']));
 
 # 创建多线程服务器
