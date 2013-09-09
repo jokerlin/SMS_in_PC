@@ -55,6 +55,15 @@ void delete_person(long long id)
     {
         p=longlong_to_PersonPoint(p->NextPerson);
     }
+
+	long long message_to_be_delete=longlong_to_PersonPoint(p->NextPerson)->HeadMessage;
+	while(message_to_be_delete != 0)
+	{
+		struct message *p_message=longlong_to_MessagePoint(message_to_be_delete);
+		Recycle_Message(message_to_be_delete);
+		message_to_be_delete=p_message->NextMessage;
+	}
+
     Recycle_Person(p->NextPerson);
     p->NextPerson=longlong_to_PersonPoint(p->NextPerson)->NextPerson;
 }
