@@ -1,5 +1,8 @@
+#include <curses.h>
+#include"sandtears.h"
 #include"PersonOperation.h"
 #include"memory.h"
+#include"power_on.h"
 
 #include<stdio.h>
 int person_pages_nums()
@@ -27,7 +30,14 @@ void list_person(int numofpage)
     for(int i=0;i<the_person_num_of_one_page;i++)
     {
         if(p==MemBasePerson) break;
-        printf("%s %lld\n",p->name,p->id);
+//DON'T EDIT BEFORE 
+        //printf("%s %lld\n",p->name,p->id);
+        mvaddstr(WELCOME_POS_X + 3 + i, 30, p->name);
+        char id_s[20];
+        longlong_to_string(p->id, id_s);
+        mvaddstr(WELCOME_POS_X + 3 + i, 50, id_s);
+        refresh();
+//DON'T EDIT BELOW
         p=longlong_to_PersonPoint(p->NextPerson);
     }
 }

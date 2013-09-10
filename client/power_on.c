@@ -15,21 +15,44 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
+#include <curses.h>
+#include <locale.h>
+
 #include "willzhang.h"
 #include "sandtears.h"
 #include "string_to_message.h"
+
 /*
 long long local_phoneNumber;
 char server_ip[16];
 int local_port;
 int server_port;
 */
+
+
+void print_content()
+{
+	mvaddstr(INDEX_POS_X + index_INDEX_CONTENT * INDEX_ADD_X, INDEX_POS_Y, content_INDEX[index_INDEX_CONTENT]);
+}
 void welcome()
 {
-	printf("#########################################################################\n\n");
-	printf("#	             > Welcome to use SMS_in_PC                         #\n\n");
-	printf("#	             > Created by My Nine Partners and Me               #\n\n");
-    printf("#########################################################################\n\n");
+	strcpy(content_INDEX[0],"收件箱");
+	strcpy(content_INDEX[1],"发短信");
+	strcpy(content_INDEX[2],"通讯录");
+
+	mvaddstr(WELCOME_POS_X, WELCOME_POS_Y,"Welcome to use SMS_in_PC");
+	mvaddstr(WELCOME_POS_X + 1, WELCOME_POS_Y - 5, "Created by My Nine Partners and Me");
+	mvaddstr(INDEX_POS_X, INDEX_POS_Y, "收件箱");
+	mvaddstr(INDEX_POS_X + INDEX_ADD_X, INDEX_POS_Y, "发短信");
+	mvaddstr(INDEX_POS_X + INDEX_ADD_X * 2, INDEX_POS_Y, "通讯录");
+
+	move(INDEX_POS_X, INDEX_POS_Y);
+	attron(A_REVERSE);
+	mvaddstr(INDEX_POS_X, INDEX_POS_Y, "收件箱");
+	index_INDEX_CONTENT = 0;
+	refresh();
+	
+	//getchar();
 }
 
 int power_on()
@@ -39,8 +62,8 @@ int power_on()
 	int status;
 	char buff[] = "./newdir";
 	char buf[1024];
-	DIR *dir=NULL;
-	dir = opendir(buff);
+	DIR *dir=NULL
+;	dir = opendir(buff);
 	char phone[12];
 	char id[50];
 	char fileid[50];

@@ -16,5 +16,14 @@ char server_ip[16];
 int local_port;
 int server_port;
 
+#define WELCOME_POS_X 4 
+#define WELCOME_POS_Y 25 
+
+#define INDEX_POS_X WELCOME_POS_X + 6
+#define INDEX_POS_Y 35
+#define INDEX_ADD_X 3
+
+unsigned char content_INDEX[3][20];
+int index_INDEX_CONTENT;
 
 #endif
