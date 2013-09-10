@@ -22,7 +22,7 @@
 #include "client.h"
 #include "string_to_message.h"
 
-#define DEBUG 1 
+#define DEBUG 0
 
 
 int main(int argc, char** argv)
@@ -36,6 +36,11 @@ int main(int argc, char** argv)
 
     welcome();
     int sockfd = power_on();
+	if (sockfd < 0) 
+	{
+		printf ("开机失败！\n");
+		return -1;
+	}
 
     if (pipe(pipe_fd) < 0)
     {
@@ -47,6 +52,7 @@ int main(int argc, char** argv)
 		printf("pipe create error\n");
 		return -1;
 	}
+	printf("开机成功！\n");
     int maxfd = pipe_fd[0] > pipe_fd[1] ? pipe_fd[0] + 1 : pipe_fd[1] + 1;
     struct timeval timeout = {1, 0};
     fd_set rdfds;
@@ -54,7 +60,6 @@ int main(int argc, char** argv)
     {
         while (!normal_power_flag)
         {
-			//printf("啊哈，又一次循环\n");
             FD_ZERO(&rdfds);
             FD_SET(pipe_fd[0], &rdfds);
 
@@ -71,9 +76,9 @@ int main(int argc, char** argv)
 				{
 					printf("Send OK success\n");
 				}
-                printf("comlete pipesending: %s\n",buf_r);//for debug
+                //printf("comlete pipesending: %s\n",buf_r);//for debug
                 struct message msg_receive = string_to_message(buf_r);
-                printf("complete string to message\n");
+                //printf("complete string to message\n");
 
                 if (!exist_in_list(msg_receive.sender))
                 {
@@ -86,9 +91,10 @@ int main(int argc, char** argv)
                     personadd.Time = 0;
                     add_person(personadd);
                 }
-				printf("before save msg\n");
+				//printf("before save msg\n");
                 save_message(msg_receive.sender,msg_receive);
-                printf("You Just Get a New Message!\n");
+                printf("您收到了一条来自 %lld 的新消息:\n",msg_receive.sender);
+				printf("%s\n",msg_receive.content);
             }
             /*
             if ((r_num = read(pipe_fd[0],buf_r,100)) > 0)
@@ -140,10 +146,10 @@ int main(int argc, char** argv)
 			case 'e':
 				client_rename_person();
             case 10:
-                printf("Refreshed.\n");
+                printf("已刷新.\n");
                 break;
             default:
-                printf("WRONG INSTRUCTION. Please press 'h' for help.\n");
+                printf("错误的命令。请按 h 获取帮助。\n");
             }
         }
     }
@@ -162,7 +168,7 @@ int main(int argc, char** argv)
                 //printf("%d\n",sockfd);
                 return -1;
             }
-            printf("Power On Successfully!\n");
+            //printf("Power On Successfully!\n");
             char buf[1024];
             memset(buf, 0, sizeof(buf));
             int len = read(childSockfd, buf, 1024);
@@ -185,7 +191,7 @@ int main(int argc, char** argv)
 			char buf_back[3];
 			memset(buf, 0, sizeof(buf));
 			memset(buf_back, 0, sizeof(buf_back));
-			printf ("%d\n",pipedebug);
+			//printf ("%d\n",pipedebug);
 			//close(pipe_fd2[1]);
 			read(pipe_fd2[0], buf_back, 3);
 			if (buf_back[0] != 'O' || buf_back[1]!='K') {

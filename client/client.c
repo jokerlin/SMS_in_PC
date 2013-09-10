@@ -70,6 +70,10 @@ void help()
 	printf("f	>	根据关键字搜索所有的短信，\n");
 	printf("		紧接着您需要输入您所输入的关键字。\n\n");
 
+	printf("e   >   更改联系人信息，\n");
+	printf("    	紧接着您需要输入你联系人电话号码,\n");
+	printf("		以及您要修改的联系人名字。\n\n");
+
 	printf("h	>	显示帮助\n\n");
 
 	printf("q	>	退出该系统。\n\n");
@@ -190,7 +194,7 @@ void send_message()
 		for (i = 0; i <  100; i++) input_message_content[i] = '\0';
 		scanf("%s", input_message_content);
 		
-		printf("Whether to delay sending?(y/n)\n");
+		printf("Whether to delay sending?(y/n)");
 		char delayflag[5];
 		struct message msg;
 		while(scanf("%s",delayflag))
@@ -243,7 +247,7 @@ void send_message()
             add_person(personadd);
         }
         save_message(msg.receiver,msg);
-        printf("complete saving\n");//for debug
+        //printf("complete saving\n");//for debug
 		sock_sendmsg(msg, server_ip, server_port) ;
 		printf("complete sending\n");//for debug
 	}
@@ -295,6 +299,13 @@ void client_search_message()
 void client_rename_person()
 {	
 	lockflag = 1;
-	
+
+	char input_person_name[50];
+	printf("请输入你要更改的联系人电话号码:");
+	scanf("%lld", &input_phonenumber);
+	printf("请输入联系人的名字：");
+	scanf("%s",input_person_name);
+	rename_person(input_phonenumber, input_person_name);
+
 	lockflag = 0;
 }

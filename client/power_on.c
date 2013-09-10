@@ -26,10 +26,10 @@ int server_port;
 */
 void welcome()
 {
-	printf("/#########################################################################\n\n");
-	printf("	> Welcome to use SMS_in_PC\n\n");
-	printf("	> Created by My Nine Partners and Me\n\n");
-    printf("#########################################################################/\n\n");
+	printf("#########################################################################\n\n");
+	printf("#	             > Welcome to use SMS_in_PC                         #\n\n");
+	printf("#	             > Created by My Nine Partners and Me               #\n\n");
+    printf("#########################################################################\n\n");
 }
 
 int power_on()
@@ -55,22 +55,25 @@ int power_on()
 	flag = GetProfileString("./client.conf","server","ip",server_ip);
 	if (flag == -1)
 	{
-
+		printf("读取配置文件失败！\n");
+		return -1;
 	}
 
 	flag = GetProfileString("./client.conf","server","port",server_port_s);
 	if (flag == -1)
 	{
-
+		printf("读取配置文件失败！\n");	\
+		return -1;
 	}
 	server_port = string_to_longlong(server_port_s,strlen(server_port_s)-1+server_port_s);
 	flag = GetProfileString("./client.conf","client","port",local_port_s);
 	if (flag == -1)
 	{
-
+		printf("读取配置文件失败！\n");
+		return -1;
 	}
 	local_port = string_to_longlong(local_port_s,strlen(local_port_s)-1+local_port_s);
-	printf("Please Enter Your Telephone Number: ");
+	printf("请输入您的电话号码：");
 	scanf("%lld",&local_phoneNumber);//输入电话号码
 
 	longlong_to_string(local_phoneNumber, phone);
@@ -89,7 +92,7 @@ int power_on()
         memset(instruction, '\0', sizeof(instruction));
         strcpy(instruction, "dd if=/dev/zero of=");
         strcat(instruction, fileid);
-        strcat(instruction, " bs=1024 count=1024");
+        strcat(instruction, " bs=1024 count=1024 1>/dev/null 2>&1");
         system(instruction);
         //write(fd,buf,1024);
 		close(fd);
@@ -101,7 +104,7 @@ int power_on()
         memset(instruction, '\0', sizeof(instruction));
         strcpy(instruction, "dd if=/dev/zero of=");
         strcat(instruction, fileid);
-        strcat(instruction, " bs=1024 count=1024");
+        strcat(instruction, " bs=1024 count=1024 1>/dev/null 2>&1");
         system(instruction);
         close(fd);
 		memset(fileid,'\0',sizeof(fileid));
@@ -111,7 +114,7 @@ int power_on()
 		memset(instruction, '\0', sizeof(instruction));
         strcpy(instruction, "dd if=/dev/zero of=");
         strcat(instruction, fileid);
-        strcat(instruction, " bs=1024 count=1024");
+        strcat(instruction, " bs=1024 count=1024 1>/dev/null 2>&1");
         system(instruction);
 		close(fd);
 		DataInit(id);
@@ -122,9 +125,14 @@ int power_on()
 		DataBaseStart(id);
 	}
 
-	list_person(0);
+	//list_person(0);
 	char local_phoneNumber_s[12];
 	longlong_to_string(local_phoneNumber, local_phoneNumber_s);
-	return sock_power_on(local_phoneNumber_s,server_ip,server_port,local_port);
-
+	int sockfd =  sock_power_on(local_phoneNumber_s,server_ip,server_port,local_port);
+	if (sockfd == -1)
+	{
+		printf("无法连接到远程服务器，请检查网路连接是否正常以及配置文件是否正确\n");
+		return -1;
+	}
+	return sockfd;
 }

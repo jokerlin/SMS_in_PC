@@ -18,7 +18,7 @@
 
 #define MAXLEN 1024
 
-#define DEBUG 1
+#define DEBUG 0
 
 void longlong_to_string(long long number, char* str) {
     int len, i;
@@ -94,7 +94,7 @@ int sock_power_on(char* phone_num, char* server_ip, int server_port, int client_
     // 连接服务器
     if(connect(sockfd, (struct sockaddr*) &serverAddr, sizeof(serverAddr)) < 0){
         perror("on_connect");
-        printf("%s\n", server_ip);
+        //printf("%s\n", server_ip);
         return -1;
     }
 
@@ -269,6 +269,6 @@ int sock_sendmsg(struct message msg, char* server_ip, int server_port)
         printf("SendMsg: get:%s\n", buf);
     }
     // 关闭socket
-    printf("SendMsg Success...\n");
+    //printf("SendMsg Success...\n");
     return 1;
 }
