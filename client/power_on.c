@@ -36,6 +36,14 @@ void print_content()
 }
 void welcome()
 {
+	attron(A_BOLD);
+	mvaddstr(LINES-2,2,"q 返回上一级菜单");
+	mvaddstr(LINES-2,20,"ENTER 选中");
+	mvaddstr(LINES-2,31,"d 删除");
+	mvaddstr(LINES-2,40,"按上下方向键移动");
+	mvaddstr(LINES-2,58,"按左右方向键翻页");
+	attroff(A_BOLD);
+
 	strcpy(content_INDEX[0],"收件箱");
 	strcpy(content_INDEX[1],"发短信");
 	strcpy(content_INDEX[2],"通讯录");
@@ -50,6 +58,8 @@ void welcome()
 	attron(A_REVERSE);
 	mvaddstr(INDEX_POS_X, INDEX_POS_Y, "收件箱");
 	index_INDEX_CONTENT = 0;
+
+	
 	refresh();
 	
 	//getchar();

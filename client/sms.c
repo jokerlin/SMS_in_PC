@@ -41,11 +41,19 @@ void initial()
 
 void print_border()
 {
+    attron(A_BOLD);
+    mvaddstr(LINES-2,2,"q 返回上一级菜单");
+    mvaddstr(LINES-2,20,"ENTER 选中");
+    mvaddstr(LINES-2,31,"d 删除");
+    mvaddstr(LINES-2,40,"按上下方向键移动");
+    mvaddstr(LINES-2,58,"按左右方向键翻页");
+    attroff(A_BOLD);
     setlocale(LC_ALL,"");
     initial();
     box(stdscr, ACS_VLINE, ACS_HLINE);
     mvaddstr(WELCOME_POS_X, WELCOME_POS_Y,"Welcome to use SMS_in_PC");
     mvaddstr(WELCOME_POS_X + 1, WELCOME_POS_Y - 5, "Created by My Nine Partners and Me");
+    //mvaddstr(LINES-2,10,"hello");
     refresh();
 }
 /*******************************************************************************************************/
@@ -143,13 +151,23 @@ int init_list_person_message(long long person_id,int NumOfPage)
         }
     }
     //printf("start\n");
-    
+    char person_id_s[20];//
+    longlong_to_string(person_id,person_id_s);
     for(int i=0;i<10;i++)
     {
         if(q==MemBaseMessage) return counter;
         /*************/
         counter++;
-        strcpy(message_content[i],q->content);
+        if(q->receiver!=local_phoneNumber)
+        {
+            strcpy(message_content[i],person_id_s);
+            strcat(message_content[i],":    ");
+        }
+        else
+        {
+            strcpy(message_content[i],"我:   ");
+        }
+        strcat(message_content[i],q->content);
         //printf("%d: %s\n",NumOfPage*the_message_num_of_one_page+i,q->content);
         /*************/
         q=longlong_to_MessagePoint(q->NextMessage);
