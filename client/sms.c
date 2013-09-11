@@ -33,7 +33,7 @@ void initial()
 	initscr();
 	cbreak();
 	nonl();
-	echo();
+	noecho();
 	intrflush(stdscr, FALSE);
 	keypad(stdscr,TRUE);
 	refresh();
@@ -48,13 +48,327 @@ void print_border()
     mvaddstr(WELCOME_POS_X + 1, WELCOME_POS_Y - 5, "Created by My Nine Partners and Me");
     refresh();
 }
+/*******************************************************************************************************/
+//新添加的全局变量
+#define the_person_num_of_one_page 10
+char addr_cur_name[11][25];
+char addr_cur_phone[11][12];
+long long addr_cur_phone_longlong[11];
 
-void unit_Address_Book()
+#define the_person_num_of_one_page 10
+#define List_POS_X 10
+#define List_POS_Y 10
+#define List_ADD_X 1
+unsigned char person_list_content[10][300];
+struct person * person_detail[10];
+int current_pages;//当前的页数
+int current_index;//当前页的哪一条信息
+
+/*******************************************************************************************************/
+
+
+
+
+/********************************************zwzwzwzwzwzwzwz********************************************/
+int init_person_list_content(int numofpage)
+{
+     int counter =0;
+     struct person *p=longlong_to_PersonPoint(PersonList->NextPerson);//开发者默认不输出
+     for(int i=0;i<numofpage;i++)
+     {
+         for(int j=0;j<the_person_num_of_one_page;j++)
+         {
+             if(p==MemBasePerson) return;
+             p=longlong_to_PersonPoint(p->NextPerson);
+         }
+     }
+     for(int i=0;i<the_person_num_of_one_page;i++)
+     {
+         if(p==MemBasePerson) break;
+ //DON'T EDIT BEFORE 
+         person_detail[i]=p;
+         char id_s[20];
+         longlong_to_string(p->id,id_s);
+         strcpy(person_list_content[i],p->name);
+         strcat(person_list_content,"   ");
+         strcat(person_list_content[i],id_s);
+         strcat(person_list_content,"   ");
+         if(p->HeadMessage)
+         {
+            strcat(person_list_content,longlong_to_MessagePoint(p->HeadMessage));
+         }
+         //mvaddstr(WELCOME_POS_X + 3 + i, 30, p->name);
+         //char id_s[20];
+         //longlong_to_string(p->id, id_s);
+         //mvaddstr(WELCOME_POS_X + 3 + i, 50, id_s);
+         counter++;
+         //refresh();
+ //DON'T EDIT BELOW
+         p=longlong_to_PersonPoint(p->NextPerson);
+     }
+     //printf("%d",count);
+     refresh();
+     return counter;//当前页的联系人个数
+}
+void Reverse_print()
+{
+    attron(A_REVERSE);
+    mvaddstr(List_POS_X+List_ADD_X*current_index,List_POS_Y,person_list_content[current_index]);
+    attroff(A_REVERSE);
+}
+void Normal_print()
+{
+    mvaddstr(List_POS_X+List_ADD_X*current_index,List_POS_Y,person_list_content[current_index]);
+}
+/***************细节************************/
+unsigned char message_content[10][250];
+int message_num;//当前页的信息的个数
+int message_page;//信息的当前页数
+int init_list_person_message(long long person_id,int NumOfPage)
+{
+    struct person *p=longlong_to_PersonPoint(PersonList->NextPerson);
+    while(p->id!=person_id)
+    {
+        p=longlong_to_PersonPoint(p->NextPerson);
+    }
+    struct message *q=longlong_to_MessagePoint(p->HeadMessage);
+    for(int i=0;i<NumOfPage;i++)
+    {
+        for(int j=0;j<10;j++)
+        {
+            if(q==MemBaseMessage) return;
+            q=longlong_to_MessagePoint(q->NextMessage);
+        }
+    }
+    int counter=0;
+    for(int i=0;i<10;i++)
+    {
+        if(q==MemBaseMessage) return;
+        /*************/
+        strcpy(message_content,q->content);
+        //printf("%d: %s\n",NumOfPage*the_message_num_of_one_page+i,q->content);
+        /*************/
+        q=longlong_to_MessagePoint(q->NextMessage);
+    }
+    return counter;
+}
+void unit_message_box_PersonDetail(struct person *Person)
 {
     clear();
     print_border();
-    list_person(0);
+    message_page=0;
+    message_num=init_list_person_message(Person->id,message_page);
+    for(int i=0;i<message_num;i++)
+    {
+        mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,message_content[i]);
+    }
     refresh();
+    int instruction;
+    while(instruction=getch())
+    {
+        if(instruction == KEY_UP)
+        {
+            message_page--;
+            message_num=init_list_person_message(Person->id,message_page);
+            for(int i=0;i<message_num;i++)
+            {
+                mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,message_content[i]);
+            }
+            refresh();
+        }
+        else if(instruction == KEY_DOWN)
+        { 
+            message_page++;
+            message_num=init_list_person_message(Person->id,message_page);
+            for(int i=0;i<message_num;i++)
+            {
+                mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,message_content[i]);
+            }
+            refresh();
+        }
+        else if(instruction == 'q')
+        {
+            return;
+        }
+        else
+        {
+            continue;
+        }
+    }
+}
+/**************************************/
+void unit_message_box()
+{
+    clear();
+    print_border();
+    current_pages=0;
+    int person_num=init_person_list_content(current_pages);
+    for(int i=0;i<person_num;i++)
+    {
+        mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,person_list_content[i]);
+    }
+    current_index=0;
+    Reverse_print();
+    refresh();
+    int instruction;
+    while(instruction=getch())
+    {
+        if(instruction == KEY_UP)
+        {
+            if(current_index == 0)  continue;
+            Normal_print();
+            current_index--;
+            Reverse_print();
+        }
+        else if(instruction == KEY_DOWN)
+        {
+            if(current_index == person_num - 1) continue;
+            Normal_print();
+            current_index++;
+            Reverse_print();
+        }
+        else if(instruction == 13)
+        {
+            unit_message_box_PersonDetail(person_detail[current_index]);
+        }
+        else
+        {
+            continue;
+        }
+    }
+}
+
+/********************************************zwzwzwzwzwzwzwz********************************************/
+int client_list_person_CUR(int numofpage)
+{
+    int counter = 0;
+    struct person *p=longlong_to_PersonPoint(PersonList->NextPerson);//开发者默认不输出
+    for(int i=0;i<numofpage;i++)
+    {
+        for(int j=0;j<the_person_num_of_one_page;j++)
+        {
+            if(p==MemBasePerson) return;
+            p=longlong_to_PersonPoint(p->NextPerson);
+        }
+    }
+    for(int i=0;i<the_person_num_of_one_page;i++)
+    {
+        if(p==MemBasePerson) break;
+//DON'T EDIT BEFORE 
+        //printf("%s %lld\n",p->name,p->id);
+        counter++;
+        strcpy(addr_cur_name[i], p->name);
+        char id_s[20];
+        addr_cur_phone_longlong[i] = p->id;
+        longlong_to_string(p->id, id_s);
+        strcpy(addr_cur_phone[i], id_s);
+        //mvaddstr(WELCOME_POS_X + 3 + i, 25, p->name);
+        //char id_s[20];
+        //longlong_to_string(p->id, id_s);
+        //mvaddstr(WELCOME_POS_X + 3 + i, 25, id_s);
+        //refresh();
+//DON'T EDIT BELOW
+        p=longlong_to_PersonPoint(p->NextPerson);
+    }
+    return counter;
+}
+
+void print_addr_cur(int num, int page)
+{
+    client_list_person_CUR(page);
+    mvaddstr(WELCOME_POS_X + 3 + num, 25, addr_cur_name[num]);
+    mvaddstr(WELCOME_POS_X + 3 + num, 50, addr_cur_phone[num]);
+}
+
+void unit_Address_Book()
+{
+    int index_addr_cur = 0;
+    int page_number_cur = 0;
+
+    clear();
+    print_border();
+    page_number = person_pages_nums() - 1;
+    list_person(page_number_cur);
+    refresh();
+    attron(A_REVERSE);
+    print_addr_cur(index_addr_cur, page_number_cur);
+    refresh();
+    attroff(A_REVERSE);
+    
+    
+    while (1)
+    {
+        int ch = getch();
+                //mvaddstr(10,10,"hello");
+                //refresh();
+                switch (ch)
+                {
+                    case 'n': 
+                        if (page_number_cur == page_number) break;
+                        clear();
+                        print_border();
+                        refresh();
+                        page_number_cur++;
+                        list_person(page_number_cur);
+                        refresh();
+                        break;
+                    case 'p':
+                        if (page_number_cur == 0) break;
+                        clear();
+                        print_border();
+                        refresh();
+                        page_number_cur--;
+                        list_person(page_number_cur);
+                        refresh();
+                        break;
+                    case KEY_UP: 
+                        if (index_addr_cur == 0) break;
+                        attroff(A_REVERSE);
+                        print_addr_cur(index_addr_cur, page_number_cur);
+                        index_addr_cur--;
+                        attron(A_REVERSE);
+                        print_addr_cur(index_addr_cur, page_number_cur);
+                        refresh();
+                        break;
+                    case KEY_DOWN:
+                        if (index_addr_cur >= client_list_person_CUR(page_number_cur) - 1 ) break;
+                        attroff(A_REVERSE);
+                        print_addr_cur(index_addr_cur, page_number_cur);
+                        index_addr_cur++;
+                        attron(A_REVERSE);
+                        print_addr_cur(index_addr_cur,page_number_cur);
+                        refresh();
+                        break;
+                    case 13:
+                        clear();
+                        attroff(A_REVERSE);
+                        print_border();
+                        mvaddstr(WELCOME_POS_X + 3, WELCOME_POS_Y - 5 , "请输入你要修改的姓名：    ");
+                        refresh();
+                        char input_name[25];
+                        echo();
+                        scanw("%s", input_name);
+                        rename_person(addr_cur_phone_longlong[index_addr_cur], input_name);
+                        mvaddstr(WELCOME_POS_X + 5, WELCOME_POS_Y - 4 , "修改成功!");
+                        refresh();
+                        noecho();
+                        clear();
+                        print_border();
+                        list_person(page_number_cur);
+                        attron(A_REVERSE);
+                        print_addr_cur(index_addr_cur, page_number_cur);
+                        refresh();
+                        attroff(A_REVERSE);
+                        break;
+                    case 127:
+                        attroff(A_REVERSE);
+                        return ;
+                        break;
+                    default:  break;
+                }
+    }
+    refresh();
+
 }
 
 void unit_Send_Msg()
@@ -62,7 +376,7 @@ void unit_Send_Msg()
     clear();
     print_border();
     refresh();
-	
+	echo();
 	char receiver_s[12];
 	mvaddstr(WELCOME_POS_X + 3, WELCOME_POS_Y - 5 , "收件人：");
 	refresh();
@@ -119,6 +433,7 @@ void unit_Send_Msg()
     sock_sendmsg(msg, server_ip, server_port) ;
     mvaddstr(WELCOME_POS_X + 10, WELCOME_POS_Y - 6 , "发送短信成功");
     refresh();
+    noecho();
 }
 
 int main(int argc, char** argv)
@@ -226,15 +541,26 @@ int main(int argc, char** argv)
                         refresh();
                         break;
                     case 13:
+                        if (index_INDEX_CONTENT == 0)
+                        {
+                            attroff(A_REVERSE);
+                            unit_message_box();
+                        }
                         if (index_INDEX_CONTENT == 1)
                         {
                             attroff(A_REVERSE);
                             unit_Send_Msg();
+                            clear();
+                            print_border();
+                            welcome();
                         }
                         if (index_INDEX_CONTENT == 2) 
                         {
                             attroff(A_REVERSE);
                             unit_Address_Book();
+                            clear();
+                            print_border();
+                            welcome();
                         }
                         break;
                     default: 
