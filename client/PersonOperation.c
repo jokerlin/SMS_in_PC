@@ -18,6 +18,7 @@ int person_pages_nums()
 }
 void list_person(int numofpage)
 {
+    int count =0;
     struct person *p=longlong_to_PersonPoint(PersonList->NextPerson);//开发者默认不输出
     for(int i=0;i<numofpage;i++)
     {
@@ -31,15 +32,18 @@ void list_person(int numofpage)
     {
         if(p==MemBasePerson) break;
 //DON'T EDIT BEFORE 
-        //printf("%s %lld\n",p->name,p->id);
-        mvaddstr(WELCOME_POS_X + 3 + i, 30, p->name);
-        char id_s[20];
-        longlong_to_string(p->id, id_s);
-        mvaddstr(WELCOME_POS_X + 3 + i, 50, id_s);
-        refresh();
+        printf("%s %lld\n",p->name,p->id);
+        //mvaddstr(WELCOME_POS_X + 3 + i, 30, p->name);
+        //char id_s[20];
+        //longlong_to_string(p->id, id_s);
+        //mvaddstr(WELCOME_POS_X + 3 + i, 50, id_s);
+        count++;
+        //refresh();
 //DON'T EDIT BELOW
         p=longlong_to_PersonPoint(p->NextPerson);
     }
+    //printf("%d",count);
+    refresh();
 }
 
 void add_person(struct person x)

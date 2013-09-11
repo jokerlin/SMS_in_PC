@@ -92,12 +92,12 @@ void save_message(long long person_id,struct message x)
     p->Time=longlong_to_MessagePoint(p->HeadMessage)->Time;
     //调整p的位置
     struct person *q=PersonList;
-    while(q->NextPerson&&longlong_to_PersonPoint(q->NextPerson)->Time>=p->Time)
+    while(q->NextPerson&&longlong_to_PersonPoint(q->NextPerson)->Time>p->Time)
     {
         q=longlong_to_PersonPoint(q->NextPerson);
     }
+    if(q->NextPerson == (void *)p-(void *)MemBasePerson)    return;
     if(q==p)  return;
     p->NextPerson=q->NextPerson;
     q->NextPerson=(void *)p-(void *)MemBasePerson;
 }
-

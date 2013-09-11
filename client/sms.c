@@ -73,11 +73,11 @@ void unit_Send_Msg()
 	refresh();
 	unsigned char input_content[250];
 	getstr(input_content);
-	mvaddstr(WELCOME_POS_X + 8, WELCOME_POS_Y - 6 , "是否发送定时短信（y/n）：");
+	mvaddstr(WELCOME_POS_X + 8, WELCOME_POS_Y - 6 , "是否发送定时短信（y/N）：");
 	char delayflag[4];
     struct message msg;
 	scanw("%s", delayflag);
-    if(delayflag[0] == 'y')
+    if(delayflag[0] == 'y' || delayflag[0] == 'Y')
     {
         char DelayTime_s[30];
         mvaddstr(WELCOME_POS_X + 9, WELCOME_POS_Y - 6 ,"请按格式输入时间 (1970-1-1-08:00:00):");
@@ -94,7 +94,7 @@ void unit_Send_Msg()
         msg.flag_lms = 0;
         msg.HasBeenReaded = 0;
     }
-    else if(delayflag[0] == 'n')
+    else
     {
         msg.receiver = receiver_num;
         msg.sender = local_phoneNumber;
@@ -118,6 +118,7 @@ void unit_Send_Msg()
     save_message(msg.receiver,msg);
     sock_sendmsg(msg, server_ip, server_port) ;
     mvaddstr(WELCOME_POS_X + 10, WELCOME_POS_Y - 6 , "发送短信成功");
+    refresh();
 }
 
 int main(int argc, char** argv)
