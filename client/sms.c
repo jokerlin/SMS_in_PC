@@ -124,6 +124,7 @@ void Normal_print()
 unsigned char message_content[10][250];
 int message_num;//当前页的信息的个数
 int message_page;//信息的当前页数
+int current_index_message;
 int init_list_person_message(long long person_id,int NumOfPage)
 {
     int counter=0;
@@ -156,6 +157,18 @@ int init_list_person_message(long long person_id,int NumOfPage)
     //printf("end\n");
     return counter;
 }
+void Reverse_message_print()
+{
+    attron(A_REVERSE);
+    mvaddstr(List_POS_X+List_ADD_X*current_index_message,List_POS_Y,message_content[current_index_message]);
+    attroff(A_REVERSE);
+    refresh();
+}
+void Normal_message_print()
+{
+    mvaddstr(List_POS_X+List_ADD_X*current_index_message,List_POS_Y,message_content[current_index_message]);
+    refresh();
+}
 void unit_message_box_PersonDetail(struct person *Person)
 {
     clear();
@@ -179,10 +192,14 @@ void unit_message_box_PersonDetail(struct person *Person)
     }
     refresh();
     int instruction;
+    current_index_message=0;
+    Reverse_message_print();
     while(instruction=getch())
     {
-        if(instruction == KEY_UP)
+        if(instruction == KEY_LEFT)
         {
+            clear();
+            print_border();
             message_page--;
             message_num=init_list_person_message(Person->id,message_page);
             for(int i=0;i<message_num;i++)
@@ -191,19 +208,54 @@ void unit_message_box_PersonDetail(struct person *Person)
             }
             refresh();
         }
-        else if(instruction == KEY_DOWN)
+        else if(instruction == KEY_RIGHT)
         { 
+            clear();
+            print_border();
             message_page++;
+            //printf("message_page %d\n",message_page );
             message_num=init_list_person_message(Person->id,message_page);
+            //printf("message_num %d\n", message_num);
             for(int i=0;i<message_num;i++)
             {
                 mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,message_content[i]);
             }
             refresh();
         }
+        else if(instruction == KEY_UP)
+        {
+            //clear();
+            //print_border();
+            if(current_index_message==0)    continue;
+            Normal_message_print();
+            current_index_message--;
+            Reverse_message_print();
+        }
+        else if(instruction == KEY_DOWN)
+        {
+            //clear();
+            //print_border();
+            if(current_index_message==message_num-1)    continue;
+            Normal_message_print();
+            current_index_message++;
+            Reverse_message_print();
+        }
         else if(instruction == 'q')
         {
             break;
+        }
+        else if(instruction == 'd')
+        {
+            delete_message(Person->id,message_page*10+current_index_message);
+            clear();
+            print_border();
+            message_num=init_list_person_message(Person->id,message_page);
+            for(int i=0;i<message_num;i++)
+            {
+                mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,message_content[i]);
+            }
+            Reverse_message_print();
+            refresh();
         }
         else
         {
@@ -275,6 +327,44 @@ void unit_message_box()
                 mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,person_list_content[i]);
             }
             //current_index=0;
+            Reverse_print();
+            refresh();
+        }
+        else if(instruction == KEY_RIGHT)
+        {
+            
+            //printf("person_pages_nums %d\n",person_pages_nums());
+            //printf("current_pages %d\n",current_pages);
+            if(current_pages == person_pages_nums() - 1)   
+            { 
+                //printf("hello\n");
+                continue;
+            }
+            //printf("hello2\n");
+            current_pages++;
+            clear();
+            print_border();
+            person_num=init_person_list_content(current_pages);
+            for(int i=0;i<person_num;i++)
+            {
+                mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,person_list_content[i]);
+            }
+            current_index=0;
+            Reverse_print();
+            refresh();
+        }
+        else if(instruction == KEY_LEFT)
+        {
+            if(current_pages == 0)  continue;
+            current_pages--;
+            clear();
+            print_border();
+            person_num=init_person_list_content(current_pages);
+            for(int i=0;i<person_num;i++)
+            {
+                mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,person_list_content[i]);
+            }
+            current_index=0;
             Reverse_print();
             refresh();
         }
@@ -404,7 +494,11 @@ void unit_Address_Book()
 
     clear();
     print_border();
+    
+    
     page_number = person_pages_nums() - 1;
+    printf("test");//debug
+    refresh();
     list_person(page_number_cur);
     refresh();
     attron(A_REVERSE);
@@ -628,8 +722,15 @@ int main(int argc, char** argv)
                 }
 				//printf("before save msg\n");
                 save_message(msg_receive.sender,msg_receive);
-                printf("您收到了一条来自 %lld 的新消息:\n",msg_receive.sender);
-				printf("%s\n",msg_receive.content);
+                char new_message_tips[100];
+                strcpy(new_message_tips, "您收到了一条来自 ");
+                char tmp_msg_receive_s;
+                longlong_to_string(msg_receive.sender, tmp_msg_receive_s);
+                strcat(new_message_tips, tmp_msg_receive_s);
+                strcat(new_message_tips, " 的新消息.");
+                mvaddstr(15,5,new_message_tips);
+                //printf("您收到了一条来自 %lld 的新消息:\n",msg_receive.sender);
+				//printf("%s\n",msg_receive.content);
             }
             
             while(1)
@@ -683,6 +784,7 @@ int main(int argc, char** argv)
                     default: 
                         break;
                 }
+                //break;
             }
             /*
             while (!kbhit()) nothing();

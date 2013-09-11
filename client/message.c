@@ -98,6 +98,12 @@ void save_message(long long person_id,struct message x)
     }
     if(q->NextPerson == (void *)p-(void *)MemBasePerson)    return;
     if(q==p)  return;
+    struct person *pre_p=PersonList;
+    while(longlong_to_PersonPoint(pre_p->NextPerson) != p)
+    {
+        pre_p=longlong_to_PersonPoint(pre_p->NextPerson);
+    }
+    pre_p->NextPerson=p->NextPerson;
     p->NextPerson=q->NextPerson;
     q->NextPerson=(void *)p-(void *)MemBasePerson;
 }
