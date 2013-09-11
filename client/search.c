@@ -1,7 +1,9 @@
 #include"search.h"
 #include"willzhang.h"
+#include"power_on.h"
 #include<string.h>
 #include<stdlib.h>
+#include<curses.h>
 #include<stdio.h>
 int strlen_unsigned(unsigned char a[])
 {
@@ -191,9 +193,13 @@ void search_message(unsigned char a[][250],int m)
         }
     }
     qsort(ans,nans,sizeof(ans[0]),cmp);
+    int index=0;
     for(int i=0;i<nans;i++)
     {
-        printf("%s 匹配的关键字数：%d\n",ans[i].cont->content,ans[i].num);
+        mvaddstr(WELCOME_POS_X+7+index,WELCOME_POS_Y-4,ans[i].cont->content);
+        //printf("匹配的关键字数：%d\n",ans[i].num);
+        //move(WELCOME_POS_X+6+index,WELCOME_POS_Y-4);
+        index++;
     }
 }
 /**********************KMP********************/
@@ -225,13 +231,17 @@ int kmp_find(unsigned char *T,unsigned char *P)//在T中寻找P出现的位置
 /****************************************/
 void search_message_single(unsigned char a[])
 {
+    int index=0;
     for(struct person *p=longlong_to_PersonPoint(PersonList->NextPerson);p!=MemBasePerson;p=longlong_to_PersonPoint(p->NextPerson))
     {
         for(struct message *q=longlong_to_MessagePoint(p->HeadMessage);q!=MemBaseMessage;q=longlong_to_MessagePoint(q->NextMessage))
         {
             if(kmp_find(q->content,a))
             {
-                printf("%s\n",q->content);
+                mvaddstr(WELCOME_POS_X+6+index,WELCOME_POS_Y-4,q->content);
+                //move(WELCOME_POS_Y-4,WELCOME_POS_X+6+index);
+                //move(WELCOME_POS_X+6+index,WELCOME_POS_Y-4);
+                index++;
             }
         }
     }

@@ -57,7 +57,7 @@ long long addr_cur_phone_longlong[11];
 
 #define the_person_num_of_one_page 10
 #define List_POS_X 10
-#define List_POS_Y 10
+#define List_POS_Y 20
 #define List_ADD_X 1
 unsigned char person_list_content[10][300];
 struct person * person_detail[10];
@@ -78,7 +78,7 @@ int init_person_list_content(int numofpage)
      {
          for(int j=0;j<the_person_num_of_one_page;j++)
          {
-             if(p==MemBasePerson) return;
+             if(p==MemBasePerson) return counter;
              p=longlong_to_PersonPoint(p->NextPerson);
          }
      }
@@ -90,12 +90,12 @@ int init_person_list_content(int numofpage)
          char id_s[20];
          longlong_to_string(p->id,id_s);
          strcpy(person_list_content[i],p->name);
-         strcat(person_list_content,"   ");
+         strcat(person_list_content[i],"  \t");
          strcat(person_list_content[i],id_s);
-         strcat(person_list_content,"   ");
+         strcat(person_list_content[i],"  \t");
          if(p->HeadMessage)
          {
-            strcat(person_list_content,longlong_to_MessagePoint(p->HeadMessage));
+            strcat(person_list_content[i],(longlong_to_MessagePoint(p->HeadMessage))->content);
          }
          //mvaddstr(WELCOME_POS_X + 3 + i, 30, p->name);
          //char id_s[20];
@@ -126,6 +126,7 @@ int message_num;//当前页的信息的个数
 int message_page;//信息的当前页数
 int init_list_person_message(long long person_id,int NumOfPage)
 {
+    int counter=0;
     struct person *p=longlong_to_PersonPoint(PersonList->NextPerson);
     while(p->id!=person_id)
     {
@@ -136,20 +137,23 @@ int init_list_person_message(long long person_id,int NumOfPage)
     {
         for(int j=0;j<10;j++)
         {
-            if(q==MemBaseMessage) return;
+            if(q==MemBaseMessage) return counter;
             q=longlong_to_MessagePoint(q->NextMessage);
         }
     }
-    int counter=0;
+    //printf("start\n");
+    
     for(int i=0;i<10;i++)
     {
-        if(q==MemBaseMessage) return;
+        if(q==MemBaseMessage) return counter;
         /*************/
-        strcpy(message_content,q->content);
+        counter++;
+        strcpy(message_content[i],q->content);
         //printf("%d: %s\n",NumOfPage*the_message_num_of_one_page+i,q->content);
         /*************/
         q=longlong_to_MessagePoint(q->NextMessage);
     }
+    //printf("end\n");
     return counter;
 }
 void unit_message_box_PersonDetail(struct person *Person)
@@ -158,9 +162,20 @@ void unit_message_box_PersonDetail(struct person *Person)
     print_border();
     message_page=0;
     message_num=init_list_person_message(Person->id,message_page);
+    //if(message_num==1)
+    //{
+     //   mvaddstr(List_POS_X+List_ADD_X,List_POS_Y,"hello2");
+    //}
+    //printf("%d\n",message_num );
+    //char message_num_s[250];
+    //longlong_to_string(message_num,message_num_s);
+    //mvaddstr(List_POS_X+List_ADD_X,List_POS_Y,message_num_s);
     for(int i=0;i<message_num;i++)
     {
+        //mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,"hello");
         mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,message_content[i]);
+        refresh();
+        //getchar();
     }
     refresh();
     int instruction;
@@ -188,7 +203,7 @@ void unit_message_box_PersonDetail(struct person *Person)
         }
         else if(instruction == 'q')
         {
-            return;
+            break;
         }
         else
         {
@@ -230,6 +245,108 @@ void unit_message_box()
         else if(instruction == 13)
         {
             unit_message_box_PersonDetail(person_detail[current_index]);
+            clear();
+            print_border();
+            person_num=init_person_list_content(current_pages);
+            for(int i=0;i<person_num;i++)
+            {
+                mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,person_list_content[i]);
+            }
+            //current_index=0;
+            Reverse_print();
+            refresh();
+        }
+        else if(instruction == 'q')
+        {
+            clear();
+            print_border();
+            welcome();
+            refresh();
+            return;
+        }
+        else if (instruction == 'd')
+        {
+            delete_person(person_detail[current_index]->id);
+            clear();
+            print_border();
+            person_num=init_person_list_content(current_pages);
+            for(int i=0;i<person_num;i++)
+            {
+                mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,person_list_content[i]);
+            }
+            //current_index=0;
+            Reverse_print();
+            refresh();
+        }
+        else if (instruction == 'f')
+        {
+            clear();
+            print_border();
+            echo();
+            mvaddstr(WELCOME_POS_X + 3, WELCOME_POS_Y - 5 , "请选择搜索模式（1）单关键字搜索;（2）多关键字搜索： ");
+            refresh();
+            int search_way;
+            scanw("%d", &search_way);
+            //long long receiver_num = string_to_longlong(receiver_s, strlen(receiver_s) - 1 + receiver_s);
+            refresh();
+            if (search_way == 1)
+            {
+                mvaddstr(WELCOME_POS_X + 5, WELCOME_POS_Y - 4 , "请输入关键字：");
+                unsigned char input_content[250];
+                getstr(input_content);
+                refresh();
+                //move(WELCOME_POS_X+6,WELCOME_POS_Y-4);
+                search_message_single(input_content);
+            }
+            else if (search_way == 2)
+            {
+                mvaddstr(WELCOME_POS_X + 5, WELCOME_POS_Y - 4 , "请输入关键字的数目：");
+                int keys_num;
+                char keys_num_s[20];
+                scanw("%s",keys_num_s);
+                keys_num=string_to_longlong(keys_num_s,keys_num_s+strlen(keys_num_s)-1);
+                refresh();
+                //printf("%d\n",keys_num );
+                mvaddstr(WELCOME_POS_X + 6, WELCOME_POS_Y - 4 , "请输入关键字：");
+                char input_search_content_array[10][250];
+                //printf("hello\n");
+                //printf("%d\n",keys_num );
+                for (int i = 0; i< keys_num; i++)
+                {
+                    //getstr(input_search_content_array[i]);
+                    if(i!=0)
+                    {   
+                        mvaddstr(WELCOME_POS_X + 6, WELCOME_POS_Y - 4 , "请输入下一个关键字：");
+                    }
+                  scanw("%s", input_search_content_array[i]);
+                  //printf("%s\n",input_search_content_array[i] );
+                  //printf("%s\n",input_search_content_array[i] );
+                  //strcpy(input_search_content_array[i],input_search_content);
+                }
+                //move(WELCOME_POS_X+6,WELCOME_POS_Y-4);
+                //printf("hello\n");
+                search_message(input_search_content_array, keys_num);
+                //printf("88\n");
+            }
+            int ch;
+            while(ch=getch())
+            {
+                if(ch=='q')
+                {
+                    break;
+                }
+            }
+            noecho();
+            clear();
+            print_border();
+            person_num=init_person_list_content(current_pages);
+            for(int i=0;i<person_num;i++)
+            {
+                mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,person_list_content[i]);
+            }
+            //current_index=0;
+            Reverse_print();
+            refresh();
         }
         else
         {
@@ -247,7 +364,7 @@ int client_list_person_CUR(int numofpage)
     {
         for(int j=0;j<the_person_num_of_one_page;j++)
         {
-            if(p==MemBasePerson) return;
+            if(p==MemBasePerson) return counter;
             p=longlong_to_PersonPoint(p->NextPerson);
         }
     }
