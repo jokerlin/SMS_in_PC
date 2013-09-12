@@ -38,7 +38,7 @@ void welcome()
 {
 	attron(A_BOLD); 
     mvaddstr(LINES-2,4,"q 返回");
-    mvaddstr(LINES-2,10,"f 搜索");
+    mvaddstr(LINES-2,12,"f 搜索");
     mvaddstr(LINES-2,22,"ENTER 选中");
     mvaddstr(LINES-2,33,"d 删除");
     mvaddstr(LINES-2,42,"按上下方向键移动");
@@ -59,7 +59,7 @@ void welcome()
 	attron(A_REVERSE);
 	mvaddstr(INDEX_POS_X, INDEX_POS_Y, "收件箱");
 	index_INDEX_CONTENT = 0;
-
+	attroff(A_REVERSE);
 	
 	refresh();
 	

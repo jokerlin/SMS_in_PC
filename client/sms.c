@@ -46,7 +46,7 @@ void print_border()
 {
     attron(A_BOLD);
     mvaddstr(LINES-2,4,"q 返回");
-    mvaddstr(LINES-2,10,"f 搜索");
+    mvaddstr(LINES-2,12,"f 搜索");
     mvaddstr(LINES-2,22,"ENTER 选中");
     mvaddstr(LINES-2,33,"d 删除");
     mvaddstr(LINES-2,42,"按上下方向键移动");
@@ -198,9 +198,13 @@ void unit_message_box_PersonDetail(struct person *Person)
 {
     clear();
     print_border();
-    mvaddstr(WELCOME_POS_X, WELCOME_POS_Y,"收件箱");
+    mvaddstr(WELCOME_POS_X, WELCOME_POS_Y+10,"收件箱");
     message_page=0;
     message_num=init_list_person_message(Person->id,message_page);
+    if(message_num == 0)
+    {
+        return;
+    }
     //if(message_num==1)
     //{
      //   mvaddstr(List_POS_X+List_ADD_X,List_POS_Y,"hello2");
@@ -227,6 +231,7 @@ void unit_message_box_PersonDetail(struct person *Person)
             if(message_page == 0) continue;
             clear();
             print_border();
+            mvaddstr(WELCOME_POS_X, WELCOME_POS_Y+10,"收件箱");
             message_page--;
             message_num=init_list_person_message(Person->id,message_page);
             for(int i=0;i<message_num;i++)
@@ -242,6 +247,7 @@ void unit_message_box_PersonDetail(struct person *Person)
             if(message_page == person_message_pages_nums(Person->id) - 1) continue;
             clear();
             print_border();
+            mvaddstr(WELCOME_POS_X, WELCOME_POS_Y+10,"收件箱");
             message_page++;
             //printf("message_page %d\n",message_page );
             message_num=init_list_person_message(Person->id,message_page);
@@ -285,6 +291,7 @@ void unit_message_box_PersonDetail(struct person *Person)
             //getch();
             clear();
             print_border();
+            mvaddstr(WELCOME_POS_X, WELCOME_POS_Y+10,"收件箱");
             message_num=init_list_person_message(Person->id,message_page);
             if(message_num == 0)    break;
             for(int i=0;i<message_num;i++)
@@ -296,7 +303,7 @@ void unit_message_box_PersonDetail(struct person *Person)
                 current_index_message=0;
             }
             Reverse_message_print();
-            refresh();
+            refresh(); 
         }
         else
         {
@@ -309,9 +316,15 @@ void unit_message_box()
 {
     clear();
     print_border();
-    mvaddstr(WELCOME_POS_X, WELCOME_POS_Y,"收件箱");
+    mvaddstr(WELCOME_POS_X, WELCOME_POS_Y+10,"收件箱");
     current_pages=0;
     int person_num=init_person_list_content(current_pages);
+    if(person_num == 0)
+    {
+        mvaddstr(WELCOME_POS_X, WELCOME_POS_Y,"收件箱为空，按任意键退出");
+        getch();
+        return;
+    }
     for(int i=0;i<person_num;i++)
     {
         mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,person_list_content[i]);
@@ -341,6 +354,7 @@ void unit_message_box()
             unit_message_box_PersonDetail(person_detail[current_index]);
             clear();
             print_border();
+            mvaddstr(WELCOME_POS_X, WELCOME_POS_Y+10,"收件箱");
             person_num=init_person_list_content(current_pages);
             for(int i=0;i<person_num;i++)
             {
@@ -355,6 +369,7 @@ void unit_message_box()
             clear();
             print_border();
             welcome();
+            mvaddstr(WELCOME_POS_X, WELCOME_POS_Y+10,"收件箱");
             refresh();
             return;
         }
@@ -378,6 +393,7 @@ void unit_message_box()
                 current_index=0;
             }
             Reverse_print();
+            mvaddstr(WELCOME_POS_X, WELCOME_POS_Y+10,"收件箱");
             refresh();
         }
         else if(instruction == KEY_RIGHT)
@@ -393,6 +409,7 @@ void unit_message_box()
             current_pages++;
             clear();
             print_border();
+            mvaddstr(WELCOME_POS_X, WELCOME_POS_Y+10,"收件箱");
             person_num=init_person_list_content(current_pages);
             for(int i=0;i<person_num;i++)
             {
@@ -408,6 +425,7 @@ void unit_message_box()
             current_pages--;
             clear();
             print_border();
+            mvaddstr(WELCOME_POS_X, WELCOME_POS_Y+10,"收件箱");
             person_num=init_person_list_content(current_pages);
             for(int i=0;i<person_num;i++)
             {
@@ -421,6 +439,7 @@ void unit_message_box()
         {
             clear();
             print_border();
+            mvaddstr(WELCOME_POS_X, WELCOME_POS_Y+10,"收件箱");
             echo();
             mvaddstr(WELCOME_POS_X + 3, WELCOME_POS_Y - 5 , "请选择搜索模式（1）单关键字搜索;（2）多关键字搜索： ");
             refresh();
@@ -546,11 +565,12 @@ void unit_Address_Book()
     clear();
     print_border();
     
-    mvaddstr(WELCOME_POS_X, WELCOME_POS_Y,"通讯录");
+    mvaddstr(WELCOME_POS_X, WELCOME_POS_Y + 13 ,"通讯录  ");
     
     page_number = person_pages_nums() - 1;
     //printf("test");//debug
     refresh();
+    client_list_person_CUR(0);
     list_person(page_number_cur);
     refresh();
     attron(A_REVERSE);
@@ -570,6 +590,7 @@ void unit_Address_Book()
                         if (page_number_cur == page_number) break;
                         clear();
                         print_border();
+                        mvaddstr(WELCOME_POS_X, WELCOME_POS_Y + 13 ,"通讯录  ");
                         refresh();
                         page_number_cur++;
                         list_person(page_number_cur);
@@ -579,6 +600,7 @@ void unit_Address_Book()
                         if (page_number_cur == 0) break;
                         clear();
                         print_border();
+                        mvaddstr(WELCOME_POS_X, WELCOME_POS_Y + 13 ,"通讯录  ");
                         refresh();
                         page_number_cur--;
                         list_person(page_number_cur);
@@ -606,6 +628,7 @@ void unit_Address_Book()
                         clear();
                         attroff(A_REVERSE);
                         print_border();
+                        mvaddstr(WELCOME_POS_X, WELCOME_POS_Y + 13 ,"通讯录  ");
                         mvaddstr(WELCOME_POS_X + 3, WELCOME_POS_Y - 5 , "请输入你要修改的姓名：    ");
                         refresh();
                         char input_name[25];
@@ -617,13 +640,14 @@ void unit_Address_Book()
                         noecho();
                         clear();
                         print_border();
+                        mvaddstr(WELCOME_POS_X, WELCOME_POS_Y + 13 ,"通讯录  ");
                         list_person(page_number_cur);
                         attron(A_REVERSE);
                         print_addr_cur(index_addr_cur, page_number_cur);
                         refresh();
                         attroff(A_REVERSE);
                         break;
-                    case 127:
+                    case 'q':
                         attroff(A_REVERSE);
                         return ;
                         break;
@@ -638,7 +662,7 @@ void unit_Send_Msg()
 {
     clear();
     print_border();
-    mvaddstr(WELCOME_POS_X, WELCOME_POS_Y,"发信息");
+    mvaddstr(WELCOME_POS_X, WELCOME_POS_Y+10,"发信息");
     refresh();
 	echo();
 	char receiver_s[12];
@@ -695,7 +719,9 @@ void unit_Send_Msg()
         }
     save_message(msg.receiver,msg);
     sock_sendmsg(msg, server_ip, server_port) ;
-    mvaddstr(WELCOME_POS_X + 10, WELCOME_POS_Y - 6 , "发送短信成功");
+    attron(A_BOLD);
+    mvaddstr(WELCOME_POS_X + 10, WELCOME_POS_Y + 8 , "发送短信成功");
+    attroff(A_BOLD);
     refresh();
     getch();
     noecho();
@@ -711,7 +737,7 @@ fd_set rdfds;
 void print_new_msg()
 {
 
-    printf("receive sig!\n");
+    //printf("receive sig!\n");
     refresh();
     /*
     FILE *fp;
@@ -781,29 +807,26 @@ void print_new_msg()
                 }
                 //printf("before save msg\n");
                 save_message(msg_receive.sender,msg_receive);
-                //char new_message_tips[200];
-                //strcpy(new_message_tips, "您收到了一条来自 ");
-                //char tmp_msg_receive_s[200];
-                //longlong_to_string(msg_receive.sender, tmp_msg_receive_s);
-                //strcat(new_message_tips, tmp_msg_receive_s);
-                //strcat(new_message_tips, " 的新消息.");
-                //attron(A_REVERSE);
-                //mvaddstr(11,25,"                       ");
-                //mvaddstr(12,30,new_message_tips);
-                //mvaddstr(13,28,msg_receive.content);
-                //mvaddstr(14,25,"                       ");
-                //attroff(A_REVERSE);
-                //getch();
-                //clear();
-                //print_border();
-                //welcome();
-                //printf("您收到了一条来自 %lld 的新消息:\n",msg_receive.sender);
-                //printf("%s\n",msg_receive.content);
+                
+                char new_message_tips[200];
+                strcpy(new_message_tips, "您收到了一条来自 ");
+                char tmp_msg_receive_s[200];
+                longlong_to_string(msg_receive.sender, tmp_msg_receive_s);
+                strcat(new_message_tips, tmp_msg_receive_s);
+                strcat(new_message_tips, " 的新消息.");
+                
+                attroff(A_REVERSE);
+                attron(A_BOLD);
+                mvaddstr(LINES - 4, 10, new_message_tips);
+                mvaddstr(LINES - 3, 10, "内容：");
+                mvaddstr(LINES - 3, 15, msg_receive.content);
+                attroff(A_BOLD);
             }
 
-            printf("complete pipe saving\n");
+            //printf("complete pipe saving\n");
             refresh();
             signal(50, print_new_msg);
+
 }
 
 int main(int argc, char** argv)
@@ -884,6 +907,9 @@ int main(int argc, char** argv)
                         {
                             attroff(A_REVERSE);
                             unit_message_box();
+                            clear();
+                            print_border();
+                            welcome();
                         }
                         if (index_INDEX_CONTENT == 1)
                         {
@@ -978,7 +1004,7 @@ int main(int argc, char** argv)
             //printf("Power On Successfully!\n");
             char buf[1024];
             memset(buf, 0, sizeof(buf));
-            printf("before read!\n");
+            //printf("before read!\n");
             int len = read(childSockfd, buf, 1024);
             
             /*
@@ -1027,7 +1053,7 @@ int main(int argc, char** argv)
 			if (buf_back[0] != 'O' || buf_back[1]!='K') {
 				perror("get msg from parent fail\n");			
 			}
-            printf("READ\n");
+            //printf("READ\n");
             refresh();
             if (pipedebug < 0)
             {

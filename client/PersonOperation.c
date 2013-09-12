@@ -9,14 +9,14 @@ int person_pages_nums()
 {
     struct person *p=longlong_to_PersonPoint(PersonList->NextPerson);
     int ans=0;
-    printf("%d",ans );
+    //printf("%d",ans );
     refresh();
     while(p->NextPerson)
     {
         ans++;
         p=longlong_to_PersonPoint(p->NextPerson);
     }
-    printf("%d",ans );
+    //printf("%d",ans );
     refresh();
     return ans/the_person_num_of_one_page+1;
 }
