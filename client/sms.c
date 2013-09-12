@@ -20,6 +20,7 @@
 #include <locale.h>
 #include <time.h>
 #include <math.h>
+#include <signal.h>
 
 #include "power_on.h"
 #include "kbhit.h"
@@ -65,6 +66,9 @@ void print_border()
 char addr_cur_name[11][25];
 char addr_cur_phone[11][12];
 long long addr_cur_phone_longlong[11];
+
+//char buf[1024];
+
 
 #define the_person_num_of_one_page 10
 #define List_POS_X 10
@@ -235,7 +239,7 @@ void unit_message_box_PersonDetail(struct person *Person)
         }
         else if(instruction == KEY_RIGHT)
         { 
-            if(message_page == person_message_pages_nums() - 1) continue;
+            if(message_page == person_message_pages_nums(Person->id) - 1) continue;
             clear();
             print_border();
             message_page++;
@@ -534,6 +538,8 @@ void print_addr_cur(int num, int page)
 
 void unit_Address_Book()
 {
+
+    
     int index_addr_cur = 0;
     int page_number_cur = 0;
 
@@ -691,17 +697,122 @@ void unit_Send_Msg()
     sock_sendmsg(msg, server_ip, server_port) ;
     mvaddstr(WELCOME_POS_X + 10, WELCOME_POS_Y - 6 , "发送短信成功");
     refresh();
+    getch();
     noecho();
+}
+
+int pipe_fd[2];
+int pipe_fd2[2];
+char buf_r[1024];
+
+
+fd_set rdfds;
+
+void print_new_msg()
+{
+
+    printf("receive sig!\n");
+    refresh();
+    /*
+    FILE *fp;
+    fp = fopen("tmp.dat","r");
+    char buf[1024];
+    fgets(buf, 1024, fp);
+    close(fp);
+    */
+    
+    /*
+    printf("%s", buf);
+
+    struct message msg_receive_child = string_to_message(buf);
+    char new_message_tips[200];
+    
+    printf("after string2msg\n");
+    refresh();
+
+    strcpy(new_message_tips, "您收到了一条来自 ");
+    char tmp_msg_receive_child[200];
+
+    printf("before longlong to string\n");
+    refresh();
+
+    longlong_to_string(msg_receive_child.sender, tmp_msg_receive_child);
+    strcat(new_message_tips, tmp_msg_receive_child);
+    strcat(new_message_tips, " 的新消息.");
+    //printf("%s\n",new_message_tips);
+    mvaddstr(15,30,new_message_tips);
+    refresh();
+
+*/
+/**********************************************************************************/
+    
+    FD_ZERO(&rdfds);
+    FD_SET(pipe_fd[0], &rdfds);
+    struct timeval timeout = {1, 0};
+    int maxfd = pipe_fd[0] > pipe_fd[1] ? pipe_fd[0] + 1 : pipe_fd[1] + 1;
+
+            int ret= select(maxfd, &rdfds, NULL, NULL, &timeout);
+            //printf ("before reading %d\n", ret);
+            if (ret < 0) perror("select");/* 这说明select函数出错 */
+            else if (ret > 0)
+            {
+                memset(buf_r,0, sizeof(buf_r));
+                read(pipe_fd[0],buf_r,1024);
+                //printf("Fuck the pipesending: %s\n",buf_r);//for debug
+                write(pipe_fd2[1], "OK", 2);
+                if(DEBUG)
+                {
+                    printf("Send OK success\n");
+                }
+                //printf("comlete pipesending: %s\n",buf_r);//for debug
+                struct message msg_receive = string_to_message(buf_r);
+                //printf("complete string to message\n");
+
+                if (!exist_in_list(msg_receive.sender))
+                {
+                    struct person personadd;
+                    personadd.HeadMessage = 0;
+                    personadd.id = msg_receive.sender;
+                    strcpy(personadd.name,"UNKNOWN");
+                    personadd.NextPerson = 0;
+                    personadd.NumOfMessage = 0;
+                    personadd.Time = 0;
+                    add_person(personadd);
+                }
+                //printf("before save msg\n");
+                save_message(msg_receive.sender,msg_receive);
+                //char new_message_tips[200];
+                //strcpy(new_message_tips, "您收到了一条来自 ");
+                //char tmp_msg_receive_s[200];
+                //longlong_to_string(msg_receive.sender, tmp_msg_receive_s);
+                //strcat(new_message_tips, tmp_msg_receive_s);
+                //strcat(new_message_tips, " 的新消息.");
+                //attron(A_REVERSE);
+                //mvaddstr(11,25,"                       ");
+                //mvaddstr(12,30,new_message_tips);
+                //mvaddstr(13,28,msg_receive.content);
+                //mvaddstr(14,25,"                       ");
+                //attroff(A_REVERSE);
+                //getch();
+                //clear();
+                //print_border();
+                //welcome();
+                //printf("您收到了一条来自 %lld 的新消息:\n",msg_receive.sender);
+                //printf("%s\n",msg_receive.content);
+            }
+
+            printf("complete pipe saving\n");
+            refresh();
+            signal(50, print_new_msg);
 }
 
 int main(int argc, char** argv)
 {
     int normal_power_flag = 0;//正常关机标志
-    int pipe_fd[2];
-    int pipe_fd2[2];
+    
 	char instruction;
     pid_t pid;
-    char buf_r[1024];
+    
 
     int sockfd = power_on();
     
@@ -729,68 +840,21 @@ int main(int argc, char** argv)
     welcome();
 	//printf("开机成功！\n");
 
-    int maxfd = pipe_fd[0] > pipe_fd[1] ? pipe_fd[0] + 1 : pipe_fd[1] + 1;
-    struct timeval timeout = {1, 0};
-    fd_set rdfds;
+    
     if ((pid = fork())  > 0)
     {
+        //printf("before signal!\n");
+        //signal(50, print_new_msg);
+        //printf("after signal!\n");
+        //refresh();
         while (!normal_power_flag)
         {
-            FD_ZERO(&rdfds);
-            FD_SET(pipe_fd[0], &rdfds);
-
-            int ret= select(maxfd, &rdfds, NULL, NULL, &timeout);
-            //printf ("before reading %d\n", ret);
-            if (ret < 0) perror("select");/* 这说明select函数出错 */
-            else if (ret > 0)
-            {
-                memset(buf_r,0, sizeof(buf_r));
-				read(pipe_fd[0],buf_r,1024);
-                //printf("Fuck the pipesending: %s\n",buf_r);//for debug
-				write(pipe_fd2[1], "OK", 2);
-				if(DEBUG)
-				{
-					printf("Send OK success\n");
-				}
-                //printf("comlete pipesending: %s\n",buf_r);//for debug
-                struct message msg_receive = string_to_message(buf_r);
-                //printf("complete string to message\n");
-
-                if (!exist_in_list(msg_receive.sender))
-                {
-                    struct person personadd;
-                    personadd.HeadMessage = 0;
-                    personadd.id = msg_receive.sender;
-                    strcpy(personadd.name,"UNKNOWN");
-                    personadd.NextPerson = 0;
-                    personadd.NumOfMessage = 0;
-                    personadd.Time = 0;
-                    add_person(personadd);
-                }
-				//printf("before save msg\n");
-                save_message(msg_receive.sender,msg_receive);
-                //char new_message_tips[200];
-                //strcpy(new_message_tips, "您收到了一条来自 ");
-                //char tmp_msg_receive_s[200];
-                //longlong_to_string(msg_receive.sender, tmp_msg_receive_s);
-                //strcat(new_message_tips, tmp_msg_receive_s);
-                //strcat(new_message_tips, " 的新消息.");
-                //attron(A_REVERSE);
-                //mvaddstr(11,25,"                       ");
-                //mvaddstr(12,30,new_message_tips);
-                //mvaddstr(13,28,msg_receive.content);
-                //mvaddstr(14,25,"                       ");
-                //attroff(A_REVERSE);
-                //getch();
-                //clear();
-                //print_border();
-                //welcome();
-                //printf("您收到了一条来自 %lld 的新消息:\n",msg_receive.sender);
-				//printf("%s\n",msg_receive.content);
-            }
+            
             //printf("Am i here?\n");
             //while(1)
             //{
+            signal(50, print_new_msg);
+            signal(50, print_new_msg);
                 int ch = getch();
                 //mvaddstr(10,10,"hello");
                 //refresh();
@@ -914,17 +978,20 @@ int main(int argc, char** argv)
             //printf("Power On Successfully!\n");
             char buf[1024];
             memset(buf, 0, sizeof(buf));
+            printf("before read!\n");
             int len = read(childSockfd, buf, 1024);
-
-            struct message msg_receive_child = string_to_message(buf);
-            char new_message_tips[200];
-            strcpy(new_message_tips, "您收到了一条来自 ");
-            char tmp_msg_receive_child[200];
-            longlong_to_string(msg_receive_child.sender, tmp_msg_receive_child);
-            strcat(new_message_tips, tmp_msg_receive_child);
-            strcat(new_message_tips, " 的新消息.");
-            //printf("%s\n",new_message_tips);
-            mvaddstr(15,30,new_message_tips);
+            
+            /*
+            FILE *fp;
+            fp = fopen("tmp.dat","w");
+            fprintf(fp, "%s", buf);
+            close(fp);
+            */
+            //printf("i am ok here\n");
+            //sleep(3);
+            
+            //printf("after kill\n");
+            //refresh();
 
             if(DEBUG)
             {
@@ -942,16 +1009,26 @@ int main(int argc, char** argv)
             close(pipe_fd[0]);
             //while (lockflag) sleep(1000);
             
+        
+
             int pipedebug = write(pipe_fd[1], buf, 1024);
 			char buf_back[3];
 			memset(buf, 0, sizeof(buf));
 			memset(buf_back, 0, sizeof(buf_back));
 			//printf ("%d\n",pipedebug);
 			//close(pipe_fd2[1]);
-			read(pipe_fd2[0], buf_back, 3);
+
+            //send signal
+            kill(getppid(), 50);
+			
+
+            read(pipe_fd2[0], buf_back, 3);
+           
 			if (buf_back[0] != 'O' || buf_back[1]!='K') {
 				perror("get msg from parent fail\n");			
 			}
+            printf("READ\n");
+            refresh();
             if (pipedebug < 0)
             {
                 perror("write");
