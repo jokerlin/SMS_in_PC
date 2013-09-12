@@ -196,7 +196,7 @@ void search_message(unsigned char a[][250],int m)
     int index=0;
     for(int i=0;i<nans;i++)
     {
-        mvaddstr(WELCOME_POS_X+7+index,WELCOME_POS_Y-4,ans[i].cont->content);
+        mvaddstr(WELCOME_POS_X+9+index,WELCOME_POS_Y-3,ans[i].cont->content);
         //printf("匹配的关键字数：%d\n",ans[i].num);
         //move(WELCOME_POS_X+6+index,WELCOME_POS_Y-4);
         index++;
@@ -238,7 +238,7 @@ void search_message_single(unsigned char a[])
         {
             if(kmp_find(q->content,a))
             {
-                mvaddstr(WELCOME_POS_X+6+index,WELCOME_POS_Y-4,q->content);
+                mvaddstr(WELCOME_POS_X+7+index,WELCOME_POS_Y-3,q->content);
                 //move(WELCOME_POS_Y-4,WELCOME_POS_X+6+index);
                 //move(WELCOME_POS_X+6+index,WELCOME_POS_Y-4);
                 index++;

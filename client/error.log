@@ -14,10 +14,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -40,33 +40,42 @@ sms.c: In function ‘init_person_list_content’:
 sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’ [-Wimplicit-function-declaration]
           longlong_to_string(p->id,id_s);
           ^
+sms.c: In function ‘init_list_person_message’:
+sms.c:174:9: warning: passing argument 1 of ‘ctime’ makes pointer from integer without a cast [enabled by default]
+         strcpy(message_content[i],ctime((q->Time));
+         ^
+In file included from sms.c:21:0:
+/usr/include/time.h:264:14: note: expected ‘const time_t *’ but argument is of type ‘time_t’
+ extern char *ctime (const time_t *__timer) __THROW;
+              ^
+sms.c:174:51: error: expected ‘)’ before ‘;’ token
+         strcpy(message_content[i],ctime((q->Time));
+                                                   ^
+sms.c:190:5: error: expected ‘;’ before ‘}’ token
+     }
+     ^
 sms.c: In function ‘unit_message_box’:
-sms.c:438:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:466:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:467:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:495:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:664:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:704:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:697:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:737:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
-In file included from sms.c:19:0:
-sms.c: In function ‘print_new_msg’:
-sms.c:796:17: error: called object is not a function or function pointer
-                 mvaddstr(LINES - 4, 15, msg_receive.content);
-                 ^
 sms.c: In function ‘main’:
-sms.c:814:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:856:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:864:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:906:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:908:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:953:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -105,10 +114,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -132,27 +141,27 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:438:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:466:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:467:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:495:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:664:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:704:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:697:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:737:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:814:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:856:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:864:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:906:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:908:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:953:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -191,10 +200,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -218,27 +227,27 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:438:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:466:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:467:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:495:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:664:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:704:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:697:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:737:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:814:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:856:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:864:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:906:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:908:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:953:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -277,10 +286,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -304,27 +313,27 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:438:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:466:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:467:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:495:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:664:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:704:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:697:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:737:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:814:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:856:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:864:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:906:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:908:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:953:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -363,10 +372,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -390,27 +399,27 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:438:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:468:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:467:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:497:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:664:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:706:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:697:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:739:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:814:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:858:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:864:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:908:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:908:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:955:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -449,10 +458,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -476,27 +485,27 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:438:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:468:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:467:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:497:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:664:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:706:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:697:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:739:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:814:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:858:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:864:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:908:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:908:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:955:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -535,10 +544,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -562,27 +571,27 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:438:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:468:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:467:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:497:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:664:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:706:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:697:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:739:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:814:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:858:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:864:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:908:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:908:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:955:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -621,10 +630,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -648,27 +657,27 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:442:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:468:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:471:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:497:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:668:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:736:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:701:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:769:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:818:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:888:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:868:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:938:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:912:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:985:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -707,10 +716,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -734,27 +743,27 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:442:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:476:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:471:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:505:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:668:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:744:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:701:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:777:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:818:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:896:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:868:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:946:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:912:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:993:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -793,10 +802,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -820,27 +829,27 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:448:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:476:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:477:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:505:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:674:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:744:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:707:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:777:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:824:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:896:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:874:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:946:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:918:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:993:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -879,10 +888,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -906,27 +915,27 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:448:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:476:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:477:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:505:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:674:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:744:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:707:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:777:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:824:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:896:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:874:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:946:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:921:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:993:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -965,10 +974,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -992,27 +1001,27 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:448:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:476:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:477:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:505:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:674:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:744:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:707:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:777:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:824:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:896:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:874:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:946:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:921:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:993:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -1051,10 +1060,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -1078,27 +1087,27 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:448:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:476:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:477:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:505:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:675:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:744:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:708:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:777:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:825:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:896:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:875:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:946:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:922:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:993:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -1137,10 +1146,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -1164,27 +1173,27 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:448:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:477:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:477:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:506:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:675:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:745:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:708:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:778:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:825:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:897:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:875:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:947:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:922:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:994:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -1223,10 +1232,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -1250,27 +1259,27 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:448:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:479:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:477:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:508:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:675:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:747:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:708:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:780:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:825:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:899:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:875:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:949:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:922:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:996:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -1309,10 +1318,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -1336,27 +1345,27 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:448:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:479:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:477:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:508:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:675:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:747:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:708:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:780:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:825:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:899:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:875:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:949:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:922:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:996:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -1395,10 +1404,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -1422,27 +1431,30 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:448:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:479:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:477:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:488:21: warning: implicit declaration of function ‘check_legal’ [-Wimplicit-function-declaration]
+                     if(!check_legal(keys_num_s))
+                     ^
+sms.c:519:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:675:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:758:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:708:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:791:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:825:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:910:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:875:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:960:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:922:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:1007:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -1481,10 +1493,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -1508,27 +1520,30 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:449:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:479:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:478:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:488:21: warning: implicit declaration of function ‘check_legal’ [-Wimplicit-function-declaration]
+                     if(!check_legal(keys_num_s))
+                     ^
+sms.c:519:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:676:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:758:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:709:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:791:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:826:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:910:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:876:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:960:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:923:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:1007:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -1567,10 +1582,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -1594,27 +1609,30 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:453:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:479:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:482:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:488:21: warning: implicit declaration of function ‘check_legal’ [-Wimplicit-function-declaration]
+                     if(!check_legal(keys_num_s))
+                     ^
+sms.c:515:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:680:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:754:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:713:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:787:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:830:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:906:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:880:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:956:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:927:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:1003:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -1653,10 +1671,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -1680,27 +1698,30 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:456:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:479:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:485:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:488:21: warning: implicit declaration of function ‘check_legal’ [-Wimplicit-function-declaration]
+                     if(!check_legal(keys_num_s))
+                     ^
+sms.c:518:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:683:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:757:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:716:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:790:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:833:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:909:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:883:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:959:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:930:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:1006:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -1739,10 +1760,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -1766,27 +1787,30 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:456:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:479:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:485:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:488:21: warning: implicit declaration of function ‘check_legal’ [-Wimplicit-function-declaration]
+                     if(!check_legal(keys_num_s))
+                     ^
+sms.c:518:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:683:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:757:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:716:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:790:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:833:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:909:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:883:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:959:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:930:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:1006:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -1825,10 +1849,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -1852,27 +1876,30 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:456:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:479:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:485:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:488:21: warning: implicit declaration of function ‘check_legal’ [-Wimplicit-function-declaration]
+                     if(!check_legal(keys_num_s))
+                     ^
+sms.c:518:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:683:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:757:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:716:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:790:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:833:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:909:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:883:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:959:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:930:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:1006:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -1911,10 +1938,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -1938,27 +1965,30 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:457:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:479:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:486:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:488:21: warning: implicit declaration of function ‘check_legal’ [-Wimplicit-function-declaration]
+                     if(!check_legal(keys_num_s))
+                     ^
+sms.c:518:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:684:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:757:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:717:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:790:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:834:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:909:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:884:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:959:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:931:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:1006:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -1997,10 +2027,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -2024,27 +2054,30 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:457:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:479:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:486:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:488:21: warning: implicit declaration of function ‘check_legal’ [-Wimplicit-function-declaration]
+                     if(!check_legal(keys_num_s))
+                     ^
+sms.c:518:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:684:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:757:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:717:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:790:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:834:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:909:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:884:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:959:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:931:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:1006:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -2083,10 +2116,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -2110,27 +2143,30 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:457:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:479:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:486:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:488:21: warning: implicit declaration of function ‘check_legal’ [-Wimplicit-function-declaration]
+                     if(!check_legal(keys_num_s))
+                     ^
+sms.c:518:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:684:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:757:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:717:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:790:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:834:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:909:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:884:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:959:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:931:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:1006:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -2169,10 +2205,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -2196,27 +2232,30 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:457:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:479:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:486:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:488:21: warning: implicit declaration of function ‘check_legal’ [-Wimplicit-function-declaration]
+                     if(!check_legal(keys_num_s))
+                     ^
+sms.c:518:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:684:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:757:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:717:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:790:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:836:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:909:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:886:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:959:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:933:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:1006:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:
@@ -2255,10 +2294,10 @@ getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wim
   for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
   ^
 PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+PersonOperation.c:94:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
   strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
   ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
+PersonOperation.c:94:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
 power_on.c: In function ‘power_on’:
 power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
          system(instruction);
@@ -2282,285 +2321,30 @@ sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’
           longlong_to_string(p->id,id_s);
           ^
 sms.c: In function ‘unit_message_box’:
-sms.c:457:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
+sms.c:479:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
                  search_message_single(input_content);
                  ^
-sms.c:486:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
+sms.c:488:21: warning: implicit declaration of function ‘check_legal’ [-Wimplicit-function-declaration]
+                     if(!check_legal(keys_num_s))
+                     ^
+sms.c:518:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
                  search_message(input_search_content_array, keys_num);
                  ^
 sms.c: In function ‘unit_Send_Msg’:
-sms.c:684:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
+sms.c:757:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
          strptime(DelayTime_s,"%F-%T",&DelayTime);
          ^
-sms.c:717:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
+sms.c:791:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
      sock_sendmsg(msg, server_ip, server_port) ;
      ^
 sms.c: In function ‘main’:
-sms.c:836:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
+sms.c:912:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
      int sockfd = power_on();
      ^
-sms.c:886:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
+sms.c:962:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
                          print_content();
                          ^
-sms.c:933:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
-                         kill(pid, 15);
-                         ^
-string_to_message.c: In function ‘string_to_message’:
-string_to_message.c:103:2: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
-  strptime(strtime, "%F %T", &tm_time);
-  ^
-willzhang.c: In function ‘DataBaseStart’:
-willzhang.c:31:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
-  strcpy(path1,path);
-  ^
-willzhang.c:31:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
-willzhang.c:32:2: warning: implicit declaration of function ‘strcat’ [-Wimplicit-function-declaration]
-  strcat(path1,"/DataFile");
-  ^
-willzhang.c:32:2: warning: incompatible implicit declaration of built-in function ‘strcat’ [enabled by default]
-willzhang.c: In function ‘DataInit’:
-willzhang.c:66:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
-  strcpy(path1,path);
-  ^
-willzhang.c:67:2: warning: incompatible implicit declaration of built-in function ‘strcat’ [enabled by default]
-  strcat(path1,"/DataFile");
-  ^
-client.c: In function ‘send_message’:
-client.c:211:5: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
-     strptime(DelayTime_s,"%F-%T",&DelayTime);
-     ^
-client.c: In function ‘client_search_message’:
-client.c:280:3: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
-   search_message_single(input_search_content);
-   ^
-client.c:293:4: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
-    search_message(*input_search_content2, keys_num);
-    ^
-getprofile.c: In function ‘l_trim’:
-getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wimplicit-function-declaration]
-  for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
-  ^
-PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
-  strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
-  ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
-power_on.c: In function ‘power_on’:
-power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
-         system(instruction);
-         ^
-sandtears.c: In function ‘sock_power_on’:
-sandtears.c:120:16: warning: comparison between pointer and integer [enabled by default]
-     if((buf[0] == "O")&&(buf[1] == "K")) {
-                ^
-sandtears.c:120:33: warning: comparison between pointer and integer [enabled by default]
-     if((buf[0] == "O")&&(buf[1] == "K")) {
-                                 ^
-sandtears.c: In function ‘sock_power_off’:
-sandtears.c:208:16: warning: comparison between pointer and integer [enabled by default]
-     if((buf[0] == "O")&&(buf[1] == "K")) {
-                ^
-sandtears.c:208:33: warning: comparison between pointer and integer [enabled by default]
-     if((buf[0] == "O")&&(buf[1] == "K")) {
-                                 ^
-sms.c: In function ‘init_person_list_content’:
-sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’ [-Wimplicit-function-declaration]
-          longlong_to_string(p->id,id_s);
-          ^
-sms.c: In function ‘unit_message_box’:
-sms.c:457:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
-                 search_message_single(input_content);
-                 ^
-sms.c:486:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
-                 search_message(input_search_content_array, keys_num);
-                 ^
-sms.c: In function ‘unit_Send_Msg’:
-sms.c:684:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
-         strptime(DelayTime_s,"%F-%T",&DelayTime);
-         ^
-sms.c:717:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
-     sock_sendmsg(msg, server_ip, server_port) ;
-     ^
-sms.c: In function ‘main’:
-sms.c:836:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
-     int sockfd = power_on();
-     ^
-sms.c:886:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
-                         print_content();
-                         ^
-sms.c:933:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
-                         kill(pid, 15);
-                         ^
-string_to_message.c: In function ‘string_to_message’:
-string_to_message.c:103:2: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
-  strptime(strtime, "%F %T", &tm_time);
-  ^
-willzhang.c: In function ‘DataBaseStart’:
-willzhang.c:31:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
-  strcpy(path1,path);
-  ^
-willzhang.c:31:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
-willzhang.c:32:2: warning: implicit declaration of function ‘strcat’ [-Wimplicit-function-declaration]
-  strcat(path1,"/DataFile");
-  ^
-willzhang.c:32:2: warning: incompatible implicit declaration of built-in function ‘strcat’ [enabled by default]
-willzhang.c: In function ‘DataInit’:
-willzhang.c:66:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
-  strcpy(path1,path);
-  ^
-willzhang.c:67:2: warning: incompatible implicit declaration of built-in function ‘strcat’ [enabled by default]
-  strcat(path1,"/DataFile");
-  ^
-client.c: In function ‘send_message’:
-client.c:211:5: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
-     strptime(DelayTime_s,"%F-%T",&DelayTime);
-     ^
-client.c: In function ‘client_search_message’:
-client.c:280:3: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
-   search_message_single(input_search_content);
-   ^
-client.c:293:4: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
-    search_message(*input_search_content2, keys_num);
-    ^
-getprofile.c: In function ‘l_trim’:
-getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wimplicit-function-declaration]
-  for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
-  ^
-PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
-  strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
-  ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
-power_on.c: In function ‘power_on’:
-power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
-         system(instruction);
-         ^
-sandtears.c: In function ‘sock_power_on’:
-sandtears.c:120:16: warning: comparison between pointer and integer [enabled by default]
-     if((buf[0] == "O")&&(buf[1] == "K")) {
-                ^
-sandtears.c:120:33: warning: comparison between pointer and integer [enabled by default]
-     if((buf[0] == "O")&&(buf[1] == "K")) {
-                                 ^
-sandtears.c: In function ‘sock_power_off’:
-sandtears.c:208:16: warning: comparison between pointer and integer [enabled by default]
-     if((buf[0] == "O")&&(buf[1] == "K")) {
-                ^
-sandtears.c:208:33: warning: comparison between pointer and integer [enabled by default]
-     if((buf[0] == "O")&&(buf[1] == "K")) {
-                                 ^
-sms.c: In function ‘init_person_list_content’:
-sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’ [-Wimplicit-function-declaration]
-          longlong_to_string(p->id,id_s);
-          ^
-sms.c: In function ‘unit_message_box’:
-sms.c:457:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
-                 search_message_single(input_content);
-                 ^
-sms.c:486:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
-                 search_message(input_search_content_array, keys_num);
-                 ^
-sms.c: In function ‘unit_Send_Msg’:
-sms.c:684:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
-         strptime(DelayTime_s,"%F-%T",&DelayTime);
-         ^
-sms.c:717:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
-     sock_sendmsg(msg, server_ip, server_port) ;
-     ^
-sms.c: In function ‘main’:
-sms.c:836:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
-     int sockfd = power_on();
-     ^
-sms.c:886:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
-                         print_content();
-                         ^
-sms.c:933:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
-                         kill(pid, 15);
-                         ^
-string_to_message.c: In function ‘string_to_message’:
-string_to_message.c:103:2: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
-  strptime(strtime, "%F %T", &tm_time);
-  ^
-willzhang.c: In function ‘DataBaseStart’:
-willzhang.c:31:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
-  strcpy(path1,path);
-  ^
-willzhang.c:31:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
-willzhang.c:32:2: warning: implicit declaration of function ‘strcat’ [-Wimplicit-function-declaration]
-  strcat(path1,"/DataFile");
-  ^
-willzhang.c:32:2: warning: incompatible implicit declaration of built-in function ‘strcat’ [enabled by default]
-willzhang.c: In function ‘DataInit’:
-willzhang.c:66:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
-  strcpy(path1,path);
-  ^
-willzhang.c:67:2: warning: incompatible implicit declaration of built-in function ‘strcat’ [enabled by default]
-  strcat(path1,"/DataFile");
-  ^
-client.c: In function ‘send_message’:
-client.c:211:5: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
-     strptime(DelayTime_s,"%F-%T",&DelayTime);
-     ^
-client.c: In function ‘client_search_message’:
-client.c:280:3: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
-   search_message_single(input_search_content);
-   ^
-client.c:293:4: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
-    search_message(*input_search_content2, keys_num);
-    ^
-getprofile.c: In function ‘l_trim’:
-getprofile.c:15:2: warning: implicit declaration of function ‘isspace’ [-Wimplicit-function-declaration]
-  for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
-  ^
-PersonOperation.c: In function ‘rename_person’:
-PersonOperation.c:103:2: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
-  strcpy(longlong_to_PersonPoint(p->NextPerson)->name,name);
-  ^
-PersonOperation.c:103:2: warning: incompatible implicit declaration of built-in function ‘strcpy’ [enabled by default]
-power_on.c: In function ‘power_on’:
-power_on.c:130:9: warning: implicit declaration of function ‘system’ [-Wimplicit-function-declaration]
-         system(instruction);
-         ^
-sandtears.c: In function ‘sock_power_on’:
-sandtears.c:120:16: warning: comparison between pointer and integer [enabled by default]
-     if((buf[0] == "O")&&(buf[1] == "K")) {
-                ^
-sandtears.c:120:33: warning: comparison between pointer and integer [enabled by default]
-     if((buf[0] == "O")&&(buf[1] == "K")) {
-                                 ^
-sandtears.c: In function ‘sock_power_off’:
-sandtears.c:208:16: warning: comparison between pointer and integer [enabled by default]
-     if((buf[0] == "O")&&(buf[1] == "K")) {
-                ^
-sandtears.c:208:33: warning: comparison between pointer and integer [enabled by default]
-     if((buf[0] == "O")&&(buf[1] == "K")) {
-                                 ^
-sms.c: In function ‘init_person_list_content’:
-sms.c:106:10: warning: implicit declaration of function ‘longlong_to_string’ [-Wimplicit-function-declaration]
-          longlong_to_string(p->id,id_s);
-          ^
-sms.c: In function ‘unit_message_box’:
-sms.c:457:17: warning: implicit declaration of function ‘search_message_single’ [-Wimplicit-function-declaration]
-                 search_message_single(input_content);
-                 ^
-sms.c:486:17: warning: implicit declaration of function ‘search_message’ [-Wimplicit-function-declaration]
-                 search_message(input_search_content_array, keys_num);
-                 ^
-sms.c: In function ‘unit_Send_Msg’:
-sms.c:688:9: warning: implicit declaration of function ‘strptime’ [-Wimplicit-function-declaration]
-         strptime(DelayTime_s,"%F-%T",&DelayTime);
-         ^
-sms.c:721:5: warning: implicit declaration of function ‘sock_sendmsg’ [-Wimplicit-function-declaration]
-     sock_sendmsg(msg, server_ip, server_port) ;
-     ^
-sms.c: In function ‘main’:
-sms.c:840:5: warning: implicit declaration of function ‘power_on’ [-Wimplicit-function-declaration]
-     int sockfd = power_on();
-     ^
-sms.c:890:25: warning: implicit declaration of function ‘print_content’ [-Wimplicit-function-declaration]
-                         print_content();
-                         ^
-sms.c:937:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
+sms.c:1009:25: warning: implicit declaration of function ‘kill’ [-Wimplicit-function-declaration]
                          kill(pid, 15);
                          ^
 string_to_message.c: In function ‘string_to_message’:

@@ -165,14 +165,25 @@ int init_list_person_message(long long person_id,int NumOfPage)
         if(q==MemBaseMessage) return counter;
         /*************/
         counter++;
+        //time
+        //printf("hello\n");
+        //printf("%s\n",q->Time );
+        //char qtime_s[100];
+        //longlong_to_string(q->Time,qtime_s);
+        //mvaddstr(10,10, qtime_s);
+        strcpy(message_content[i],ctime(&(q->Time)));
+        int message_content_len=strlen(message_content[i]);
+        message_content[i][message_content_len-1]=' ';
+        //strcpy(message_content[i],"292190");
+        //
         if(q->receiver == local_phoneNumber)
         {
-            strcpy(message_content[i],person_id_s);
-            strcat(message_content[i],":    ");
+            strcat(message_content[i],person_id_s);
+            strcat(message_content[i]," :    ");
         }
         else
         {
-            strcpy(message_content[i],"我:   ");
+            strcat(message_content[i]," 我:   ");
         }
         strcat(message_content[i],q->content);
         //printf("%d: %s\n",NumOfPage*the_message_num_of_one_page+i,q->content);
@@ -185,13 +196,13 @@ int init_list_person_message(long long person_id,int NumOfPage)
 void Reverse_message_print()
 {
     attron(A_REVERSE);
-    mvaddstr(List_POS_X+List_ADD_X*current_index_message,List_POS_Y,message_content[current_index_message]);
+    mvaddstr(List_POS_X+List_ADD_X*current_index_message,List_POS_Y-10,message_content[current_index_message]);
     attroff(A_REVERSE);
     refresh();
 }
 void Normal_message_print()
 {
-    mvaddstr(List_POS_X+List_ADD_X*current_index_message,List_POS_Y,message_content[current_index_message]);
+    mvaddstr(List_POS_X+List_ADD_X*current_index_message,List_POS_Y-10,message_content[current_index_message]);
     refresh();
 }
 void unit_message_box_PersonDetail(struct person *Person)
@@ -216,7 +227,7 @@ void unit_message_box_PersonDetail(struct person *Person)
     for(int i=0;i<message_num;i++)
     {
         //mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,"hello");
-        mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,message_content[i]);
+        mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y-10,message_content[i]);
         refresh();
         //getchar();
     }
@@ -236,7 +247,7 @@ void unit_message_box_PersonDetail(struct person *Person)
             message_num=init_list_person_message(Person->id,message_page);
             for(int i=0;i<message_num;i++)
             {
-                mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,message_content[i]);
+                mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y-10,message_content[i]);
             }
             current_index_message=0;
             Reverse_message_print();
@@ -254,7 +265,7 @@ void unit_message_box_PersonDetail(struct person *Person)
             //printf("message_num %d\n", message_num);
             for(int i=0;i<message_num;i++)
             {
-                mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,message_content[i]);
+                mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y-10,message_content[i]);
             }
             current_index_message=0;
             Reverse_message_print();
@@ -296,7 +307,7 @@ void unit_message_box_PersonDetail(struct person *Person)
             if(message_num == 0)    break;
             for(int i=0;i<message_num;i++)
             {
-                mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,message_content[i]);
+                mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y-10,message_content[i]);
             }
             if(current_index_message >= message_num)
             {
@@ -444,12 +455,23 @@ void unit_message_box()
             mvaddstr(WELCOME_POS_X + 3, WELCOME_POS_Y - 5 , "请选择搜索模式（1）单关键字搜索;（2）多关键字搜索： ");
             refresh();
             int search_way;
-            scanw("%d", &search_way);
+            while(scanw("%d", &search_way) == 0 || search_way<1||search_way>2)
+            {
+                mvaddstr(WELCOME_POS_X + 5, WELCOME_POS_Y - 3 , "不合法输入，按任意键再次输入");
+                refresh();
+                getch();
+                clear();
+                print_border();
+                mvaddstr(WELCOME_POS_X, WELCOME_POS_Y+10,"收件箱");
+                echo();
+                mvaddstr(WELCOME_POS_X + 3, WELCOME_POS_Y - 5 , "请选择搜索模式（1）单关键字搜索;（2）多关键字搜索： ");
+                refresh();
+            }
             //long long receiver_num = string_to_longlong(receiver_s, strlen(receiver_s) - 1 + receiver_s);
             refresh();
             if (search_way == 1)
             {
-                mvaddstr(WELCOME_POS_X + 5, WELCOME_POS_Y - 4 , "请输入关键字：");
+                mvaddstr(WELCOME_POS_X + 5, WELCOME_POS_Y - 3 , "请输入关键字：");
                 unsigned char input_content[250];
                 getstr(input_content);
                 refresh();
@@ -458,14 +480,24 @@ void unit_message_box()
             }
             else if (search_way == 2)
             {
-                mvaddstr(WELCOME_POS_X + 5, WELCOME_POS_Y - 4 , "请输入关键字的数目：");
+                mvaddstr(WELCOME_POS_X + 5, WELCOME_POS_Y - 3 , "请输入关键字的数目：");
                 int keys_num;
                 char keys_num_s[20];
-                scanw("%s",keys_num_s);
+                while(scanw("%s",keys_num_s))
+                {
+                    if(!check_legal(keys_num_s))
+                    {
+                        mvaddstr(WELCOME_POS_X + 7, WELCOME_POS_Y - 3 , "不合法输入，按任意键退出");
+                        refresh();
+                        getch();
+                        return;
+                    }
+                    break;
+                }
                 keys_num=string_to_longlong(keys_num_s,keys_num_s+strlen(keys_num_s)-1);
                 refresh();
                 //printf("%d\n",keys_num );
-                mvaddstr(WELCOME_POS_X + 6, WELCOME_POS_Y - 4 , "请输入关键字：");
+                mvaddstr(WELCOME_POS_X + 7, WELCOME_POS_Y - 3 , "请输入关键字：");
                 char input_search_content_array[10][250];
                 //printf("hello\n");
                 //printf("%d\n",keys_num );
@@ -474,7 +506,7 @@ void unit_message_box()
                     //getstr(input_search_content_array[i]);
                     if(i!=0)
                     {   
-                        mvaddstr(WELCOME_POS_X + 6, WELCOME_POS_Y - 4 , "请输入下一个关键字：");
+                        mvaddstr(WELCOME_POS_X + 7, WELCOME_POS_Y - 3 , "请输入下一个关键字：");
                     }
                   scanw("%s", input_search_content_array[i]);
                   //printf("%s\n",input_search_content_array[i] );
@@ -497,6 +529,7 @@ void unit_message_box()
             noecho();
             clear();
             print_border();
+            mvaddstr(WELCOME_POS_X, WELCOME_POS_Y+10,"收件箱");
             person_num=init_person_list_content(current_pages);
             for(int i=0;i<person_num;i++)
             {
@@ -565,13 +598,19 @@ void unit_Address_Book()
     clear();
     print_border();
     
-    mvaddstr(WELCOME_POS_X, WELCOME_POS_Y + 13 ,"通讯录  ");
+    mvaddstr(WELCOME_POS_X, WELCOME_POS_Y + 13 ,"通讯录");
     
     page_number = person_pages_nums() - 1;
     //printf("test");//debug
     refresh();
-    client_list_person_CUR(0);
-    list_person(page_number_cur);
+    //client_list_person_CUR(0);
+
+    if (list_person(page_number_cur) == 0) 
+    {
+        mvaddstr(WELCOME_POS_X + 3, WELCOME_POS_Y , "没有任何联系人，请按任意键退出");
+        getch();
+        return;
+    }
     refresh();
     attron(A_REVERSE);
     print_addr_cur(index_addr_cur, page_number_cur);
@@ -586,7 +625,7 @@ void unit_Address_Book()
                 //refresh();
                 switch (ch)
                 {
-                    case 'n': 
+                    case KEY_RIGHT: 
                         if (page_number_cur == page_number) break;
                         clear();
                         print_border();
@@ -596,7 +635,7 @@ void unit_Address_Book()
                         list_person(page_number_cur);
                         refresh();
                         break;
-                    case 'p':
+                    case KEY_LEFT:
                         if (page_number_cur == 0) break;
                         clear();
                         print_border();
@@ -657,7 +696,20 @@ void unit_Address_Book()
     refresh();
 
 }
-
+int check_legal(char * receiver_s)
+{
+    int len=strlen(receiver_s);
+    if(len == 0)    return 0;
+    for(int i=0;i<len;i++)
+    {
+        if(receiver_s[i]>='0'&&receiver_s[i]<='9')
+        {
+            continue;
+        }
+        return 0;
+    }
+    return 1;
+}
 void unit_Send_Msg()
 {
     clear();
@@ -668,7 +720,24 @@ void unit_Send_Msg()
 	char receiver_s[12];
 	mvaddstr(WELCOME_POS_X + 3, WELCOME_POS_Y - 5 , "收件人：");
 	refresh();
-	scanw("%s", receiver_s);
+	while(scanw("%s", receiver_s))
+    {
+        if(!check_legal(receiver_s))
+        {
+            mvaddstr(WELCOME_POS_X + 5, WELCOME_POS_Y - 4 , "不合法输入，按任意键再次输入");
+            getch();
+            clear();
+            print_border();
+            mvaddstr(WELCOME_POS_X, WELCOME_POS_Y+10,"发信息");
+            refresh();
+            echo();
+            char receiver_s[12];
+            mvaddstr(WELCOME_POS_X + 3, WELCOME_POS_Y - 5 , "收件人：");
+            refresh();
+            continue;
+        }
+        break;
+    }
 	long long receiver_num = string_to_longlong(receiver_s, strlen(receiver_s) - 1 + receiver_s);
 	refresh();
 	mvaddstr(WELCOME_POS_X + 5, WELCOME_POS_Y - 4 , "内容：");
@@ -687,7 +756,7 @@ void unit_Send_Msg()
         struct tm DelayTime;
         strptime(DelayTime_s,"%F-%T",&DelayTime);
         //printf("%d\n",DelayTime.tm_year,DelayTime.tm_ho
-        msg.receiver = input_phonenumber;
+        msg.receiver = receiver_num;
         msg.sender = local_phoneNumber;
         strcpy(msg.content, input_content);
         //printf("Delay:%ld\n",DelayTime);
@@ -717,8 +786,11 @@ void unit_Send_Msg()
             personadd.Time = 0;
             add_person(personadd);
         }
-    save_message(msg.receiver,msg);
+
+    
     sock_sendmsg(msg, server_ip, server_port) ;
+    msg.Time=time(NULL);
+    save_message(msg.receiver,msg);
     attron(A_BOLD);
     mvaddstr(WELCOME_POS_X + 10, WELCOME_POS_Y + 8 , "发送短信成功");
     attroff(A_BOLD);

@@ -20,14 +20,15 @@ int person_pages_nums()
     refresh();
     return ans/the_person_num_of_one_page+1;
 }
-void list_person(int numofpage)
+int list_person(int numofpage)
 {
+    int counter = 0;
     struct person *p=longlong_to_PersonPoint(PersonList->NextPerson);//开发者默认不输出
     for(int i=0;i<numofpage;i++)
     {
         for(int j=0;j<the_person_num_of_one_page;j++)
         {
-            if(p==MemBasePerson) return;
+            if(p==MemBasePerson) return counter;
             p=longlong_to_PersonPoint(p->NextPerson);
         }
     }
@@ -35,19 +36,8 @@ void list_person(int numofpage)
     {
         if(p==MemBasePerson) break;
 //DON'T EDIT BEFORE 
-        //printf("%s %lld\n",p->name,p->id);
-        //if (i==0)
-        //{
-        //    attron(A_REVERSE);
-        //    mvaddstr(WELCOME_POS_X + 3 + i, 25, p->name);
-        //    char id_s[20];
-        //    longlong_to_string(p->id, id_s);
-        //    mvaddstr(WELCOME_POS_X + 3 + i, 50, id_s);
-        //    refresh();
-        //    attroff(A_REVERSE);
-        //    p=longlong_to_PersonPoint(p->NextPerson);
-        //    continue;
-        //}
+        //mvaddstr(WELCOME_POS_X + 2 + i, 25, "I AM HERE");
+        counter++;
         mvaddstr(WELCOME_POS_X + 3 + i, 25, p->name);
         char id_s[20];
         longlong_to_string(p->id, id_s);
@@ -56,6 +46,7 @@ void list_person(int numofpage)
 //DON'T EDIT BELOW
         p=longlong_to_PersonPoint(p->NextPerson);
     }
+    return counter;
 }
 
 void add_person(struct person x)
