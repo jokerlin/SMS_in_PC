@@ -153,7 +153,7 @@ int init_list_person_message(long long person_id,int NumOfPage)
     //printf("start\n");
     char person_id_s[20];//
     longlong_to_string(person_id,person_id_s);
-    for(int i=0;i<10;i++)
+    for(int i=0;i<10;i++)   
     {
         if(q==MemBaseMessage) return counter;
         /*************/
@@ -740,22 +740,32 @@ int main(int argc, char** argv)
                 }
 				//printf("before save msg\n");
                 save_message(msg_receive.sender,msg_receive);
-                char new_message_tips[100];
-                strcpy(new_message_tips, "您收到了一条来自 ");
-                char tmp_msg_receive_s;
-                longlong_to_string(msg_receive.sender, tmp_msg_receive_s);
-                strcat(new_message_tips, tmp_msg_receive_s);
-                strcat(new_message_tips, " 的新消息.");
-                mvaddstr(15,5,new_message_tips);
+                //char new_message_tips[200];
+                //strcpy(new_message_tips, "您收到了一条来自 ");
+                //char tmp_msg_receive_s[200];
+                //longlong_to_string(msg_receive.sender, tmp_msg_receive_s);
+                //strcat(new_message_tips, tmp_msg_receive_s);
+                //strcat(new_message_tips, " 的新消息.");
+                //attron(A_REVERSE);
+                //mvaddstr(11,25,"                       ");
+                //mvaddstr(12,30,new_message_tips);
+                //mvaddstr(13,28,msg_receive.content);
+                //mvaddstr(14,25,"                       ");
+                //attroff(A_REVERSE);
+                //getch();
+                //clear();
+                //print_border();
+                //welcome();
                 //printf("您收到了一条来自 %lld 的新消息:\n",msg_receive.sender);
 				//printf("%s\n",msg_receive.content);
             }
-            
-            while(1)
-            {
+            //printf("Am i here?\n");
+            //while(1)
+            //{
                 int ch = getch();
                 //mvaddstr(10,10,"hello");
                 //refresh();
+                //printf("Am i here2?\n");
                 switch (ch)
                 {
                     case KEY_UP: 
@@ -799,11 +809,19 @@ int main(int argc, char** argv)
                             welcome();
                         }
                         break;
+                    case 'q':
+                        normal_power_flag = 1;
+                        char local_phoneNumber_s [12];
+                        memset(local_phoneNumber_s, 0, sizeof(local_phoneNumber_s));
+                        longlong_to_string(local_phoneNumber, local_phoneNumber_s);
+                        power_off(sockfd,local_phoneNumber_s, server_ip, server_port);
+                        kill(pid, 15);
+                        return 1;
                     default: 
                         break;
                 }
                 //break;
-            }
+            //}
             /*
             while (!kbhit()) nothing();
             instruction = getchar();
@@ -861,13 +879,24 @@ int main(int argc, char** argv)
             if((childSockfd = accept(sockfd, (struct sockaddr*) &addr, &addrlen)) < 0)
             {
                 perror("accept");
-                //printf("%d\n",sockfd);
+                printf("%d\n",sockfd);
                 return -1;
             }
             //printf("Power On Successfully!\n");
             char buf[1024];
             memset(buf, 0, sizeof(buf));
             int len = read(childSockfd, buf, 1024);
+
+            struct message msg_receive_child = string_to_message(buf);
+            char new_message_tips[200];
+            strcpy(new_message_tips, "您收到了一条来自 ");
+            char tmp_msg_receive_child[200];
+            longlong_to_string(msg_receive_child.sender, tmp_msg_receive_child);
+            strcat(new_message_tips, tmp_msg_receive_child);
+            strcat(new_message_tips, " 的新消息.");
+            //printf("%s\n",new_message_tips);
+            mvaddstr(15,30,new_message_tips);
+
             if(DEBUG)
             {
                 printf("get message: %s", buf);
@@ -883,6 +912,7 @@ int main(int argc, char** argv)
             close(childSockfd);
             close(pipe_fd[0]);
             //while (lockflag) sleep(1000);
+            
             int pipedebug = write(pipe_fd[1], buf, 1024);
 			char buf_back[3];
 			memset(buf, 0, sizeof(buf));

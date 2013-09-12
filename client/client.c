@@ -18,6 +18,7 @@
 #include <ctype.h>
 #include <time.h>
 #include <math.h>
+#include <curses.h>
 
 char input_phonenumber_s[12];
 char input_page_number_s[5];
@@ -26,6 +27,7 @@ char input_message_id_s[5];
 void power_off(int serverfd, char* phone_num, char* server_ip, int server_port)
 {
 	sock_power_off(serverfd, phone_num, server_ip, server_port) ;//关机
+	endwin();
 	printf("\n/#########################################################################\n\n");
 	printf("	> Shutdown Sucessfully.\n\n");
 	printf("	> Bye Bye.\n\n");
