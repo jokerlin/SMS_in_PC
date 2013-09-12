@@ -42,7 +42,8 @@ void initial()
 void print_border()
 {
     attron(A_BOLD);
-    mvaddstr(LINES-2,4,"q 返回上一级菜单");
+    mvaddstr(LINES-2,4,"q 返回");
+    mvaddstr(LINES-2,10,"f 搜索");
     mvaddstr(LINES-2,22,"ENTER 选中");
     mvaddstr(LINES-2,33,"d 删除");
     mvaddstr(LINES-2,42,"按上下方向键移动");
@@ -51,8 +52,8 @@ void print_border()
     setlocale(LC_ALL,"");
     initial();
     box(stdscr, ACS_VLINE, ACS_HLINE);
-    mvaddstr(WELCOME_POS_X, WELCOME_POS_Y,"Welcome to use SMS_in_PC");
-    mvaddstr(WELCOME_POS_X + 1, WELCOME_POS_Y - 5, "Created by My Nine Partners and Me");
+    //mvaddstr(WELCOME_POS_X, WELCOME_POS_Y,"Welcome to use SMS_in_PC");
+    //mvaddstr(WELCOME_POS_X + 1, WELCOME_POS_Y - 5, "Created by My Nine Partners and Me");
     //mvaddstr(LINES-2,10,"hello");
     refresh();
 }
@@ -191,6 +192,7 @@ void unit_message_box_PersonDetail(struct person *Person)
 {
     clear();
     print_border();
+    mvaddstr(WELCOME_POS_X, WELCOME_POS_Y,"收件箱");
     message_page=0;
     message_num=init_list_person_message(Person->id,message_page);
     //if(message_num==1)
@@ -264,7 +266,11 @@ void unit_message_box_PersonDetail(struct person *Person)
         }
         else if(instruction == 'd')
         {
+            //mvaddstr(10,10,"begin");
+            //printf("begin\n");
             delete_message(Person->id,message_page*10+current_index_message);
+            //mvaddstr(12,10,"end");
+            getch();
             clear();
             print_border();
             message_num=init_list_person_message(Person->id,message_page);
@@ -286,6 +292,7 @@ void unit_message_box()
 {
     clear();
     print_border();
+    mvaddstr(WELCOME_POS_X, WELCOME_POS_Y,"收件箱");
     current_pages=0;
     int person_num=init_person_list_content(current_pages);
     for(int i=0;i<person_num;i++)
@@ -513,9 +520,10 @@ void unit_Address_Book()
     clear();
     print_border();
     
+    mvaddstr(WELCOME_POS_X, WELCOME_POS_Y,"通讯录");
     
     page_number = person_pages_nums() - 1;
-    printf("test");//debug
+    //printf("test");//debug
     refresh();
     list_person(page_number_cur);
     refresh();
@@ -604,6 +612,7 @@ void unit_Send_Msg()
 {
     clear();
     print_border();
+    mvaddstr(WELCOME_POS_X, WELCOME_POS_Y,"发信息");
     refresh();
 	echo();
 	char receiver_s[12];
