@@ -143,7 +143,6 @@ def message(s):
     print "message"
     sms = s.rfile.readline()
     sms = sms[:-1]
-    s.wfile.write('OK')
     print repr(sms);
     sms = json.loads(sms)
     sms['flag_lms'] = 0
@@ -153,10 +152,13 @@ def message(s):
     if sms["Time"] <= 0:
         if sms['receiver'] in client.keys():
             sendsms(sms, sms['receiver'], client[sms['receiver']])
+            s.wfile.write('old')
         else:
             savesms(sms, True)
+            s.wfile.write('new')
     else:
         print "请等待%d秒后的短信...." % sms['Time']
+        s.wfile.write('old')
         threading.Thread(target = sendsms_wait, args = (sms, sms['Time'])).start();
 
 # 创建多线程服务器
