@@ -270,7 +270,7 @@ void unit_message_box_PersonDetail(struct person *Person)
             //printf("begin\n");
             delete_message(Person->id,message_page*10+current_index_message);
             //mvaddstr(12,10,"end");
-            getch();
+            //getch();
             clear();
             print_border();
             message_num=init_list_person_message(Person->id,message_page);
@@ -278,6 +278,7 @@ void unit_message_box_PersonDetail(struct person *Person)
             {
                 mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,message_content[i]);
             }
+            current_index_message=0;
             Reverse_message_print();
             refresh();
         }
