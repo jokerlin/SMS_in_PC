@@ -25,6 +25,8 @@
 #include "kbhit.h"
 #include "client.h"
 #include "string_to_message.h"
+#include "PersonOperation.h"
+#include "message.h"
 
 #define DEBUG 0
 
@@ -218,6 +220,7 @@ void unit_message_box_PersonDetail(struct person *Person)
     {
         if(instruction == KEY_LEFT)
         {
+            if(message_page == 0) continue;
             clear();
             print_border();
             message_page--;
@@ -226,10 +229,13 @@ void unit_message_box_PersonDetail(struct person *Person)
             {
                 mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,message_content[i]);
             }
+            current_index_message=0;
+            Reverse_message_print();
             refresh();
         }
         else if(instruction == KEY_RIGHT)
         { 
+            if(message_page == person_message_pages_nums() - 1) continue;
             clear();
             print_border();
             message_page++;
@@ -240,6 +246,8 @@ void unit_message_box_PersonDetail(struct person *Person)
             {
                 mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,message_content[i]);
             }
+            current_index_message=0;
+            Reverse_message_print();
             refresh();
         }
         else if(instruction == KEY_UP)
@@ -274,11 +282,15 @@ void unit_message_box_PersonDetail(struct person *Person)
             clear();
             print_border();
             message_num=init_list_person_message(Person->id,message_page);
+            if(message_num == 0)    break;
             for(int i=0;i<message_num;i++)
             {
                 mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,message_content[i]);
             }
-            current_index_message=0;
+            if(current_index_message >= message_num)
+            {
+                current_index_message=0;
+            }
             Reverse_message_print();
             refresh();
         }
@@ -348,17 +360,24 @@ void unit_message_box()
             clear();
             print_border();
             person_num=init_person_list_content(current_pages);
+            if(person_num == 0)
+            {
+                break;
+            }
             for(int i=0;i<person_num;i++)
             {
                 mvaddstr(List_POS_X+List_ADD_X*i,List_POS_Y,person_list_content[i]);
             }
             //current_index=0;
+            if(current_index >= person_num)
+            {
+                current_index=0;
+            }
             Reverse_print();
             refresh();
         }
         else if(instruction == KEY_RIGHT)
         {
-            
             //printf("person_pages_nums %d\n",person_pages_nums());
             //printf("current_pages %d\n",current_pages);
             if(current_pages == person_pages_nums() - 1)   
