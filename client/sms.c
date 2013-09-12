@@ -42,11 +42,11 @@ void initial()
 void print_border()
 {
     attron(A_BOLD);
-    mvaddstr(LINES-2,2,"q 返回上一级菜单");
-    mvaddstr(LINES-2,20,"ENTER 选中");
-    mvaddstr(LINES-2,31,"d 删除");
-    mvaddstr(LINES-2,40,"按上下方向键移动");
-    mvaddstr(LINES-2,58,"按左右方向键翻页");
+    mvaddstr(LINES-2,4,"q 返回上一级菜单");
+    mvaddstr(LINES-2,22,"ENTER 选中");
+    mvaddstr(LINES-2,33,"d 删除");
+    mvaddstr(LINES-2,42,"按上下方向键移动");
+    mvaddstr(LINES-2,60,"按左右方向键翻页");
     attroff(A_BOLD);
     setlocale(LC_ALL,"");
     initial();
@@ -158,7 +158,7 @@ int init_list_person_message(long long person_id,int NumOfPage)
         if(q==MemBaseMessage) return counter;
         /*************/
         counter++;
-        if(q->receiver!=local_phoneNumber)
+        if(q->receiver == local_phoneNumber)
         {
             strcpy(message_content[i],person_id_s);
             strcat(message_content[i],":    ");
