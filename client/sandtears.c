@@ -261,14 +261,16 @@ int sock_sendmsg(struct message msg, char* server_ip, int server_port)
         perror("sendmsg_read");
         return -1;
     }
-    if((buf[0] != 'O')||(buf[1] != 'K')) {
-        perror("sendmsg_read_2");
-        return -1;
-    }
     if(DEBUG) {
         printf("SendMsg: get:%s\n", buf);
     }
     // 关闭socket
     //printf("SendMsg Success...\n");
-    return 1;
+
+    if ((buf[0] == 'n') && (buf[1] == 'e') && (buf[2] == 'w')) {
+        return 2;
+    }
+    if ((buf[0] == 'o') && (buf[1] == 'l') && (buf[2] == 'd')) {
+        return 1;
+    }
 }
